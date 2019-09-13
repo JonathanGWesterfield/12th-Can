@@ -11,6 +11,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20190910200039) do
+
+  create_table "items", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "quantity"
+    t.integer  "capacity"
+    t.boolean  "removed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "member_positions", force: :cascade do |t|
+    t.string   "position"
+    t.integer  "privilege"
+    t.text     "description"
+    t.boolean  "removed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "member_position_id"
+    t.string   "phone_num"
+    t.string   "email"
+    t.string   "username"
+    t.string   "password"
+    t.boolean  "curr_member"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "member_id"
+    t.integer  "item_id"
+    t.integer  "item_change_quantity"
+    t.datetime "created_at",           null: false
+    t.text     "comment"
+    t.datetime "updated_at",           null: false
+  end
 
 end

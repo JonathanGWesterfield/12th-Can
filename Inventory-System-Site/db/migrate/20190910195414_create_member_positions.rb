@@ -1,7 +1,6 @@
 class CreateMemberPositions < ActiveRecord::Migration
   def change
     create_table :member_positions do |t|
-      t.integer :id
       t.string :position
       t.integer :privilege
       t.text :description
