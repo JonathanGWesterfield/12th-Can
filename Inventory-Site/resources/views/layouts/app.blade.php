@@ -12,6 +12,7 @@
         @yield('content')
 
         <footer>
+            <br><br>
             <p>CSCE 431</p>
             <p>Team: The 12th Yam</p>
             <p>Members: Jonathan Westerfield, Ismael Rodriguez, Abdul Campos, Aaron Todd, Daniel Patlovany, Mannan Mendiratta</p>
