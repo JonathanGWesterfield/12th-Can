@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\ItemsController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,4 +23,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// Route for interacting with items in the database
+Route::resource('items', 'ItemsController');
 
+// Route for interacting with order transactions
+Route::resource('transactions', 'TransactionsController');
