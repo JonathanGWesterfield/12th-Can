@@ -16,3 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/new_items', 'PagesController@newItems');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
