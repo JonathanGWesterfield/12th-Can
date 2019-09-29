@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class gitItem extends Model
+class Item extends Model
 {
-    //
+    protected $table = 'Item'; // table name
+    protected $primaryKey = 'id'; // primary key
+    public $timestamps = true; // timestamps
 }
