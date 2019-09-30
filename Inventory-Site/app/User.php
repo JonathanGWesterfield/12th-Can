@@ -37,7 +37,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $table = 'users'; // table name
+    protected $table = 'User'; // table name
     protected $primaryKey = 'id'; // primary key
     protected $timestamps = true; // timestamps
 }

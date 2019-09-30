@@ -14,7 +14,7 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        return Item::all();
+        return Item::NotRemoved()->all();
     }
 
     /**
@@ -35,7 +35,25 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'capacity' => 'required',
+            'threshold' => 'required',
+            'isFood' => 'required',
+            'refrigerated' => 'required'
+        ]);
+
+        $item = new Item;
+        $item->name = $request->input('name');
+        $item->quantity = 0;
+        $item->capacity = $request->input('capacity');
+        $item->low_threshold = $request->input('threshold');
+        $item->is_food = $request->input('isFood');
+        $item->refrigerated = $request->input('refrigerated');
+        $item->created_at = date("Y-m-d H:i:s"); // updated_at uses the database timestamp
+        $item->save();
+
+        return redirect('/new_items')->with('success', 'Item Added');
     }
 
     /**
