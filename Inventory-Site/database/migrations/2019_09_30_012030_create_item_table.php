@@ -24,6 +24,7 @@ class CreateItemTable extends Migration
             $table->boolean('removed');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->useCurrent();
+            $table->unique(['name', 'is_food', 'refrigerated', 'removed']);
         });
     }
 
