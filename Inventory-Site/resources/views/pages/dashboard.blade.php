@@ -1,4 +1,17 @@
 @extends('layouts.app')
+@php
+$inventoryNames = array();
+$inventoryQuantities = array();
+$inventoryCapacities = array();
+$inventoryThresholds = array();
+
+for ($i = 0; $i < count($activeItems); ++$i) {
+    $inventoryNames[] = $activeItems[$i]->name;
+    $inventoryQuantities[] = $activeItems[$i]->quantity;
+    $inventoryCapacities[] = $activeItems[$i]->capacity;
+    $inventoryThresholds[] = $activeItems[$i]->low_threshold;
+}
+@endphp
 
 @section('content')
 <head>
@@ -36,12 +49,13 @@
         <td>
           <div id="currentHisto" style="width:400px;height:360px;">
             <script>
+            var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+            var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
               var trace1 = {
                 //Histogram
                 type: 'bar',
-                x: ['Corn', 'Potato', 'Rice'],
-                //Hard coded dummy values
-                y: [13, 28, 54],
+                x: inventoryNames,
+                y: inventoryQuantities,
                 marker: {
                   line: {
                     width: 1.5
@@ -62,10 +76,12 @@
         </td>
         <td>
           <h2>Low Inventory</h2>
-          <div class="vertical-menu">
-            <a>Corn</a>
-            <a>Potatoes</a>
-            <a>Rice</a>
+            <div class="vertical-menu">
+                @for ($i = 0; $i < count($inventoryQuantities); ++$i)
+                    @if ($inventoryQuantities[$i] < $inventoryThresholds[$i])
+                        <a>{{$inventoryNames[$i]}}</a>
+                    @endif
+                @endfor
           </div>
         </td>
         <td>
@@ -152,9 +168,12 @@
         <td>
           <div id="stockCapacity" style="width:400px;height:360px;">
             <script>
+              var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+              var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
+              var inventoryCapacities = <?php echo json_encode($inventoryCapacities); ?>;
               var trace1 = {
-                x: ['Corn', 'Potato', 'Rice'],
-                y: [13, 28, 54],
+                x: inventoryNames,
+                y: inventoryQuantities,
                 name: 'Inventory',
                 type: 'bar',
                 marker: {
@@ -165,8 +184,8 @@
               };
 
               var trace2 = {
-                x: ['Corn', 'Potato', 'Rice'],
-                y: [45, 30, 75],
+                x: inventoryNames,
+                y: inventoryCapacities,
                 name: 'Capacity',
                 type: 'bar',
                 marker: {
