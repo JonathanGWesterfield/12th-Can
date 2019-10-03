@@ -13,15 +13,26 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('User', function (Blueprint $table) {
+            $table->bigIncrements('id')->autoIncrement();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at')->useCurrent();
+            $table->string('phone_num');
+            $table->boolean('current_member');
+            $table->integer('position_id');
+            $table->foreign('position_id')->references('id')->on('Member_Position');
         });
+
+        Schema::enableForeignKeyConstraints();
+
+//        Schema::table('User', function(Blueprint $table){
+//            $table->foreign('position_id')->references('id')->on('Member_Position');
+//        });
     }
 
     /**
