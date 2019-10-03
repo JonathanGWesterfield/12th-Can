@@ -23,6 +23,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/dashboard', 'DashboardController@index');
+
 // Route for interacting with items in the database
 Route::resource('items', 'ItemsController');
 
