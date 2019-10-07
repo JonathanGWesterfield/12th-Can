@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// TODO: POSSIBLY USE LARAVEL PASSPORT FOR AUTHENTICATION FOR REST API
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -36,4 +38,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $table = 'User'; // table name
+    protected $primaryKey = 'id'; // primary key
+    protected $timestamps = true; // timestamps
+
+    public function User()
+    {
+        // Define the table relationships
+        $this->hasMany(Transaction::Class);
+    }
 }
