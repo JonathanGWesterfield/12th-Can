@@ -39,9 +39,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $table = 'User'; // table name
+    protected $table = 'users'; // table name
     protected $primaryKey = 'id'; // primary key
-    protected $timestamps = true; // timestamps
+    public $timestamps = true; // timestamps
 
     public function User()
     {
