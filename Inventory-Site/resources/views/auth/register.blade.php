@@ -18,7 +18,7 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
-                                <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -43,7 +43,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                <input id="phone" type="text" class="form-control @error('email') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
 
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
