@@ -24,13 +24,11 @@
         <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <!--{{ config('app.name', 'Laravel') }} -->
-                    12th Can
+                <img src="../../../android-chrome-512x512.png" width="75" height="55"  class="d-inline-block align-top" alt="err">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
