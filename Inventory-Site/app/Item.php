@@ -11,6 +11,15 @@ class Item extends Model
     public $timestamps = true; // timestamps
 
     /**
+     * Class constructor
+     */
+    public function Item()
+    {
+        // Set the database relationship
+        $this->hasMany(Transaction::Class);
+    }
+
+    /**
      * Scope function to only get items that are food from the database
      * @param $query The query we need to modify scope
      * @return mixed The query where we have added the condition that we are only getting food items
