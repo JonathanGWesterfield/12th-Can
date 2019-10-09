@@ -106,12 +106,11 @@ class ItemsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id The ID of the item we want to modify. Is the Primary key in the Item table.
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //TODO: MAKE THIS WORK!!!!!
         $this->validate($request, [
             'name' => 'required',
             'capacity' => 'required',
@@ -122,14 +121,12 @@ class ItemsController extends Controller
         ]);
 
         try{
-            $item = new Item;
+            $item = Item::find($id);
             $item->name = $request->input('name');
-            $item->quantity = 0;
             $item->capacity = $request->input('capacity');
             $item->low_threshold = $request->input('threshold');
             $item->is_food = $request->input('isFood');
             $item->refrigerated = $request->input('refrigerated');
-            $item->created_at = date("Y-m-d H:i:s"); // updated_at uses the database timestamp
             $item->removed = $request->input('removed');
             $item->save();
         }
@@ -143,27 +140,23 @@ class ItemsController extends Controller
         }
 
         // If the item is removed, have the response reflect that.
-        if($item->removed)
+        if($item->removed == 'true')
             return response([
                 'status' => 'item removed',
+                'item_id' => $item->id,
                 'item_name' => $item->name,
-                'item_quantity' => $item->quantity,
-                'item_capacity' =>  $item->capacity,
-                'item_threshold' => $item->low_threshold,
-                'item_is_food' => $item->is_food,
-                'item_refrigerated' => $item->created_at,
                 'item_removed' => $item->removed], 200)
                 ->header('Content-Type', 'text/plain');
 
         return response([
             'status' => 'item modified',
+            'item_id' => $item->id,
             'item_name' => $item->name,
             'item_quantity' => $item->quantity,
             'item_capacity' =>  $item->capacity,
             'item_threshold' => $item->low_threshold,
             'item_is_food' => $item->is_food,
-            'item_refrigerated' => $item->created_at,
-            'item_removed' => $item->removed], 200)
+            'item_refrigerated' => $item->refrigerated], 200)
             ->header('Content-Type', 'text/plain');
     }
 
