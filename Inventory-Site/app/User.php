@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
 // TODO: POSSIBLY USE LARAVEL PASSPORT FOR AUTHENTICATION FOR REST API
 
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email','phone', 'password',
     ];
 
     /**
@@ -39,9 +40,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $table = 'User'; // table name
+    protected $table = 'users'; // table name
     protected $primaryKey = 'id'; // primary key
-    protected $timestamps = true; // timestamps
+    public $timestamps = true; // timestamps
 
     public function User()
     {

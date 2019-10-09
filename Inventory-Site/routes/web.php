@@ -30,3 +30,11 @@ Route::resource('items', 'ItemsController');
 
 // Route for interacting with order transactions
 Route::resource('transactions', 'TransactionsController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
