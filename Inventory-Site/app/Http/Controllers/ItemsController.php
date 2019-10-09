@@ -15,6 +15,7 @@ class ItemsController extends Controller
      */
     public function index()
     {
+        console.log("Here");
         return Item::NotRemoved()->all();
     }
 
