@@ -162,8 +162,9 @@ When OK received, redirect to mainpage
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
-                    $scope.items = msthis.responseTextg
-                    $scope.completeItems = JSON.parse(JSON.stringify(this.responseText))
+                    $scope.items = [JSON.parse(this.responseText)]
+                    $scope.completeItems = JSON.parse(this.responseText)
+                    console.log($scope.completeItems)
                     $scope.addItems = []
                     $scope.$apply()
                 }

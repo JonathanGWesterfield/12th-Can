@@ -15,7 +15,13 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        return Item::NotRemoved()->all();
+        return '{
+            "name": "Apples",
+            "capacity": "120",
+            "Threshold": "60",
+            "foodItem": "Yes",
+            "Refrigeration": "Yes"
+        }';
     }
 
     /**
