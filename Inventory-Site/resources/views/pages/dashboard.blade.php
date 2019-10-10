@@ -1,3 +1,4 @@
+@inject('dashboardCont', 'App\Http\Controllers\DashboardController')
 @extends('layouts.app')
 @php
 $inventoryNames = array();
@@ -43,6 +44,9 @@ for ($i = 0; $i < count($activeItems); ++$i) {
 </head>
 <body>
     <h1>Inventory Dashboard Page</h1>
+<span class="text-bold">
+{{ $dashboardCont::test() }}
+</span>
 
     <table style="width:100%">
       <tr>
