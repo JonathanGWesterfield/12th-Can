@@ -26,20 +26,20 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     background-color: #ccc;
   }
 
-  .container {
-    display: block;
-    background-color: #eee;
-  }
-  .container:hover {
-    background-color: #ccc;
-    cursor: pointer;
-  }
-  .container input {
-    cursor: pointer;
-    top: 0;
-    left: 0;
-  }
+
+
   </style>
+
+  <script>
+    function getUrlVars() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+      });
+      return vars;
+    }
+  </script>
+
 </head>
 <body>
     <h1>Inventory Dashboard Page</h1>
@@ -49,13 +49,31 @@ for ($i = 0; $i < count($activeItems); ++$i) {
         <td>
           <div id="currentHisto" style="width:400px;height:360px;">
             <script>
-            var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
-            var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
+
+              var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+              var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
+
+              var checkedNames = getUrlVars();
+              var activeNames = [];
+              var activeQuantities = [];
+              if (checkedNames["totalInventory"] == "on"){
+                activeNames = inventoryNames;
+                activeQuantities = inventoryQuantities;
+              }
+              else {
+                for (var i = 0; i < inventoryNames.length; i++){
+                  if (checkedNames[inventoryNames[i]] == "on"){
+                    activeNames.push(inventoryNames[i]);
+                    activeQuantities.push(inventoryQuantities[i]);
+                  }
+                }
+              }
+
               var trace1 = {
                 //Histogram
                 type: 'bar',
-                x: inventoryNames,
-                y: inventoryQuantities,
+                x: activeNames,
+                y: activeQuantities,
                 marker: {
                   line: {
                     width: 1.5
@@ -114,22 +132,14 @@ for ($i = 0; $i < count($activeItems); ++$i) {
       </tr>
       <tr>
         <td>
-          <label class="container">Total Inventory
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container">Corn
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container">Potatoes
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container">Rice
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
+          <form>
+            <input type="submit" value="Submit"><br>
+            <input type="checkbox" name="totalInventory">Total Inventory<br>
+            @for ($i = 0; $i < count($inventoryNames); ++$i)
+              <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryNames[$i]}}<br>
+            @endfor
+            </form>
+          </form>
         </td>
         <td>
           <div id="inventoryLine" style="width:400px;height:360px;">
@@ -155,7 +165,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
                 name: 'Rice'
               };
 
-              var data = [ trace1, trace2, trace3 ];
+              var data = [ trace1, trace2, trace3];
 
               var layout = {
                 title:'Monthly Inventory'
@@ -171,9 +181,29 @@ for ($i = 0; $i < count($activeItems); ++$i) {
               var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
               var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
               var inventoryCapacities = <?php echo json_encode($inventoryCapacities); ?>;
+
+              var checkedNames = getUrlVars();
+              var activeNames = [];
+              var activeQuantities = [];
+              var activeCapacities = [];
+              if (checkedNames["totalInventory"] == "on"){
+                activeNames = inventoryNames;
+                activeQuantities = inventoryQuantities;
+                activeCapacities = inventoryCapacities;
+              }
+              else {
+                for (var i = 0; i < inventoryNames.length; i++){
+                  if (checkedNames[inventoryNames[i]] == "on"){
+                    activeNames.push(inventoryNames[i]);
+                    activeQuantities.push(inventoryQuantities[i]);
+                    activeCapacities.push(inventoryCapacities[i]);
+                  }
+                }
+              }
+
               var trace1 = {
-                x: inventoryNames,
-                y: inventoryQuantities,
+                x: activeNames,
+                y: activeQuantities,
                 name: 'Inventory',
                 type: 'bar',
                 marker: {
@@ -184,8 +214,8 @@ for ($i = 0; $i < count($activeItems); ++$i) {
               };
 
               var trace2 = {
-                x: inventoryNames,
-                y: inventoryCapacities,
+                x: activeNames,
+                y: activeCapacities,
                 name: 'Capacity',
                 type: 'bar',
                 marker: {
