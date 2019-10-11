@@ -120,6 +120,7 @@
                     <th scope="col">Low Inventory Threshold</th>
                     <th scope="col">Food Item</th>
                     <th scope="col">Needs to be refrigerated</th>
+                    <th scope="col">Remove Row?</th>
                 </tr>
             </thead>
             <tbody ng-repeat="item in addItems">
@@ -129,6 +130,7 @@
                     <td><%item.threshold%></td>
                     <td><%item.isFood%></td>
                     <td><%item.refrigerated%></td>
+                    <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
                 </tr>
             </tbody>
         </table>
@@ -199,6 +201,9 @@ When OK received, redirect to mainpage
             name.value = ''
             capacity.value = ''
             threshold.value = ''
+        }
+        $scope.remove = function(index){
+            $scope.addItems.splice(index, 1);
         }
         $scope.submit = function() {
             /*if (counter===5) {
