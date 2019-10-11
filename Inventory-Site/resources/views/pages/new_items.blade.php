@@ -18,18 +18,18 @@
           </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form name = "addItemForm">
                     <div class="form-group">
                         <label for="itemName">Item Name</label>
-                        <input required type="text" class="form-control" id="itemName" placeholder="Enter item name">
+                        <input required type="text" class="form-control" id="itemName" placeholder="Enter item name" required>
                     </div>
                     <div class="form-group">
                         <label for="capacity">Capacity</label>
-                        <input required type="number" class="form-control" id="capacity" placeholder="Capacity">
+                        <input required type="number" class="form-control" id="capacity" placeholder="Capacity" required>
                     </div>
                     <div class="form-group">
                         <label for="threshold">Threshold</label>
-                        <input required type="number" class="form-control" id="threshold" placeholder="Threshold">
+                        <input required type="number" class="form-control" id="threshold" placeholder="Threshold" required>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="foodItem">
@@ -91,15 +91,8 @@
         <h2>Add Item Page</h2>
     </div>
 </div>
-<div class="row py-md-2">
-    <div class="col" style="text-align: right">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Add Item
-        </button>
-    </div>
-</div>
 <div class="row">
-    <div class="col-2 mx-md-5 border">
+    <div class="col-2 mx-md-5 my-md-5 py-md-2 border">
         <label>Search: <input ng-model="searchText"></label>
         <table id="searchTextResults">
             <tr>
@@ -109,48 +102,51 @@
                 <td><%item.name%></td>
             </tr>
         </table>
-
     </div>
     <div class="col mx-md-5">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col">Capacity</th>
-                    <th scope="col">Low Inventory Threshold</th>
-                    <th scope="col">Food Item</th>
-                    <th scope="col">Needs to be refrigerated</th>
-                    <th scope="col">Remove Row?</th>
-                </tr>
-            </thead>
-            <tbody ng-repeat="item in addItems">
-                <tr>
-                    <td><%item.name%></td>
-                    <td><%item.capacity%></td>
-                    <td><%item.threshold%></td>
-                    <td><%item.isFood%></td>
-                    <td><%item.refrigerated%></td>
-                    <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row py-md-2">
+            <div class="col" style="text-align: right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Add Item
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Capacity</th>
+                            <th scope="col">Low Inventory Threshold</th>
+                            <th scope="col">Food Item</th>
+                            <th scope="col">Needs to be refrigerated</th>
+                            <th scope="col">Remove Row?</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="item in addItems">
+                        <tr>
+                            <td><%item.name%></td>
+                            <td><%item.capacity%></td>
+                            <td><%item.threshold%></td>
+                            <td><%item.isFood%></td>
+                            <td><%item.refrigerated%></td>
+                            <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row py-md-2">
+            <div class="col" style="text-align: right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                    Submit
+                </button>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row py-md-2">
-    <div class="col" style="text-align: right">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
-            Submit
-        </button>
-    </div>
-</div>
-<!--
-$scope.reset is the definition of what the reset function does
-Placeholder for a login function on line 13
-Instead of resetting, it should:
-Send username and password to backend for verification
-Wait for response
-When OK received, redirect to mainpage
--->
+
 <script>
     var app = angular.module('add', [], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
