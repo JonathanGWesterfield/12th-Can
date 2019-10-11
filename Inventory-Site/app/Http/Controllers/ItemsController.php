@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
 use function MongoDB\BSON\toJSON;
+use Illuminate\Support\Facades\DB;
 
 class ItemsController extends Controller
 {
@@ -15,13 +16,7 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        return '{
-            "name": "Apples",
-            "capacity": "120",
-            "Threshold": "60",
-            "foodItem": "Yes",
-            "Refrigeration": "Yes"
-        }';
+        return DB::table('Item')->get();
     }
 
     /**

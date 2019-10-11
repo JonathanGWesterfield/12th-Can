@@ -6,7 +6,7 @@
 
 @section('content')
 
-
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <div ng-app="add" ng-controller="addItems">
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -72,9 +72,9 @@
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.Threshold%></td>
-                            <td><%item.foodItem%></td>
-                            <td><%item.Refrigeration%></td>
+                            <td><%item.threshold%></td>
+                            <td><%item.isFood%></td>
+                            <td><%item.refrigerated%></td>
                         </tr>
                     </tbody>
                 </table>
@@ -126,9 +126,9 @@
                 <tr>
                     <td><%item.name%></td>
                     <td><%item.capacity%></td>
-                    <td><%item.Threshold%></td>
-                    <td><%item.foodItem%></td>
-                    <td><%item.Refrigeration%></td>
+                    <td><%item.threshold%></td>
+                    <td><%item.isFood%></td>
+                    <td><%item.refrigerated%></td>
                 </tr>
             </tbody>
         </table>
@@ -162,7 +162,7 @@ When OK received, redirect to mainpage
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
-                    $scope.items = [JSON.parse(this.responseText)]
+                    $scope.items = JSON.parse(this.responseText)
                     $scope.completeItems = JSON.parse(this.responseText)
                     console.log($scope.completeItems)
                     $scope.addItems = []
@@ -177,36 +177,60 @@ When OK received, redirect to mainpage
             var name = document.getElementById('itemName');
             var capacity = document.getElementById('capacity');
             var threshold = document.getElementById('threshold');
+            var foodItem = document.getElementById('foodItem');
+            var ref = document.getElementById('refrigeration');
+            var food = 'No';
+            var refr = 'No';
+            if(foodItem.checked){
+                food = 'Yes';
+                foodItem.checked = false;
+            }
+            if(ref.checked){
+                refr = 'Yes';
+                ref.checked = false;
+            }
             $scope.addItems.push({
                 "name": name.value,
                 "capacity": capacity.value,
-                "Threshold": threshold.value,
-                "foodItem": "Yes",
-                "Refrigeration": "Yes"
+                "threshold": threshold.value,
+                "isFood": food,
+                "refrigerated": refr
             })
-            $scope.completeItems.push({
-                "name": name.value,
-                "capacity": capacity.value,
-                "Threshold": threshold.value,
-                "foodItem": "Yes",
-                "Refrigeration": "Yes"
-            })
+            name.value = ''
+            capacity.value = ''
+            threshold.value = ''
         }
         $scope.submit = function() {
-            console.log($scope.items)
-            $scope.addItems = []
-            console.log($scope.items)
-            jQuery.ajax({
-                    method: "POST",
-                    url: "/addItem",
-                    data: {
-                        "data": $scope.completeItems
+            /*if (counter===5) {
+    		$('.quoteList').empty();
+                counter = 0;
+            }
+            
+            $.ajax({
+                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... 
+                url:'http://quotes.stormconsultancy.co.uk/random.json',
+                async: true,
+                dataType: 'jsonp',
+                success:function(data){
+                    $('.quoteList').append('<li>' + data.quote +'</li>');
+                    counter++;
+                    if (counter < 5) getData();
+                }
+            });*/
+            console.log("Time to submit")
+            console.log($scope.addItems.length)
+            while($scope.addItems.length>0){
+                var x = $scope.addItems.pop()
+                jQuery.post('items',x,function(data){
+                    console.log(data)
+                    console.log(x)
+                    $scope.items.push(x)
+                    if($scope.addItems.length == 0){
+                        console.log("Entering Here")
+                        $scope.$apply();
                     }
                 })
-                .done(function(msg) {
-
-                    $scope.$apply()
-                });
+            }
         }
     });
 </script>
