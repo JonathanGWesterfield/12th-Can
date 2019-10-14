@@ -110,18 +110,12 @@ class ItemsController extends Controller
         try
         {
             $items = json_decode($request->getContent(), true);
-//            echo("Num Items: ". count($items));
 
             // Go through every item submitted and create it
             foreach($items as $elem)
             {
-                echo("Looking for item");
                 $item = Item::find($elem['id']);
-                echo(strval($item));
-                echo("Found item");
-//                echo($item->name);
                 $item->name = $elem['name'];
-                echo("name: " . $item->name);
                 $item->capacity = $elem['capacity'];
                 $item->low_threshold = $elem['threshold'];
                 $item->is_food = $elem['isFood'];
@@ -130,10 +124,7 @@ class ItemsController extends Controller
                 $item->save();
 
                 if ($item->removed == 'true')
-                {
-                    echo("\nRemoved an Item\n");
                     $numRemoved++;
-                }
 
             }
 
