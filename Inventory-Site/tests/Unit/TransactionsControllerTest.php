@@ -30,14 +30,39 @@ class TransactionsControllerTest extends TestCase
      */
     public function testStore()
     {
+        // Insert an Item to test with
+        $this->withoutMiddleware();
+        $response = $this->json('POST', 'items',
+            [
+                'name' => 'Yeeterinos',
+                'capacity' => '420',
+                'threshold' => '42',
+                'isFood' => 'true',
+                'refrigerated' => 'false'
+            ]);
+
         // Test a good request
         $this->withoutMiddleware();
         $response = $this->json('POST', 'transactions',
             [
-                'item_id' => '1',
-                'user_id' => '1',
-                'quantity_change' => '10',
-                'comment' => 'Yeet',
+                [
+                    'item_id' => '1',
+                    'user_id' => '1',
+                    'quantity_change' => '10',
+                    'comment' => 'Yeet'
+                ],
+                [
+                    'item_id' => '1',
+                    'user_id' => '1',
+                    'quantity_change' => '100',
+                    'comment' => 'Add me some of that.'
+                ],
+                [
+                    'item_id' => '1',
+                    'user_id' => '1',
+                    'quantity_change' => '-20',
+                    'comment' => 'Subtract me some'
+                ]
             ]);
         // evaluate
         $response
@@ -84,6 +109,7 @@ class TransactionsControllerTest extends TestCase
                 ]
             ]);
     }
+
 
     /**
      * Test the show function to get the transactions that we need.
