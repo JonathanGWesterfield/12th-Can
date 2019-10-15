@@ -673,6 +673,7 @@ fabric.properties
 
 ### Laravel ###
 /vendor/
+/Inventory-Site/vendor/
 npm-debug.log
 yarn-error.log
 
