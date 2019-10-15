@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->useCurrent();
-            $table->string('phone_num');
+            $table->string('phone');
             $table->boolean('current_member');
             $table->integer('position_id');
             $table->foreign('position_id')->references('id')->on('Member_Position');
