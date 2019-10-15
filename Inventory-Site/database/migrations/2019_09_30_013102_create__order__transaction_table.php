@@ -20,7 +20,7 @@ class CreateOrderTransactionTable extends Migration
             $table->integer('item_quantity_change');
             $table->string('comment')->nullable();
             $table->timestamp('transaction_date')->useCurrent();
-            $table->foreign('member_id')->references('id')->on('User');
+            $table->foreign('member_id')->references('id')->on('users');
             $table->foreign('item_id')->references('id')->on('Item');
         });
 
