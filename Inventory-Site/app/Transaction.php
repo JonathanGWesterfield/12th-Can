@@ -7,15 +7,28 @@ use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
-    protected $table = 'Order_Transaction'; // table name
+    public $table = 'Order_Transaction'; // table name
     protected $primaryKey = 'id'; // primary key
-    public $timestamps = true; // timestamps
+    public $timestamps = false; // timestamps
 
     public function Transaction()
     {
         // Define the table relationships
         $this->belongsTo(User::Class);
         $this->belongsTo(Item::Class);
+
+//        $this->$table->foreign('user_id')->references('id')->on('users');
+//        $this->$table->foreign('item_id')->references('id')->on('Item');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
     }
 
     /**
@@ -31,6 +44,4 @@ class Transaction extends Model
 
         return $quantity;
     }
-
-
 }

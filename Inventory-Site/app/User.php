@@ -47,6 +47,11 @@ class User extends Authenticatable
     public function User()
     {
         // Define the table relationships
-        $this->hasMany(Transaction::Class);
+        return $this->hasMany(Transaction::Class);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Member_Position::class);
     }
 }
