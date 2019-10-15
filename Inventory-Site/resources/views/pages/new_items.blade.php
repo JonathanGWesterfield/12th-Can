@@ -220,18 +220,26 @@
             });*/
             console.log("Time to submit")
             console.log($scope.addItems.length)
-            while($scope.addItems.length>0){
-                var x = $scope.addItems.pop()
-                jQuery.post('items',x,function(data){
-                    console.log(data)
-                    console.log(x)
-                    $scope.items.push(x)
-                    if($scope.addItems.length == 0){
-                        console.log("Entering Here")
-                        $scope.$apply();
+            for (var i = 0; i<$scope.addItems.length; ++i){
+                for (var j = 0; j<$scope.items.length; ++j){
+                    if($scope.addItems[i].name == $scope.items[j].name){
+                        $scope.addItems.splice(i,1);
+                        --i;
+                        break;
                     }
-                })
+                }
             }
+            if($scope.addItems.length == 0) return;
+            jQuery.post('items',JSON.stringify($scope.addItems), function(data){
+                console.log(data);
+                for (var i = 0; i<$scope.addItems.length; ++i){
+                    $scope.items.push($scope.addItems[i]);
+                }
+                //console.log($scope.items);
+                $scope.addItems = [];
+                //console.log($scope.items);
+                $scope.$apply();
+            })
         }
     });
 </script>
