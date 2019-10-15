@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 class ItemsControllerTest extends TestCase
 {
     // By using this, we will rollback the db transaction to avoid polluting the db with test cases
-//    use RefreshDatabase;
+    use RefreshDatabase;
     use WithoutMiddleware;
 
     /**
@@ -22,36 +22,60 @@ class ItemsControllerTest extends TestCase
         // Test a good request
         $this->withoutMiddleware();
         $response = $this->json('POST', 'items',
-            ['name' => 'Yeeterinos',
-                'capacity' => '420',
-                'threshold' => '42',
-                'isFood' => 'true',
-                'refrigerated' => 'false'
+            [
+                [
+                    'name' => 'Yeeterinos',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'false'
+                ],
+                [
+                    'name' => 'Yeeteronis',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'true'
+                ],
+                [
+                    'name' => 'Yeet Street',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'false',
+                    'refrigerated' => 'false'
+                ]
             ]);
         // evaluate
         $response
             ->assertStatus(200)
             ->assertJson([
                 'status' => 'item created',
-                'item_name' => 'Yeeterinos'
+                'item_count' => '3'
             ]);
 
         // test a bad request
         $this->withoutMiddleware();
         $response = $this->json('POST', 'items',
-            ['name' => 'Yeeterinos',
-                'capacity' => '420',
-                'threshold' => '42',
-                'isFood' => 'true',
+            [
+                [
+                    'name' => 'Hee Hees',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'false'
+                ],
+                [
+                    'name' => 'Bad Guys',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                ]
             ]);
         // evaluate
         $response
-            ->assertStatus(422)
+            ->assertStatus(500)
             ->assertJson([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'refrigerated' => ['The refrigerated field is required.']
-                ]
+                'message' => 'Undefined index: refrigerated'
             ]);
     }
 
@@ -59,63 +83,107 @@ class ItemsControllerTest extends TestCase
     {
         $this->withoutMiddleware();
 
-        // Test just modifying the item
-        $response = $this->json('PUT', 'items/1',
-            ['id' => '1',
-                'name' => 'Yeeterinos',
-                'capacity' => '100',
-                'threshold' => '10',
-                'isFood' => 'false',
-                'refrigerated' => 'false',
-                'removed' => 'false'
-            ]);
-        // evaluate
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'status' => 'item modified',
-                'item_name' => 'Yeeterinos',
-                'item_capacity' =>  '100',
-                'item_threshold' => '10',
-                'item_is_food' => 'false',
-                'item_refrigerated' => 'false'
-            ]);
-
-        // Test Removing an item by setting the removed field to True
-        $response = $this->json('PUT', 'items/1',
-            ['name' => 'Yeeterinos',
-                'capacity' => '420',
-                'threshold' => '42',
-                'isFood' => 'true',
-                'refrigerated' => 'true',
-                'removed' => 'true'
-            ]);
-        // evaluate
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'status' => 'item removed',
-                'item_id' => '1',
-                'item_name' => 'Yeeterinos',
-                'item_removed' => 'true'
-            ]);
-
-        // test a bad request
-        $this->withoutMiddleware();
-        $response = $this->json('PUT', 'items/1',
-            ['name' => 'Yeeterinos',
-                'capacity' => '420',
-                'isFood' => 'true',
-            ]);
-        // evaluate
-        $response
-            ->assertStatus(422)
-            ->assertJson([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'threshold' => ['The threshold field is required.']
+        // Create some items in the db
+        $response = $this->json('POST', 'items',
+            [
+                [
+                    'name' => 'Yeeterinos',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'false'
+                ],
+                [
+                    'name' => 'Yeeteronis',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'true'
+                ],
+                [
+                    'name' => 'Yeet Street',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'false',
+                    'refrigerated' => 'false'
                 ]
             ]);
+
+        // Test just modifying the item
+        $response = $this->json('PUT', 'items/1',
+            [
+                [
+                    'id' => '1',
+                    'name' => 'Yeeterinos',
+                    'capacity' => '100',
+                    'threshold' => '10',
+                    'isFood' => 'false',
+                    'refrigerated' => 'false',
+                    'removed' => 'false'
+                ],
+                [
+                    'id' => '2',
+                    'name' => 'Yeeteronis',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'true',
+                    'refrigerated' => 'true',
+                    'removed' => 'false'
+                ],
+                [
+                    'id' => '3',
+                    'name' => 'Yeet Street',
+                    'capacity' => '420',
+                    'threshold' => '42',
+                    'isFood' => 'false',
+                    'refrigerated' => 'false',
+                    'removed' => 'true'
+                ]
+            ]);
+        // evaluate
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => 'item(s) modified',
+                'items_modified' => '3',
+                'items_deleted' => '1'
+            ]);
+
+//        // Test Removing an item by setting the removed field to True
+//        $response = $this->json('PUT', 'items/1',
+//            ['name' => 'Yeeterinos',
+//                'capacity' => '420',
+//                'threshold' => '42',
+//                'isFood' => 'true',
+//                'refrigerated' => 'true',
+//                'removed' => 'true'
+//            ]);
+//        // evaluate
+//        $response
+//            ->assertStatus(200)
+//            ->assertJson([
+//                'status' => 'item removed',
+//                'item_id' => '1',
+//                'item_name' => 'Yeeterinos',
+//                'item_removed' => 'true'
+//            ]);
+//
+//        // test a bad request
+//        $this->withoutMiddleware();
+//        $response = $this->json('PUT', 'items/1',
+//            ['name' => 'Yeeterinos',
+//                'capacity' => '420',
+//                'isFood' => 'true',
+//            ]);
+//        // evaluate
+//        $response
+//            ->assertStatus(422)
+//            ->assertJson([
+//                'message' => 'The given data was invalid.',
+//                'errors' => [
+//                    'threshold' => ['The threshold field is required.']
+//                ]
+//            ]);
     }
 
 //    public function testCreate()
