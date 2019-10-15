@@ -15,9 +15,9 @@ class DashboardController extends Controller
         $activeItems = Item::all()->where('removed','false');
         return view('pages.dashboard')->with('activeItems', $activeItems);
     }
-    
+
     public static function test()
     {
-        return "This has been a test";
+        return;
     }
 }
