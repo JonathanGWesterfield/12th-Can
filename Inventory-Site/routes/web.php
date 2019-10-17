@@ -13,9 +13,7 @@
 
 use App\Http\Controllers\ItemsController;
 
-Route::get('/', function () {
-    return view('home');
-})->middleware('auth');
+Route::get('/', 'DashboardController@index')->middleware('auth');
 
 Route::get('/new_items', 'PagesController@newItems')->middleware('auth');
 
