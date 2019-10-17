@@ -86,6 +86,8 @@
         </div>
     </div>
 </div>
+<div class="alert alert-primary" role="alert" id ="alert" hidden>
+</div>
 <div class="row">
     <div class="col" style="text-align: center">
         <h2>Add Item Page</h2>
@@ -148,6 +150,7 @@
 </div>
 
 <script>
+
     var app = angular.module('add', [], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
@@ -155,6 +158,8 @@
     app.controller('addItems', function($scope) {
         console.log("Hello")
         jQuery(function() {
+            
+            //document.getElementById("alert").slideUp(500);
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -220,9 +225,11 @@
             });*/
             console.log("Time to submit")
             console.log($scope.addItems.length)
+            $scope.notAdded =[];
             for (var i = 0; i<$scope.addItems.length; ++i){
                 for (var j = 0; j<$scope.items.length; ++j){
                     if($scope.addItems[i].name == $scope.items[j].name){
+                        $scope.notAdded.push($scope.addItems[i]);
                         $scope.addItems.splice(i,1);
                         --i;
                         break;
@@ -232,11 +239,28 @@
             if($scope.addItems.length == 0) return;
             jQuery.post('items',JSON.stringify($scope.addItems), function(data){
                 console.log(data);
-                for (var i = 0; i<$scope.addItems.length; ++i){
-                    $scope.items.push($scope.addItems[i]);
-                }
+                data = JSON.parse(data);
                 //console.log($scope.items);
+                for (var i = 0; i<$scope.addItems.length; ++i){
+                    $scope.items.push($scope.addItems[i])
+                }
                 $scope.addItems = [];
+                document.getElementById("alert").innerHTML = "";
+                console.log(data.item_count);
+                if(data.status == 'item created'){
+                    document.getElementById("alert").innerHTML = data.item_count + " item was successfully created. ";
+                }
+                if($scope.notAdded.length > 0){
+                    document.getElementById("alert").innerHTML += "The following were not added because they existed previously in the database: ";
+                    for (var i = 0; i<$scope.notAdded.length; ++i){
+                        document.getElementById("alert").innerHTML += $scope.notAdded[i].name;
+                    }
+                    
+                }
+                document.getElementById("alert").hidden = false;
+                jQuery("#alert").delay(5000).slideUp(200, function() {
+                    jQuery(this).alert('close');
+                });
                 //console.log($scope.items);
                 $scope.$apply();
             })
