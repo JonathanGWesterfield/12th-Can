@@ -21,7 +21,7 @@
                 <form name = "addItemForm">
                     <div class="form-group">
                         <label for="itemName">Item Name</label>
-                        <input required type="text" class="form-control" id="itemName" placeholder="Enter item name" required>
+                        <input required type="text" class="form-control" id="itemName" name = "itemName" placeholder="Enter item name" required>
                     </div>
                     <div class="form-group">
                         <label for="capacity">Capacity</label>
@@ -43,7 +43,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="addItem()" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-primary" ng-click="addItem()" data-dismiss="modal" ng-disabled = "addItemForm.$invalid">Save changes</button>
             </div>
         </div>
     </div>
