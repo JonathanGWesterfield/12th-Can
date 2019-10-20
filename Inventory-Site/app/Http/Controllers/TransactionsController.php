@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
+use App\User;
+use App\Item;
 use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
@@ -46,32 +48,38 @@ class TransactionsController extends Controller
             // Go through every item submitted and create it
             foreach($transactions as $elem)
             {
-//                $transaction = new Transaction();
-//                $transaction->item_id = $elem['item_id'];
-//                $transaction->member_id = $elem['user_id']; // ID of the currently logged in user.
-//                $transaction->item_quantity_change = $elem['quantity_change'];
-//                $transaction->transaction_date = date("Y-m-d H:i:s"); // current time
-//                $transactions->comment = "";
+                $item = Item::find($elem['item_id']);
+//                dd($item);
+                $user = User::find($elem['user_id']);
+////                dd($user);
+//
+                $transaction = new Transaction();
+                $transaction->item()->associate($item);
+                $transaction->user()->associate($user);
+                $transaction->item_quantity_change = $elem['quantity_change'];
+                $transaction->transaction_date = date("Y-m-d H:i:s"); // current time
+                $transaction->comment = "";
 
-                $comment = "";
+//                $comment = "";
+//
+//                if($elem['comment'] != null)
+//                    $comment = $elem['comment'];
+////
+//                DB::table('Order_Transaction')->insert(
+//                    [
+//                        'item_id' => $elem['item_id'],
+//                        'member_id' => $elem['user_id'],
+//                        'item_quantity_change' => $elem['quantity_change'],
+//                        'transaction_date' => "'".date("Y-m-d H:i:s")."'", // current time
+//                        'comment' => "'".$comment."'"
+//                    ]fd
+//                );
 
                 if($elem['comment'] != null)
-                    $comment = $elem['comment'];
+                    $transaction->comment = $elem['comment'];
 
-                DB::table('Order_Transaction')->insert(
-                    [
-                        'item_id' => $elem['item_id'],
-                        'member_id' => $elem['user_id'],
-                        'item_quantity_change' => $elem['quantity_change'],
-                        'transaction_date' => date("Y-m-d H:i:s"), // current time
-                        'comment' => $comment
-                    ]
-                );
-
-//                if($elem['comment'] != null)
-//                    $transaction->comment = $elem['comment'];
-
-//                $transaction->save();
+//                dd($transaction);
+                $transaction->save();
             }
 
             return response([

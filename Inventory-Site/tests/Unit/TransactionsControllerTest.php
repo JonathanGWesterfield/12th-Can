@@ -5,10 +5,11 @@ namespace Tests\Unit;
 use App\Http\Controllers\TransactionsController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class TransactionsControllerTest extends TestCase
 {
-    use RefreshDatabase;
+   use RefreshDatabase;
     /**
      * Shouldn't need a test for editing transactions
      */
@@ -30,36 +31,25 @@ class TransactionsControllerTest extends TestCase
      */
     public function testStore()
     {
-        // Insert an Item to test with
-        $this->withoutMiddleware();
-        $response = $this->json('POST', 'items',
-            [
-                'name' => 'Yeeterinos',
-                'capacity' => '420',
-                'threshold' => '42',
-                'isFood' => 'true',
-                'refrigerated' => 'false'
-            ]);
-
         // Test a good request
         $this->withoutMiddleware();
         $response = $this->json('POST', 'transactions',
             [
                 [
                     'item_id' => '1',
-                    'user_id' => '1',
+                    'user_id' => '2',
                     'quantity_change' => '10',
-                    'comment' => 'Yeet'
+                    'comment' => 'Yeety Meet'
                 ],
                 [
                     'item_id' => '1',
-                    'user_id' => '1',
+                    'user_id' => '2',
                     'quantity_change' => '100',
                     'comment' => 'Add me some of that.'
                 ],
                 [
                     'item_id' => '1',
-                    'user_id' => '1',
+                    'user_id' => '2',
                     'quantity_change' => '-20',
                     'comment' => 'Subtract me some'
                 ]
@@ -68,46 +58,44 @@ class TransactionsControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'status' => 'transaction succeeded',
-                'transaction_change' => '10',
-                'transaction_user' => '1',
-                'comment' => 'Yeet'
+                'status' => 'transaction(s) stored',
+                'transactions_count' => '3'
             ]);
 
-        // Test a good request without the transaction comment
-        $this->withoutMiddleware();
-        $response = $this->json('POST', 'transactions',
-            [
-                'item_id' => '1',
-                'user_id' => '1',
-                'quantity_change' => '10',
-            ]);
-        // evaluate
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'status' => 'transaction succeeded',
-                'transaction_change' => '10',
-                'transaction_user' => '1',
-            ]);
-
-        // test a bad request
-        $this->withoutMiddleware();
-        $response = $this->json('POST', 'transactions',
-            [
-                'item_id' => '1',
-                'quantity_change' => '10',
-                'comment' => 'Yeet',
-            ]);
-        // evaluate
-        $response
-            ->assertStatus(422)
-            ->assertJson([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'refrigerated' => ['The refrigerated field is required.']
-                ]
-            ]);
+//        // Test a good request without the transaction comment
+//        $this->withoutMiddleware();
+//        $response = $this->json('POST', 'transactions',
+//            [
+//                'item_id' => '1',
+//                'user_id' => '1',
+//                'quantity_change' => '10',
+//            ]);
+//        // evaluate
+//        $response
+//            ->assertStatus(200)
+//            ->assertJson([
+//                'status' => 'transaction succeeded',
+//                'transaction_change' => '10',
+//                'transaction_user' => '1',
+//            ]);
+//
+//        // test a bad request
+//        $this->withoutMiddleware();
+//        $response = $this->json('POST', 'transactions',
+//            [
+//                'item_id' => '1',
+//                'quantity_change' => '10',
+//                'comment' => 'Yeet',
+//            ]);
+//        // evaluate
+//        $response
+//            ->assertStatus(422)
+//            ->assertJson([
+//                'message' => 'The given data was invalid.',
+//                'errors' => [
+//                    'refrigerated' => ['The refrigerated field is required.']
+//                ]
+//            ]);
     }
 
 
