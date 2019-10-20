@@ -1,59 +1,21 @@
 @extends('layouts.sidebar')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
 <!-- Modal -->
 
 @section('content')
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
+<style>
+td input{
+    width: 100px;
+}
+</style>
 <div ng-app="add" ng-controller="addItems">
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modify Item</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-            </div>
-            <div class="modal-body">
-                <form ng-submit = "addItem()">
-                    <div class="form-row">
-                        <label for="itemName">Item name</label>
-                        <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="capacity">Capacity</label>
-                        <input type="number" class="form-control" id="capacity" placeholder="Capcity" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="threshold">Threshold</label>
-                        <input type="number" class="form-control" id="threshold" placeholder="Threshold" required>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="foodItem">
-                            <label class="form-check-label" for="exampleCheck1">Food Item?</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="refrigeration">
-                            <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Submit form</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="confirmationTitle">Confirmation</h5>
@@ -70,15 +32,17 @@
                             <th scope="col">Low Inventory Threshold</th>
                             <th scope="col">Food Item</th>
                             <th scope="col">Needs to be refrigerated</th>
+                            <th scope="col">Delete Item</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="item in addItems">
+                    <tbody ng-repeat="item in modifyItems">
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.threshold%></td>
-                            <td><%item.isFood%></td>
+                            <td><%item.low_threshold%></td>
+                            <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
+                            <td><%item.removed%></td>
                         </tr>
                     </tbody>
                 </table>
@@ -91,6 +55,9 @@
     </div>
 </div>
 <div class="alert alert-primary" role="alert" id ="alert" hidden>
+</div>
+<div class="alert alert-danger" role="alert" id ="requiredAlert" hidden>
+Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
@@ -110,13 +77,6 @@
         </table>
     </div>
     <div class="col mx-md-5">
-        <div class="row py-md-2">
-            <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Add Item
-                </button>
-            </div>
-        </div>
         <div class="row">
             <div class="col">
                 <table class="table table-striped table-bordered">
@@ -127,17 +87,19 @@
                             <th scope="col">Low Inventory Threshold</th>
                             <th scope="col">Food Item</th>
                             <th scope="col">Needs to be refrigerated</th>
-                            <th scope="col">Remove Row?</th>
+                            <th scope="col">Delete Item?</th>
+                            <th scope="col">Cnacel</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="item in addItems">
                         <tr>
                             <td><input ng-model = "item.name" type = "text"></td>
-                            <td><input ng-model = "item.capacity" type = "text"></td>
-                            <td><input ng-model = "item.low_threshold" type = "text"></td>
-                            <td><input ng-model = "item.is_food" type = "text"></td>
-                            <td><input ng-model = "item.refrigerated" type = "text"></td>
-                            <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
+                            <td><input ng-model = "item.capacity" type = "number" only-num></td>
+                            <td><input ng-model = "item.low_threshold" type = "number" only-num></td>
+                            <td><input ng-model = "item.is_food" type = "checkbox"></td>
+                            <td><input ng-model = "item.refrigerated" type = "checkbox"></td>
+                            <td><input ng-model = "item.removed" type="checkbox"></td>
+                            <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -145,7 +107,7 @@
         </div>
         <div class="row pt-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="preview()">
                     Submit
                 </button>
             </div>
@@ -154,11 +116,11 @@
 </div>
 
 <script>
-
     var app = angular.module('add', [], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     });
+    
     app.controller('addItems', function($scope) {
         console.log("Hello")
         jQuery(function() {
@@ -180,86 +142,108 @@
             xhttp.send()
         })
         $scope.addToTable = function(e){
-            console.log("Adding: " + e);
-            if($scope.addItems.includes(e)){
-                return;
+            for(var i = 0; i<$scope.addItems.length; ++i){
+                if($scope.addItems[i].id == e.id){
+                    return;
+                }
+            }
+            $scope.addItems.push(JSON.parse(JSON.stringify(e)));
+            console.log(e.removed)
+            
+            var currItem = $scope.addItems[$scope.addItems.length - 1];
+            if(currItem.is_food == 'Yes'){
+                currItem.is_food = true;
             }
             else{
-                $scope.addItems.push(JSON.parse(JSON.stringify(e)));
+                currItem.is_food = false;
             }
+            if(currItem.refrigerated == 'Yes'){
+                currItem.refrigerated = true;
+            }
+            else{
+                currItem.refrigerated = false;
+            }
+            if(currItem.removed == 0){
+                currItem.removed = false;
+            }
+            else{
+                currItem.removed = true;
+            }
+            console.log(currItem.is_food)
+            currItem.capacity = parseInt(currItem.capacity)
+            currItem.low_threshold = parseInt(currItem.low_threshold)
         }
-        $scope.addItem = function() {
-            console.log("Hello101")
-            var name = document.getElementById('itemName');
-            var capacity = document.getElementById('capacity');
-            var threshold = document.getElementById('threshold');
-            var foodItem = document.getElementById('foodItem');
-            var ref = document.getElementById('refrigeration');
-            var food = 'No';
-            var refr = 'No';
-            if(foodItem.checked){
-                food = 'Yes';
-                foodItem.checked = false;
+        $scope.preview = function(){
+            $scope.modifyItems = [];
+            for (var i = 0; i<$scope.addItems.length; ++i){
+                var item = $scope.addItems[i];
+                console.log(item.capacity)
+                if(item.name == "" || item.capacity == null || item.low_threshold == null){
+                    document.getElementById("requiredAlert").hidden = false;
+                    jQuery("#requiredAlert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#requiredAlert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                    $scope.modifyItems = [];
+                    
+                    return;
+                }
+                $scope.modifyItems.push(JSON.parse(JSON.stringify(item)));
+                var currItem = $scope.modifyItems[$scope.modifyItems.length - 1];
+                if(currItem.is_food == true){
+                    currItem.is_food = "Yes";
+                }
+                else{
+                    currItem.is_food = "No";
+                }
+                if(currItem.refrigerated == true){
+                    currItem.refrigerated = "Yes";
+                }
+                else{
+                    currItem.refrigerated = "No";
+                }
+                if(currItem.removed == false){
+                    currItem.removed = 0;
+                }
+                else{
+                    currItem.removed = 1;
+                }
+                jQuery('#confirmationModal').modal('show')
             }
-            if(ref.checked){
-                refr = 'Yes';
-                ref.checked = false;
-            }
-            $scope.addItems.push({
-                "name": name.value,
-                "capacity": capacity.value,
-                "threshold": threshold.value,
-                "isFood": food,
-                "refrigerated": refr
-            })
-            name.value = ''
-            capacity.value = ''
-            threshold.value = ''
-            jQuery('#exampleModal').modal('hide')
         }
         $scope.remove = function(index){
             $scope.addItems.splice(index, 1);
         }
         $scope.submit = function() {
-            /*if (counter===5) {
-    		$('.quoteList').empty();
-                counter = 0;
-            }
-
-            $.ajax({
-                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar...
-                url:'http://quotes.stormconsultancy.co.uk/random.json',
-                async: true,
-                dataType: 'jsonp',
-                success:function(data){
-                    $('.quoteList').append('<li>' + data.quote +'</li>');
-                    counter++;
-                    if (counter < 5) getData();
-                }
-            });*/
             console.log("Time to submit")
             console.log($scope.addItems.length)
-            $scope.notAdded =[];
-            for (var i = 0; i<$scope.addItems.length; ++i){
-                for (var j = 0; j<$scope.items.length; ++j){
-                    if($scope.addItems[i].name == $scope.items[j].name){
-                        $scope.notAdded.push($scope.addItems[i]);
-                        $scope.addItems.splice(i,1);
-                        --i;
-                        break;
-                    }
-                }
-            }
             //if($scope.addItems.length == 0) return;
-            jQuery.post('items',JSON.stringify($scope.addItems), function(data){
+            jQuery.put('items',{item: JSON.stringify($scope.modifyItems)}, function(data){
                 console.log(data);
                 data = JSON.parse(data);
                 //console.log($scope.items);
-                for (var i = 0; i<$scope.addItems.length; ++i){
-                    $scope.items.push($scope.addItems[i])
+                for (var i = 0; i<$scope.modifyItems.length; ++i){
+                    $scope.items.push($scope.modifyItems[i])
                 }
-                $scope.addItems = [];
-                document.getElementById("alert").innerHTML = "";
+                $scope.modifyItems = [];
+                $scope.addItems = []
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText)
+                        $scope.items = JSON.parse(this.responseText)
+                        $scope.completeItems = JSON.parse(this.responseText)
+                        console.log($scope.completeItems)
+                        $scope.addItems = []
+                        $scope.$apply()
+                    }
+                };
+                xhttp.open("GET", "items", true);
+                xhttp.send()
+                /*document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
                 if(data.status == 'item created'){
                     document.getElementById("alert").innerHTML = data.item_count + " item was successfully created. ";
@@ -278,12 +262,28 @@
                 jQuery("#alert").delay(5000).slideUp(200, function() {
                     //jQuery(this).alert('close');
                     //document.getElementById("alert").hidden = true;
-                });
+                });*/
                 //console.log($scope.items);
-                $scope.$apply();
             })
         }
     });
+    app.directive('onlyNum', function() {
+    return function(scope, element, attrs) {
+
+        var keyCode = [8, 9, 37, 39, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 110];
+        element.bind("keydown", function(event) {
+            //console.log($.inArray(event.which,keyCode));
+            if ($.inArray(event.which, keyCode) === -1) {
+                scope.$apply(function() {
+                    scope.$eval(attrs.onlyNum);
+                    event.preventDefault();
+                });
+                event.preventDefault();
+            }
+
+        });
+    };
+});
 </script>
 
 </div>

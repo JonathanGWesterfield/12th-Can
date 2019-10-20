@@ -98,8 +98,8 @@
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.threshold%></td>
-                            <td><%item.isFood%></td>
+                            <td><%item.low_threshold%></td>
+                            <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
                         </tr>
                     </tbody>
@@ -156,8 +156,8 @@
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.threshold%></td>
-                            <td><%item.isFood%></td>
+                            <td><%item.low_threshold%></td>
+                            <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
                         </tr>
@@ -221,8 +221,8 @@
             $scope.addItems.push({
                 "name": name.value,
                 "capacity": capacity.value,
-                "threshold": threshold.value,
-                "isFood": food,
+                "low_threshold": threshold.value,
+                "is_food": food,
                 "refrigerated": refr
             })
             name.value = ''
@@ -234,22 +234,6 @@
             $scope.addItems.splice(index, 1);
         }
         $scope.submit = function() {
-            /*if (counter===5) {
-    		$('.quoteList').empty();
-                counter = 0;
-            }
-
-            $.ajax({
-                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar...
-                url:'http://quotes.stormconsultancy.co.uk/random.json',
-                async: true,
-                dataType: 'jsonp',
-                success:function(data){
-                    $('.quoteList').append('<li>' + data.quote +'</li>');
-                    counter++;
-                    if (counter < 5) getData();
-                }
-            });*/
             console.log("Time to submit")
             console.log($scope.addItems.length)
             $scope.notAdded =[];
