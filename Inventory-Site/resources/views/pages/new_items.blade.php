@@ -18,7 +18,7 @@
           </button>
             </div>
             <div class="modal-body">
-                <form name = "addItemForm">
+                <!---form name = "addItemForm">
                     <div class="form-group">
                         <label for="itemName">Item Name</label>
                         <input required type="text" class="form-control" id="itemName" name = "itemName" placeholder="Enter item name" required>
@@ -39,11 +39,37 @@
                         <input type="checkbox" class="form-check-input" id="refrigeration">
                         <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
                     </div>
+                </form---!>
+                <form ng-submit = "addItem()">
+                    <div class="form-row">
+                        <label for="itemName">Item name</label>
+                        <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="capacity">Capacity</label>
+                        <input type="number" class="form-control" id="capacity" placeholder="Capcity" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="threshold">Threshold</label>
+                        <input type="number" class="form-control" id="threshold" placeholder="Threshold" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="foodItem">
+                            <label class="form-check-label" for="exampleCheck1">Food Item?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="refrigeration">
+                            <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit form</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="addItem()" data-dismiss="modal" ng-disabled = "addItemForm.$invalid">Save changes</button>
             </div>
         </div>
     </div>
@@ -202,6 +228,7 @@
             name.value = ''
             capacity.value = ''
             threshold.value = ''
+            jQuery('#exampleModal').modal('hide')
         }
         $scope.remove = function(index){
             $scope.addItems.splice(index, 1);
@@ -236,7 +263,7 @@
                     }
                 }
             }
-            if($scope.addItems.length == 0) return;
+            //if($scope.addItems.length == 0) return;
             jQuery.post('items',JSON.stringify($scope.addItems), function(data){
                 console.log(data);
                 data = JSON.parse(data);
@@ -258,8 +285,12 @@
                     
                 }
                 document.getElementById("alert").hidden = false;
+                jQuery("#alert").slideDown(200, function() {
+                    //jQuery(this).alert('close');
+                });
                 jQuery("#alert").delay(5000).slideUp(200, function() {
-                    jQuery(this).alert('close');
+                    //jQuery(this).alert('close');
+                    //document.getElementById("alert").hidden = true;
                 });
                 //console.log($scope.items);
                 $scope.$apply();
