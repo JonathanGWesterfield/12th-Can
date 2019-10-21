@@ -1,4 +1,4 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -206,9 +206,9 @@
     		$('.quoteList').empty();
                 counter = 0;
             }
-            
+
             $.ajax({
-                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... 
+                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar...
                 url:'http://quotes.stormconsultancy.co.uk/random.json',
                 async: true,
                 dataType: 'jsonp',
