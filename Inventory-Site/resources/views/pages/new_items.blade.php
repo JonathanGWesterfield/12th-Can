@@ -206,9 +206,9 @@
     		$('.quoteList').empty();
                 counter = 0;
             }
-            
+
             $.ajax({
-                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... 
+                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar...
                 url:'http://quotes.stormconsultancy.co.uk/random.json',
                 async: true,
                 dataType: 'jsonp',
