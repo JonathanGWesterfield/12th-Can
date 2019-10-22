@@ -40,19 +40,19 @@ class TransactionsControllerTest extends TestCase
             [
                 [
                     'item_id' => '1',
-                    'member_id' => '2',
+                    'user_id' => '2',
                     'quantity_change' => '10',
                     'comment' => 'Yeety Meet'
                 ],
                 [
                     'item_id' => '1',
-                    'member_id' => '2',
+                    'user_id' => '2',
                     'quantity_change' => '100',
                     'comment' => 'Add me some of that.'
                 ],
                 [
                     'item_id' => '1',
-                    'member_id' => '2',
+                    'user_id' => '2',
                     'quantity_change' => '-20',
                     'comment' => 'Subtract me some'
                 ]
