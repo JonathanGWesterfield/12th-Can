@@ -221,50 +221,43 @@ Please fill out all the feilds in the table
             console.log("Time to submit")
             console.log($scope.addItems.length)
             //if($scope.addItems.length == 0) return;
-            jQuery.put('items',{item: JSON.stringify($scope.modifyItems)}, function(data){
-                console.log(data);
-                data = JSON.parse(data);
-                //console.log($scope.items);
-                for (var i = 0; i<$scope.modifyItems.length; ++i){
-                    $scope.items.push($scope.modifyItems[i])
-                }
-                $scope.modifyItems = [];
-                $scope.addItems = []
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText)
-                        $scope.items = JSON.parse(this.responseText)
-                        $scope.completeItems = JSON.parse(this.responseText)
-                        console.log($scope.completeItems)
-                        $scope.addItems = []
-                        $scope.$apply()
+            jQuery.ajax({
+                url: 'items/1',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify($scope.modifyItems),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    data = JSON.parse(data);
+                    //console.log($scope.items);
+                    for (var i = 0; i<$scope.modifyItems.length; ++i){
+                        $scope.items.push($scope.modifyItems[i])
                     }
-                };
-                xhttp.open("GET", "items", true);
-                xhttp.send()
-                /*document.getElementById("alert").innerHTML = "";
-                console.log(data.item_count);
-                if(data.status == 'item created'){
-                    document.getElementById("alert").innerHTML = data.item_count + " item was successfully created. ";
+                    $scope.modifyItems = [];
+                    $scope.addItems = []
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            console.log(this.responseText)
+                            $scope.items = JSON.parse(this.responseText)
+                            $scope.completeItems = JSON.parse(this.responseText)
+                            console.log($scope.completeItems)
+                            $scope.addItems = []
+                            $scope.$apply()
+                        }
+                    };
+                    xhttp.open("GET", "items", true);
+                    xhttp.send()
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
                 }
-                if($scope.notAdded.length > 0){
-                    document.getElementById("alert").innerHTML += "The following were not added because they existed previously in the database: ";
-                    for (var i = 0; i<$scope.notAdded.length; ++i){
-                        document.getElementById("alert").innerHTML += $scope.notAdded[i].name;
-                    }
-                    
-                }
-                document.getElementById("alert").hidden = false;
-                jQuery("#alert").slideDown(200, function() {
-                    //jQuery(this).alert('close');
-                });
-                jQuery("#alert").delay(5000).slideUp(200, function() {
-                    //jQuery(this).alert('close');
-                    //document.getElementById("alert").hidden = true;
-                });*/
-                //console.log($scope.items);
-            })
+            });
         }
     });
     app.directive('onlyNum', function() {
