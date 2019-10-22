@@ -205,12 +205,6 @@ Please fill out all the feilds in the table
                 else{
                     currItem.refrigerated = "No";
                 }
-                if(currItem.removed == false){
-                    currItem.removed = 0;
-                }
-                else{
-                    currItem.removed = 1;
-                }
                 jQuery('#confirmationModal').modal('show')
             }
         }
@@ -250,6 +244,19 @@ Please fill out all the feilds in the table
                     };
                     xhttp.open("GET", "items", true);
                     xhttp.send()
+                    document.getElementById("alert").innerHTML = "";
+                console.log(data.item_count);
+                if(data.status == 'item(s) modified'){
+                    document.getElementById("alert").innerHTML = data.items_modified + " item was successfully modified. ";
+                }
+                document.getElementById("alert").hidden = false;
+                jQuery("#alert").slideDown(200, function() {
+                    //jQuery(this).alert('close');
+                });
+                jQuery("#alert").delay(5000).slideUp(200, function() {
+                    //jQuery(this).alert('close');
+                    //document.getElementById("alert").hidden = true;
+                });
                 },
                 error: function(request,msg,error) {
                     // handle failure
