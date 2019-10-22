@@ -49,10 +49,8 @@ class TransactionsController extends Controller
             foreach($transactions as $elem)
             {
                 $item = Item::find($elem['item_id']);
-//                dd($item);
                 $user = User::find($elem['user_id']);
-////                dd($user);
-//
+
                 $transaction = new Transaction();
                 $transaction->item()->associate($item);
                 $transaction->user()->associate($user);
@@ -60,25 +58,10 @@ class TransactionsController extends Controller
                 $transaction->transaction_date = date("Y-m-d H:i:s"); // current time
                 $transaction->comment = "";
 
-//                $comment = "";
-//
-//                if($elem['comment'] != null)
-//                    $comment = $elem['comment'];
-////
-//                DB::table('Order_Transaction')->insert(
-//                    [
-//                        'item_id' => $elem['item_id'],
-//                        'member_id' => $elem['user_id'],
-//                        'item_quantity_change' => $elem['quantity_change'],
-//                        'transaction_date' => "'".date("Y-m-d H:i:s")."'", // current time
-//                        'comment' => "'".$comment."'"
-//                    ]fd
-//                );
-
-                if($elem['comment'] != null)
+                // The user commenting on a transaction is optional
+                if(array_key_exists('comment', $elem))
                     $transaction->comment = $elem['comment'];
 
-//                dd($transaction);
                 $transaction->save();
             }
 
@@ -87,14 +70,14 @@ class TransactionsController extends Controller
                 'transactions_count' => count($transactions)], 200)
                 ->header('Content-Type', 'text/plain');
         }
-        catch (\Illuminate\Database\QueryException | Exception $e)
+        catch (Exception $e)
         {
             dd($e->getMessage());
             // Attempt to catch a bad database store
             return response([
                 'status' => 'item modification failed',
                 'error' => $e->getMessage()
-            ], 500);
+            ], 422);
         }
     }
 
