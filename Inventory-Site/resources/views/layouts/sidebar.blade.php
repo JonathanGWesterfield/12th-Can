@@ -28,33 +28,6 @@
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-               
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#">Add Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Remove Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Add New Items</a>
-                </li>
-                <li>
-                    <a href="#">Modify Items</a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">History</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Page Content  -->
         <div id="content">
@@ -62,7 +35,7 @@
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <button type="button" id="sidebarCollapse" class="btn btn-light">
                         <i class="fas fa-align-left"></i>
                         <div id="hamburger"></div>
                         <div id="hamburger"></div>
@@ -114,16 +87,39 @@
                             @endguest
                         </ul>
                     </div>
-
                 </div>
             </nav>
+            <!-- Sidebar  -->
+            <div id="bottomContent">
+                <nav id="sidebar">
 
-            <main class="py-4">
-                @yield('content')
-            </main>
+                    <ul class="list-unstyled components">
+                        <li>
+                            <a href="#">Add Inventory</a>
+                        </li>
+                        <li>
+                            <a href="#">Remove Inventory</a>
+                        </li>
+                        <li>
+                            <a href="#">Add New Items</a>
+                        </li>
+                        <li>
+                            <a href="#">Modify Items</a>
+                        </li>
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#">History</a>
+                        </li>
+                    </ul>
+                </nav>
+                <main class="py-4">
+                    @yield('content')
+                </main>
+            </div>
         </div>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
