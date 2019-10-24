@@ -18,7 +18,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
@@ -27,33 +28,6 @@
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-               
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#">Add Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Remove Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Add New Items</a>
-                </li>
-                <li>
-                    <a href="#">Modify Items</a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">History</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Page Content  -->
         <div id="content">
@@ -61,7 +35,7 @@
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <button type="button" id="sidebarCollapse" class="btn btn-light">
                         <i class="fas fa-align-left"></i>
                         <div id="hamburger"></div>
                         <div id="hamburger"></div>
@@ -113,16 +87,39 @@
                             @endguest
                         </ul>
                     </div>
-
                 </div>
             </nav>
+            <!-- Sidebar  -->
+            <div id="bottomContent">
+                <nav id="sidebar">
 
-            <main class="py-4">
-                @yield('content')
-            </main>
+                    <ul class="list-unstyled components">
+                        <li>
+                            <a href="#">Add Inventory</a>
+                        </li>
+                        <li>
+                            <a href="#">Remove Inventory</a>
+                        </li>
+                        <li>
+                            <a href="#">Add New Items</a>
+                        </li>
+                        <li>
+                            <a href="#">Modify Items</a>
+                        </li>
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#">History</a>
+                        </li>
+                    </ul>
+                </nav>
+                <main class="py-4">
+                    @yield('content')
+                </main>
+            </div>
         </div>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {

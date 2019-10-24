@@ -16,6 +16,7 @@ use App\Http\Controllers\ItemsController;
 Route::get('/', 'DashboardController@index')->middleware('auth');
 
 Route::get('/new_items', 'PagesController@newItems')->middleware('auth');
+Route::get('/modify_items', 'PagesController@modifyItems')->middleware('auth');
 
 Auth::routes();
 
