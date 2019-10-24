@@ -88,7 +88,7 @@ Please fill out all the feilds in the table
                             <th scope="col">Food Item</th>
                             <th scope="col">Needs to be refrigerated</th>
                             <th scope="col">Delete Item?</th>
-                            <th scope="col">Cnacel</th>
+                            <th scope="col">Cancel</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="item in addItems">
@@ -120,11 +120,11 @@ Please fill out all the feilds in the table
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     });
-    
+
     app.controller('addItems', function($scope) {
         console.log("Hello")
         jQuery(function() {
-            
+
             //document.getElementById("alert").slideUp(500);
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
@@ -149,7 +149,7 @@ Please fill out all the feilds in the table
             }
             $scope.addItems.push(JSON.parse(JSON.stringify(e)));
             console.log(e.removed)
-            
+
             var currItem = $scope.addItems[$scope.addItems.length - 1];
             if(currItem.is_food == 'Yes'){
                 currItem.is_food = true;
@@ -188,7 +188,7 @@ Please fill out all the feilds in the table
                         //document.getElementById("alert").hidden = true;
                     });
                     $scope.modifyItems = [];
-                    
+
                     return;
                 }
                 $scope.modifyItems.push(JSON.parse(JSON.stringify(item)));
