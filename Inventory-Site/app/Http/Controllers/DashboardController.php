@@ -12,12 +12,12 @@ class DashboardController extends Controller
     {
         #$orderTransactions = Transaction
         #return Transaction::all();
-        $activeItems = Item::all()->where('removed','false');
+        $activeItems = Item::all()->where('removed','0');
         return view('pages.dashboard')->with('activeItems', $activeItems);
     }
     
     public static function test()
     {
-        return "This has been a test";
+        return;
     }
 }
