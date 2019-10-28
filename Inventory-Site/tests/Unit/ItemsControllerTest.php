@@ -26,22 +26,22 @@ class ItemsControllerTest extends TestCase
                 [
                     'name' => 'Yeeterinos',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'false'
                 ],
                 [
                     'name' => 'Yeeteronis',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'true'
                 ],
                 [
                     'name' => 'Yeet Street',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'false',
+                    'low_threshold' => '42',
+                    'is_food' => 'false',
                     'refrigerated' => 'false'
                 ]
             ]);
@@ -60,15 +60,15 @@ class ItemsControllerTest extends TestCase
                 [
                     'name' => 'Hee Hees',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'false'
                 ],
                 [
                     'name' => 'Bad Guys',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                 ]
             ]);
         // evaluate
@@ -89,22 +89,22 @@ class ItemsControllerTest extends TestCase
                 [
                     'name' => 'Yeeterinos',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'false'
                 ],
                 [
                     'name' => 'Yeeteronis',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'true'
                 ],
                 [
                     'name' => 'Yeet Street',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'false',
+                    'low_threshold' => '42',
+                    'is_food' => 'false',
                     'refrigerated' => 'false'
                 ]
             ]);
@@ -116,8 +116,8 @@ class ItemsControllerTest extends TestCase
                     'id' => '1',
                     'name' => 'Yeeterinos',
                     'capacity' => '100',
-                    'threshold' => '10',
-                    'isFood' => 'false',
+                    'low_threshold' => '10',
+                    'is_food' => 'false',
                     'refrigerated' => 'false',
                     'removed' => 'false'
                 ],
@@ -125,8 +125,8 @@ class ItemsControllerTest extends TestCase
                     'id' => '2',
                     'name' => 'Yeeteronis',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'true',
+                    'low_threshold' => '42',
+                    'is_food' => 'true',
                     'refrigerated' => 'true',
                     'removed' => 'false'
                 ],
@@ -134,8 +134,8 @@ class ItemsControllerTest extends TestCase
                     'id' => '3',
                     'name' => 'Yeet Street',
                     'capacity' => '420',
-                    'threshold' => '42',
-                    'isFood' => 'false',
+                    'low_threshold' => '42',
+                    'is_food' => 'false',
                     'refrigerated' => 'false',
                     'removed' => 'true'
                 ]
@@ -153,8 +153,8 @@ class ItemsControllerTest extends TestCase
 //        $response = $this->json('PUT', 'items/1',
 //            ['name' => 'Yeeterinos',
 //                'capacity' => '420',
-//                'threshold' => '42',
-//                'isFood' => 'true',
+//                'low_threshold' => '42',
+//                'is_food' => 'true',
 //                'refrigerated' => 'true',
 //                'removed' => 'true'
 //            ]);
@@ -173,7 +173,7 @@ class ItemsControllerTest extends TestCase
 //        $response = $this->json('PUT', 'items/1',
 //            ['name' => 'Yeeterinos',
 //                'capacity' => '420',
-//                'isFood' => 'true',
+//                'is_food' => 'true',
 //            ]);
 //        // evaluate
 //        $response
@@ -181,7 +181,7 @@ class ItemsControllerTest extends TestCase
 //            ->assertJson([
 //                'message' => 'The given data was invalid.',
 //                'errors' => [
-//                    'threshold' => ['The threshold field is required.']
+//                    'low_threshold' => ['The low_threshold field is required.']
 //                ]
 //            ]);
     }

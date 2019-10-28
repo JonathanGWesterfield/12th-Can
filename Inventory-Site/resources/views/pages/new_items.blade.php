@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -18,10 +18,10 @@
           </button>
             </div>
             <div class="modal-body">
-                <form name = "addItemForm">
+                <!---form name = "addItemForm">
                     <div class="form-group">
                         <label for="itemName">Item Name</label>
-                        <input required type="text" class="form-control" id="itemName" placeholder="Enter item name" required>
+                        <input required type="text" class="form-control" id="itemName" name = "itemName" placeholder="Enter item name" required>
                     </div>
                     <div class="form-group">
                         <label for="capacity">Capacity</label>
@@ -39,11 +39,37 @@
                         <input type="checkbox" class="form-check-input" id="refrigeration">
                         <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
                     </div>
+                </form---!>
+                <form ng-submit = "addItem()">
+                    <div class="form-row">
+                        <label for="itemName">Item name</label>
+                        <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="capacity">Capacity</label>
+                        <input type="number" class="form-control" id="capacity" placeholder="Capcity" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="threshold">Threshold</label>
+                        <input type="number" class="form-control" id="threshold" placeholder="Threshold" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="foodItem">
+                            <label class="form-check-label" for="exampleCheck1">Food Item?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="refrigeration">
+                            <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit form</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="addItem()" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -72,8 +98,8 @@
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.threshold%></td>
-                            <td><%item.isFood%></td>
+                            <td><%item.low_threshold%></td>
+                            <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
                         </tr>
                     </tbody>
@@ -85,6 +111,8 @@
             </div>
         </div>
     </div>
+</div>
+<div class="alert alert-primary" role="alert" id ="alert" hidden>
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
@@ -128,8 +156,8 @@
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.capacity%></td>
-                            <td><%item.threshold%></td>
-                            <td><%item.isFood%></td>
+                            <td><%item.low_threshold%></td>
+                            <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
                         </tr>
@@ -148,6 +176,7 @@
 </div>
 
 <script>
+
     var app = angular.module('add', [], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
@@ -155,6 +184,8 @@
     app.controller('addItems', function($scope) {
         console.log("Hello")
         jQuery(function() {
+            
+            //document.getElementById("alert").slideUp(500);
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -190,53 +221,61 @@
             $scope.addItems.push({
                 "name": name.value,
                 "capacity": capacity.value,
-                "threshold": threshold.value,
-                "isFood": food,
+                "low_threshold": threshold.value,
+                "is_food": food,
                 "refrigerated": refr
             })
             name.value = ''
             capacity.value = ''
             threshold.value = ''
+            jQuery('#exampleModal').modal('hide')
         }
         $scope.remove = function(index){
             $scope.addItems.splice(index, 1);
         }
         $scope.submit = function() {
-            /*if (counter===5) {
-    		$('.quoteList').empty();
-                counter = 0;
-            }
-            
-            $.ajax({
-                /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... 
-                url:'http://quotes.stormconsultancy.co.uk/random.json',
-                async: true,
-                dataType: 'jsonp',
-                success:function(data){
-                    $('.quoteList').append('<li>' + data.quote +'</li>');
-                    counter++;
-                    if (counter < 5) getData();
-                }
-            });*/
             console.log("Time to submit")
             console.log($scope.addItems.length)
+            $scope.notAdded =[];
             for (var i = 0; i<$scope.addItems.length; ++i){
                 for (var j = 0; j<$scope.items.length; ++j){
                     if($scope.addItems[i].name == $scope.items[j].name){
+                        $scope.notAdded.push($scope.addItems[i]);
                         $scope.addItems.splice(i,1);
                         --i;
                         break;
                     }
                 }
             }
-            if($scope.addItems.length == 0) return;
+            //if($scope.addItems.length == 0) return;
             jQuery.post('items',JSON.stringify($scope.addItems), function(data){
                 console.log(data);
-                for (var i = 0; i<$scope.addItems.length; ++i){
-                    $scope.items.push($scope.addItems[i]);
-                }
+                data = JSON.parse(data);
                 //console.log($scope.items);
+                for (var i = 0; i<$scope.addItems.length; ++i){
+                    $scope.items.push($scope.addItems[i])
+                }
                 $scope.addItems = [];
+                document.getElementById("alert").innerHTML = "";
+                console.log(data.item_count);
+                if(data.status == 'item created'){
+                    document.getElementById("alert").innerHTML = data.item_count + " item was successfully created. ";
+                }
+                if($scope.notAdded.length > 0){
+                    document.getElementById("alert").innerHTML += "The following were not added because they existed previously in the database: ";
+                    for (var i = 0; i<$scope.notAdded.length; ++i){
+                        document.getElementById("alert").innerHTML += $scope.notAdded[i].name;
+                    }
+                    
+                }
+                document.getElementById("alert").hidden = false;
+                jQuery("#alert").slideDown(200, function() {
+                    //jQuery(this).alert('close');
+                });
+                jQuery("#alert").delay(5000).slideUp(200, function() {
+                    //jQuery(this).alert('close');
+                    //document.getElementById("alert").hidden = true;
+                });
                 //console.log($scope.items);
                 $scope.$apply();
             })
