@@ -13,22 +13,25 @@
 
 use App\Http\Controllers\ItemsController;
 
-Route::get('/', 'DashboardController@index')->middleware('auth');
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/new_items', 'PagesController@newItems')->middleware('auth');
-Route::get('/modify_items', 'PagesController@modifyItems')->middleware('auth');
+Route::get('/new_items', 'PagesController@newItems');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/dashboard', 'DashboardController@index')->middleware('auth');
+Route::get('/dashboard', 'DashboardController@index');
+
+Route::get('/history', 'HistoryController@index');
 
 // Route for interacting with items in the database
-Route::resource('items', 'ItemsController')->middleware('auth');
+Route::resource('items', 'ItemsController');
 
 // Route for interacting with order transactions
-Route::resource('transactions', 'TransactionsController')->middleware('auth');
+Route::resource('transactions', 'TransactionsController');
 
 Auth::routes();
 
