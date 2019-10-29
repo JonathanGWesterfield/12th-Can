@@ -7,7 +7,8 @@ $inventoryCapacities = array();
 $inventoryThresholds = array();
 
 for ($i = 0; $i < count($activeItems); ++$i) {
-    $inventoryNames[] = $activeItems[$i]->name;
+    $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
+    $inventoryDisplayNames[] = $activeItems[$i]->name;
     $inventoryQuantities[] = $activeItems[$i]->quantity;
     $inventoryCapacities[] = $activeItems[$i]->capacity;
     $inventoryThresholds[] = $activeItems[$i]->low_threshold;
@@ -53,19 +54,23 @@ for ($i = 0; $i < count($activeItems); ++$i) {
           </div>
           <script>
             var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+            var inventoryDisplayNames = <?php echo json_encode($inventoryDisplayNames); ?>;
             var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
 
             var checkedNames = getUrlVars();
             var activeNames = [];
             var activeQuantities = [];
+            var activeDisplayNames = [];
             if (checkedNames["totalInventory"] == "on"){
               activeNames = inventoryNames;
+              activeDisplayNames = inventoryDisplayNames;
               activeQuantities = inventoryQuantities;
             }
             else {
               for (var i = 0; i < inventoryNames.length; i++){
                   if (checkedNames[inventoryNames[i]] == "on"){
                   activeNames.push(inventoryNames[i]);
+                  activeDisplayNames.push(inventoryDisplayNames[i]);
                   activeQuantities.push(inventoryQuantities[i]);
                 }
               }
@@ -75,7 +80,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             var inventoryChart = new Chart(inventoryChart, {
               type:'bar',
               data:{
-                labels:activeNames,
+                labels:activeDisplayNames,
                 datasets:[{
                   label:'Current Inventory',
                   data:activeQuantities,
@@ -98,7 +103,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             <div class="vertical-menu">
                 @for ($i = 0; $i < count($inventoryQuantities); ++$i)
                     @if ($inventoryQuantities[$i] < $inventoryThresholds[$i])
-                        <a>{{$inventoryNames[$i]}}</a>
+                        <a>{{$inventoryDisplayNames[$i]}}</a>
                     @endif
                 @endfor
           </div>
@@ -112,7 +117,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             var recentChart = new Chart(recentChart, {
               type:'bar',
               data:{
-                labels:activeNames,
+                labels:activeDisplayNames,
                 datasets:[{
                   label:'Recent Inventory',
                   data:activeQuantities,
@@ -136,7 +141,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             <input type="submit" value="Submit"><br>
             <input type="checkbox" name="totalInventory">Total Inventory<br>
             @for ($i = 0; $i < count($inventoryNames); ++$i)
-              <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryNames[$i]}}<br>
+              <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryDisplayNames[$i]}}<br>
             @endfor
             </form>
           </form>
@@ -197,14 +202,17 @@ for ($i = 0; $i < count($activeItems); ++$i) {
           <script>
             var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
             var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
+            var inventoryDisplayNames = <?php echo json_encode($inventoryDisplayNames); ?>;
             var inventoryCapacities = <?php echo json_encode($inventoryCapacities); ?>;
 
             var checkedNames = getUrlVars();
             var activeNames = [];
+            var activeDisplayNames = [];
             var activeQuantities = [];
             var activeCapacities = [];
             if (checkedNames["totalInventory"] == "on"){
               activeNames = inventoryNames;
+              activeDisplayNames = inventoryDisplayNames;
               activeQuantities = inventoryQuantities;
               activeCapacities = inventoryCapacities;
             }
@@ -212,6 +220,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
               for (var i = 0; i < inventoryNames.length; i++){
                 if (checkedNames[inventoryNames[i]] == "on"){
                   activeNames.push(inventoryNames[i]);
+                  activeDisplayNames.push(inventoryDisplayNames[i]);
                   activeQuantities.push(inventoryQuantities[i]);
                   activeCapacities.push(inventoryCapacities[i]);
                 }
@@ -222,7 +231,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             var capacityChart = new Chart(capacityChart, {
               type:'bar',
               data:{
-                labels:activeNames,
+                labels:activeDisplayNames,
                 datasets:[
                 {
                   label:'Inventory',
