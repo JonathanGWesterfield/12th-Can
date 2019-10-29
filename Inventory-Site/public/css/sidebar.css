@@ -10712,6 +10712,7 @@ a:focus {
     color: #fff;
     transition: all 0.3s;
     float: left;
+    margin-left: -150px;
 }
 
 #sidebarCollapse {
@@ -10719,7 +10720,7 @@ a:focus {
 }
 
 #sidebar.active {
-    margin-left: -150px;
+    margin-left: 0px;
 }
 
 #sidebar ul.components {
