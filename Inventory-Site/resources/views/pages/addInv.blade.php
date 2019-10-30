@@ -25,6 +25,7 @@
                             <th scope="col">Item</th>
                             <th scope="col">Current Quantity</th>
                             <th scope="col">Quantity Added</th>
+                            <th scope="col">Comment</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="item in addItems">
@@ -32,6 +33,7 @@
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
                             <td><%item.addQuantity%></td>
+                            <td><%item.comment%></td>
                         </tr>
                     </tbody>
                 </table>
@@ -50,7 +52,7 @@ Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Modify Items Page</h2>
+        <h2>Add Inventory Page</h2>
     </div>
 </div>
 <div class="row">
@@ -74,6 +76,7 @@ Please fill out all the feilds in the table
                             <th scope="col">Item</th>
                             <th scope="col">Current Quantity</th>
                             <th scope="col">Quantity Added</th>
+                            <th scope="col">Comment</th>
                             <th scope="col">Cancel</th>
                         </tr>
                     </thead>
@@ -82,6 +85,7 @@ Please fill out all the feilds in the table
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
                             <td><input ng-model = "item.addQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
@@ -134,6 +138,7 @@ Please fill out all the feilds in the table
             console.log(e.removed)
             var currItem = $scope.addItems[$scope.addItems.length - 1];
             currItem.addQuantity = 0;
+            currItem.comment = "";
         }
         $scope.preview = function(){
             jQuery('#confirmationModal').modal('show')
@@ -144,12 +149,21 @@ Please fill out all the feilds in the table
         $scope.submit = function() {
             console.log("Time to submit")
             console.log($scope.addItems.length)
+            changedItems = [];
+            for (var i = 0; i<$scope.addItems.length; ++i){
+                changedItems.push({
+                    'item_id':$scope.addItems[i].id,
+                    'user_id':'2',
+                    'quantity_change':$scope.addItems[i].addQuantity,
+                    'comment':$scope.addItems[i].comment
+                    })
+            }
             //if($scope.addItems.length == 0) return;
             jQuery.ajax({
                 url: 'transactions',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify($scope.addItems),
+                data: JSON.stringify(changedItems),
                 //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
