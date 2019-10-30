@@ -25,13 +25,15 @@
                             <th scope="col">Item</th>
                             <th scope="col">Current Quantity</th>
                             <th scope="col">Quantity Removed</th>
+                            <th scope="col">Comment</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="item in addItems">
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><%item.remQuantity%></td>
+                            <td><%item.addQuantity%></td>
+                            <td><%item.comment%></td>
                         </tr>
                     </tbody>
                 </table>
@@ -74,6 +76,7 @@ Please fill out all the feilds in the table
                             <th scope="col">Item</th>
                             <th scope="col">Current Quantity</th>
                             <th scope="col">Quantity Removed</th>
+                            <th scope="col">Comment</th>
                             <th scope="col">Cancel</th>
                         </tr>
                     </thead>
@@ -81,7 +84,8 @@ Please fill out all the feilds in the table
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><input ng-model = "item.remQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.addQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
@@ -133,7 +137,8 @@ Please fill out all the feilds in the table
             $scope.addItems.push(JSON.parse(JSON.stringify(e)));
             console.log(e.removed)
             var currItem = $scope.addItems[$scope.addItems.length - 1];
-            currItem.remQuantity = 0;
+            currItem.addQuantity = 0;
+            currItem.comment = "";
         }
         $scope.preview = function(){
             jQuery('#confirmationModal').modal('show')
@@ -144,12 +149,21 @@ Please fill out all the feilds in the table
         $scope.submit = function() {
             console.log("Time to submit")
             console.log($scope.addItems.length)
+            changedItems = [];
+            for (var i = 0; i<$scope.addItems.length; ++i){
+                changedItems.push({
+                    'item_id':$scope.addItems[i].id,
+                    'user_id':'2',
+                    'quantity_change':'-' + $scope.addItems[i].addQuantity.toString(),
+                    'comment':$scope.addItems[i].comment
+                    })
+            }
             //if($scope.addItems.length == 0) return;
             jQuery.ajax({
                 url: 'transactions',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify($scope.addItems),
+                data: JSON.stringify(changedItems),
                 //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
@@ -172,8 +186,8 @@ Please fill out all the feilds in the table
                     xhttp.send()
                     document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
-                if(data.status == 'item(s) modified'){
-                    document.getElementById("alert").innerHTML = data.items_modified + " item was successfully modified. ";
+                if(data.status == 'transaction(s) stored'){
+                    document.getElementById("alert").innerHTML = data.transactions_count + " Quantity was succesfully modified. ";
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {

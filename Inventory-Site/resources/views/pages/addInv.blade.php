@@ -186,8 +186,8 @@ Please fill out all the feilds in the table
                     xhttp.send()
                     document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
-                if(data.status == 'item(s) modified'){
-                    document.getElementById("alert").innerHTML = data.items_modified + " item was successfully modified. ";
+                if(data.status == 'transaction(s) stored'){
+                    document.getElementById("alert").innerHTML = data.transactions_count + " Quantity was succesfully modified. ";
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {
