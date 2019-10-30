@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <div id="nom" class="wrapper">
+    <div class="wrapper">
 
         <!-- Page Content  -->
         <div id="content">
@@ -113,7 +113,7 @@
                         </li>
                     </ul>
                 </nav>
-                <main class="py-4">
+                <main id="main_content" class="py-4">
                     @yield('content')
                 </main>
             </div>
