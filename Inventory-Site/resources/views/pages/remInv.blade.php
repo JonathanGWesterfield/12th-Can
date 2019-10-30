@@ -1,4 +1,4 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -7,11 +7,6 @@
 @section('content')
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-<style>
-td input{
-    width: 100px;
-}
-</style>
 <div ng-app="add" ng-controller="addItems">
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -28,21 +23,15 @@ td input{
                     <thead>
                         <tr>
                             <th scope="col">Item</th>
-                            <th scope="col">Capacity</th>
-                            <th scope="col">Low Inventory Threshold</th>
-                            <th scope="col">Food Item</th>
-                            <th scope="col">Needs to be refrigerated</th>
-                            <th scope="col">Delete Item</th>
+                            <th scope="col">Current Quantity</th>
+                            <th scope="col">Quantity Removed</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="item in modifyItems">
+                    <tbody ng-repeat="item in addItems">
                         <tr>
                             <td><%item.name%></td>
-                            <td><%item.capacity%></td>
-                            <td><%item.low_threshold%></td>
-                            <td><%item.is_food%></td>
-                            <td><%item.refrigerated%></td>
-                            <td><%item.removed%></td>
+                            <td><%item.quantity%></td>
+                            <td><%item.remQuantity%></td>
                         </tr>
                     </tbody>
                 </table>
@@ -61,7 +50,7 @@ Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Modify Items Page</h2>
+        <h2>Remove Inventory Page</h2>
     </div>
 </div>
 <div class="row">
@@ -83,22 +72,16 @@ Please fill out all the feilds in the table
                     <thead>
                         <tr>
                             <th scope="col">Item</th>
-                            <th scope="col">Capacity</th>
-                            <th scope="col">Low Inventory Threshold</th>
-                            <th scope="col">Food Item</th>
-                            <th scope="col">Needs to be refrigerated</th>
-                            <th scope="col">Delete Item?</th>
+                            <th scope="col">Current Quantity</th>
+                            <th scope="col">Quantity Removed</th>
                             <th scope="col">Cancel</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="item in addItems">
                         <tr>
-                            <td><input ng-model = "item.name" type = "text"></td>
-                            <td><input ng-model = "item.capacity" type = "number" only-num></td>
-                            <td><input ng-model = "item.low_threshold" type = "number" only-num></td>
-                            <td><input ng-model = "item.is_food" type = "checkbox"></td>
-                            <td><input ng-model = "item.refrigerated" type = "checkbox"></td>
-                            <td><input ng-model = "item.removed" type="checkbox"></td>
+                            <td><%item.name%></td>
+                            <td><%item.quantity%></td>
+                            <td><input ng-model = "item.remQuantity" type = "number" only-num></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
@@ -149,64 +132,11 @@ Please fill out all the feilds in the table
             }
             $scope.addItems.push(JSON.parse(JSON.stringify(e)));
             console.log(e.removed)
-
             var currItem = $scope.addItems[$scope.addItems.length - 1];
-            if(currItem.is_food == 'Yes'){
-                currItem.is_food = true;
-            }
-            else{
-                currItem.is_food = false;
-            }
-            if(currItem.refrigerated == 'Yes'){
-                currItem.refrigerated = true;
-            }
-            else{
-                currItem.refrigerated = false;
-            }
-            if(currItem.removed == 0){
-                currItem.removed = false;
-            }
-            else{
-                currItem.removed = true;
-            }
-            console.log(currItem.is_food)
-            currItem.capacity = parseInt(currItem.capacity)
-            currItem.low_threshold = parseInt(currItem.low_threshold)
+            currItem.remQuantity = 0;
         }
         $scope.preview = function(){
-            $scope.modifyItems = [];
-            for (var i = 0; i<$scope.addItems.length; ++i){
-                var item = $scope.addItems[i];
-                console.log(item.capacity)
-                if(item.name == "" || item.capacity == null || item.low_threshold == null){
-                    document.getElementById("requiredAlert").hidden = false;
-                    jQuery("#requiredAlert").slideDown(200, function() {
-                        //jQuery(this).alert('close');
-                    });
-                    jQuery("#requiredAlert").delay(5000).slideUp(200, function() {
-                        //jQuery(this).alert('close');
-                        //document.getElementById("alert").hidden = true;
-                    });
-                    $scope.modifyItems = [];
-
-                    return;
-                }
-                $scope.modifyItems.push(JSON.parse(JSON.stringify(item)));
-                var currItem = $scope.modifyItems[$scope.modifyItems.length - 1];
-                if(currItem.is_food == true){
-                    currItem.is_food = "Yes";
-                }
-                else{
-                    currItem.is_food = "No";
-                }
-                if(currItem.refrigerated == true){
-                    currItem.refrigerated = "Yes";
-                }
-                else{
-                    currItem.refrigerated = "No";
-                }
-                jQuery('#confirmationModal').modal('show')
-            }
+            jQuery('#confirmationModal').modal('show')
         }
         $scope.remove = function(index){
             $scope.addItems.splice(index, 1);
@@ -216,19 +146,15 @@ Please fill out all the feilds in the table
             console.log($scope.addItems.length)
             //if($scope.addItems.length == 0) return;
             jQuery.ajax({
-                url: 'items/1',
-                method: 'PUT',
+                url: 'transactions',
+                method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify($scope.modifyItems),
+                data: JSON.stringify($scope.addItems),
                 //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
                     console.log(data);
                     data = JSON.parse(data);
-                    //console.log($scope.items);
-                    for (var i = 0; i<$scope.modifyItems.length; ++i){
-                        $scope.items.push($scope.modifyItems[i])
-                    }
                     $scope.modifyItems = [];
                     $scope.addItems = []
                     var xhttp = new XMLHttpRequest();

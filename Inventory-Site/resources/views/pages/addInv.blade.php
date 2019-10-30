@@ -7,11 +7,6 @@
 @section('content')
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-<style>
-td input{
-    width: 100px;
-}
-</style>
 <div ng-app="add" ng-controller="addItems">
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
