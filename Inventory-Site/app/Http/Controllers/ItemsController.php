@@ -51,8 +51,8 @@ class ItemsController extends Controller
                 $item->name = $elem['name'];
                 $item->quantity = 0;
                 $item->capacity = $elem['capacity'];
-                $item->low_threshold = $elem['threshold'];
-                $item->is_food = $elem['isFood'];
+                $item->low_threshold = $elem['low_threshold'];
+                $item->is_food = $elem['is_food'];
                 $item->refrigerated = $elem['refrigerated'];
                 $item->created_at = date("Y-m-d H:i:s"); // updated_at uses the database timestamp
                 $item->removed = false;
@@ -117,8 +117,8 @@ class ItemsController extends Controller
                 $item = Item::find($elem['id']);
                 $item->name = $elem['name'];
                 $item->capacity = $elem['capacity'];
-                $item->low_threshold = $elem['threshold'];
-                $item->is_food = $elem['isFood'];
+                $item->low_threshold = $elem['low_threshold'];
+                $item->is_food = $elem['is_food'];
                 $item->refrigerated = $elem['refrigerated'];
                 $item->removed = $elem['removed'];
                 $item->save();

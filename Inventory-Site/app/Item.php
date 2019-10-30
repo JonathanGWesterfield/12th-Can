@@ -16,7 +16,7 @@ class Item extends Model
     public function Item()
     {
         // Set the database relationship
-        $this->hasMany(Transaction::Class);
+        $this->hasMany('App\Transaction');
     }
 
     /**

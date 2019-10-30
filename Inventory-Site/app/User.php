@@ -44,14 +44,14 @@ class User extends Authenticatable
     protected $primaryKey = 'id'; // primary key
     public $timestamps = true; // timestamps
 
-    public function User()
+    public function transaction()
     {
         // Define the table relationships
-        return $this->hasMany(Transaction::Class);
+        return $this->hasMany('App\Transaction');
     }
 
     public function position()
     {
-        return $this->belongsTo(Member_Position::class);
+        return $this->belongsTo('App\Member_Position');
     }
 }

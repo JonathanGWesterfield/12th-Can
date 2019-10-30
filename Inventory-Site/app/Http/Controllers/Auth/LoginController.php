@@ -20,12 +20,24 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    //number of attempts to log in before lockout
+    public function maxAttempts()
+    {
+        return 5;
+    }
+
+    //how long the account should remain locked for
+    public function decayMinutes()
+    {
+        return 15;
+    }
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.

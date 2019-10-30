@@ -64,12 +64,44 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id ID of the user specified
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'email' => 'required|string',
+            'phone' => 'required|integer',
+            'current_member' => 'required|boolean',
+            'position_id' => 'required|integer'
+        ]);
+        // TODO: WRITE TESTS FOR THIS
+        try
+        {
+            $user = User::find($id);
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
+            $user->current_member = $request->input('current_member');
+            $user->position_id = $request->input('position_id');
+
+            $user->save();
+        }
+        catch (Exception $e)
+        {
+            // Attempt to catch a bad database store
+            return response([
+                'status' => 'User Info Modification Failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+        return response([
+            'status' => 'User Info Modification Succeeded',
+            'user_email' => $user->email,
+            'user_phone' => $user->phone,
+            'user_current_member' =>  $user->current_member,
+            'user_position_id' => $user->position_id], 200)
+            ->header('Content-Type', 'text/plain');
     }
 
     /**

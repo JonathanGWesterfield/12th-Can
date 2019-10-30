@@ -14,8 +14,8 @@ class Transaction extends Model
     public function Transaction()
     {
         // Define the table relationships
-        $this->belongsTo(User::Class);
-        $this->belongsTo(Item::Class);
+        $this->belongsTo('App\User');
+        $this->belongsTo('App\Item');
 
 //        $this->$table->foreign('user_id')->references('id')->on('users');
 //        $this->$table->foreign('item_id')->references('id')->on('Item');
@@ -23,12 +23,12 @@ class Transaction extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\User', "member_id");
     }
 
     public function item()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo('App\Item');
     }
 
     /**
