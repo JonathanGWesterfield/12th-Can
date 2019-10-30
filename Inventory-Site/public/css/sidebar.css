@@ -10027,14 +10027,11 @@ Menu Icon
     transition: all 0.3s;
 }
 
-<<<<<<< HEAD
 #main_content {
    resize: both;
    overflow: auto;
 }
-=======
 
->>>>>>> dev
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
