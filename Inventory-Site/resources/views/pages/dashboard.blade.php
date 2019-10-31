@@ -5,6 +5,7 @@ $inventoryNames = array();
 $inventoryQuantities = array();
 $inventoryCapacities = array();
 $inventoryThresholds = array();
+$TransactionAmnt = array();
 
 for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
@@ -12,6 +13,10 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryQuantities[] = $activeItems[$i]->quantity;
     $inventoryCapacities[] = $activeItems[$i]->capacity;
     $inventoryThresholds[] = $activeItems[$i]->low_threshold;
+}
+
+for ($i = 0; $i < count($transactions); ++$i) {
+    $TransactionAmnt[] = $transactions[$i]->item_quantity_change;
 }
 @endphp
 
@@ -43,7 +48,6 @@ for ($i = 0; $i < count($activeItems); ++$i) {
 <body>
     <h1>Inventory Dashboard Page</h1>
 <span class="text-bold">
-{{ $dashboardCont::test() }}
 </span>
 
     <table>
@@ -56,6 +60,8 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
             var inventoryDisplayNames = <?php echo json_encode($inventoryDisplayNames); ?>;
             var inventoryQuantities = <?php echo json_encode($inventoryQuantities); ?>;
+            var TransactionAmnt = <?php echo json_encode($TransactionAmnt); ?>;
+            var transactionNames = <?php echo json_encode($transactionNames); ?>;
 
             var checkedNames = getUrlVars();
             var activeNames = [];
@@ -117,10 +123,10 @@ for ($i = 0; $i < count($activeItems); ++$i) {
             var recentChart = new Chart(recentChart, {
               type:'bar',
               data:{
-                labels:activeDisplayNames,
+                labels:transactionNames,
                 datasets:[{
                   label:'Recent Inventory',
-                  data:activeQuantities,
+                  data:TransactionAmnt,
                 }]
               },
               options:{
