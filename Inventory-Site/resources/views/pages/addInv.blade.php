@@ -110,6 +110,7 @@ Please fill out all the feilds in the table
 
     app.controller('addItems', function($scope) {
         console.log("Hello")
+        
         jQuery(function() {
 
             //document.getElementById("alert").slideUp(500);
@@ -150,10 +151,11 @@ Please fill out all the feilds in the table
             console.log("Time to submit")
             console.log($scope.addItems.length)
             changedItems = [];
+            var user_id = {{Auth::user()->id}};
             for (var i = 0; i<$scope.addItems.length; ++i){
                 changedItems.push({
                     'item_id':$scope.addItems[i].id,
-                    'user_id':'2',
+                    'user_id':user_id,
                     'quantity_change':$scope.addItems[i].addQuantity,
                     'comment':$scope.addItems[i].comment
                     })
@@ -167,6 +169,7 @@ Please fill out all the feilds in the table
                 //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
+                    
                     console.log(data);
                     data = JSON.parse(data);
                     $scope.modifyItems = [];

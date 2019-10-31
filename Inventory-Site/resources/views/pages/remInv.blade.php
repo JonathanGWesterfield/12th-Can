@@ -150,10 +150,11 @@ Please fill out all the feilds in the table
             console.log("Time to submit")
             console.log($scope.addItems.length)
             changedItems = [];
+            var user_id = {{Auth::user()->id}};
             for (var i = 0; i<$scope.addItems.length; ++i){
                 changedItems.push({
                     'item_id':$scope.addItems[i].id,
-                    'user_id':'2',
+                    'user_id':user_id,
                     'quantity_change':'-' + $scope.addItems[i].addQuantity.toString(),
                     'comment':$scope.addItems[i].comment
                     })
