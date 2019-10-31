@@ -21,14 +21,26 @@ class Item extends Model
     }
 
     /**
+     * Gets the current quantity of the item for this model.
+     * @return The current quantity of the item.
+     */
+    public function quantity()
+    {
+        $quantity = DB::table('Order_Transaction')
+            ->where('item_id', $this->id)
+            ->sum('item_quantity_change');
+        return $quantity;
+    }
+
+    /**
      * Gets the current quantity of the item specified.
      * @param $id The ID of the item we need the quantity for.
      * @return The current quantity of the item.
      */
-    public function quantity($id)
+    public function getQuantity($id)
     {
         $quantity = DB::table('Order_Transaction')
-            ->where('item_id', $id)
+            ->where('item_id', $this->id)
             ->sum('item_quantity_change');
         return $quantity;
     }
