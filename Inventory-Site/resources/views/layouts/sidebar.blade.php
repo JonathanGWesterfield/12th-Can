@@ -104,7 +104,7 @@
                             <a href="#">Remove Inventory</a>
                         </li>
                         <li>
-                            <a href="#">Add New Items</a>
+                            <a href="/new_items">Add New Items</a>
                         </li>
                         <li>
                             <a href="#">Modify Items</a>
