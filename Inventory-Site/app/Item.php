@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
@@ -17,6 +18,19 @@ class Item extends Model
     {
         // Set the database relationship
         $this->hasMany('App\Transaction');
+    }
+
+    /**
+     * Gets the current quantity of the item specified.
+     * @param $id The ID of the item we need the quantity for.
+     * @return The current quantity of the item.
+     */
+    public function quantity($id)
+    {
+        $quantity = DB::table('Order_Transaction')
+            ->where('item_id', $id)
+            ->sum('item_quantity_change');
+        return $quantity;
     }
 
     /**
