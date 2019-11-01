@@ -188,7 +188,7 @@ Please fill out all the feilds in the table
                     document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
                 if(data.status == 'transaction(s) stored'){
-                    document.getElementById("alert").innerHTML = data.transactions_count + " Quantity was succesfully modified. ";
+                    document.getElementById("alert").innerHTML = "Inventory was removed for " + data.transactions_count + " item(s). ";
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {

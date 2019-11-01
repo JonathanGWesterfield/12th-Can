@@ -1,11 +1,11 @@
 @extends('layouts.app')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-
+<script src="app/Item.php" type="php"></script>
 <!-- Modal -->
 
 @section('content')
-
+@inject('Item', 'App\Item')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <div ng-app="add" ng-controller="addItems">
 
@@ -110,18 +110,20 @@ Please fill out all the feilds in the table
 
     app.controller('addItems', function($scope) {
         console.log("Hello")
-        
+        console.log({{$Item->getQuantity(1)}})
         jQuery(function() {
 
             //document.getElementById("alert").slideUp(500);
+            
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.items = JSON.parse(this.responseText)
-                    $scope.completeItems = JSON.parse(this.responseText)
-                    console.log($scope.completeItems)
+                    for (var i = 0; i<$scope.items.length; ++i){
+                        
+                    }
                     $scope.addItems = []
                     $scope.$apply()
                 }
@@ -179,8 +181,9 @@ Please fill out all the feilds in the table
                         if (this.readyState == 4 && this.status == 200) {
                             console.log(this.responseText)
                             $scope.items = JSON.parse(this.responseText)
-                            $scope.completeItems = JSON.parse(this.responseText)
-                            console.log($scope.completeItems)
+                            for (var i = 0; i<$scope.items.length; ++i){
+                                
+                            }
                             $scope.addItems = []
                             $scope.$apply()
                         }
@@ -190,7 +193,7 @@ Please fill out all the feilds in the table
                     document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
                 if(data.status == 'transaction(s) stored'){
-                    document.getElementById("alert").innerHTML = data.transactions_count + " Quantity was succesfully modified. ";
+                    document.getElementById("alert").innerHTML = "Inventory was addded for " + data.transactions_count + " item(s). ";
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {
