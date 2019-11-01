@@ -63,6 +63,8 @@ class TransactionsController extends Controller
                     $transaction->comment = $elem['comment'];
 
                 $transaction->save();
+
+                $this->updateItemQuantity($elem['item_id']);
             }
 
             return response([
@@ -79,6 +81,21 @@ class TransactionsController extends Controller
                 'error' => $e->getMessage()
             ], 422);
         }
+    }
+
+    /**
+     * Updates the quantity of the specified item by summing up all of the quantity changes
+     * for that item in the transactions table.
+     * @param $id The ID of the item that needs to have it's quantity updated.
+     */
+    public function updateItemQuantity($id)
+    {
+        $item = Item::find($id);
+        $item->quantity = DB::table('Order_Transaction')
+            ->where('item_id', $id)
+            ->sum('item_quantity_change');
+
+        $item->save();
     }
 
 
