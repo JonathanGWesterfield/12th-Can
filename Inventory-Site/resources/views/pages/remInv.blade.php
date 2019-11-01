@@ -163,7 +163,7 @@ Please fill out all the feilds in the table
                     'comment':$scope.addItems[i].comment
                     })
             }
-            if($scope.changedItems.length == 0) return;
+            //if($scope.changedItems.length == 0) return;
             jQuery.ajax({
                 url: 'transactions',
                 method: 'POST',
