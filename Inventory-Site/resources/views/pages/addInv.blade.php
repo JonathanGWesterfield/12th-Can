@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script src="app/Item.php" type="php"></script>
@@ -114,7 +114,7 @@ Please fill out all the feilds in the table
         jQuery(function() {
 
             //document.getElementById("alert").slideUp(500);
-            
+
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -122,7 +122,7 @@ Please fill out all the feilds in the table
                     console.log(this.responseText)
                     $scope.items = JSON.parse(this.responseText)
                     for (var i = 0; i<$scope.items.length; ++i){
-                        
+
                     }
                     $scope.addItems = []
                     $scope.$apply()
@@ -175,7 +175,7 @@ Please fill out all the feilds in the table
                 //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
-                    
+
                     console.log(data);
                     data = JSON.parse(data);
                     $scope.modifyItems = [];
@@ -186,7 +186,7 @@ Please fill out all the feilds in the table
                             console.log(this.responseText)
                             $scope.items = JSON.parse(this.responseText)
                             for (var i = 0; i<$scope.items.length; ++i){
-                                
+
                             }
                             $scope.addItems = []
                             $scope.$apply()
@@ -197,7 +197,7 @@ Please fill out all the feilds in the table
                     document.getElementById("alert").innerHTML = "";
                 console.log(data.item_count);
                 if(data.status == 'transaction(s) stored'){
-                    document.getElementById("alert").innerHTML = "Inventory was addded for " + data.transactions_count + " item(s). ";
+                    document.getElementById("alert").innerHTML = "Inventory was added for " + data.transactions_count + " item(s). ";
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {
