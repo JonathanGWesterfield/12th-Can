@@ -155,6 +155,10 @@ Please fill out all the feilds in the table
             changedItems = [];
             var user_id = {{Auth::user()->id}};
             for (var i = 0; i<$scope.addItems.length; ++i){
+                if ($scope.addItems[i].addQuantity == null || $scope.addItems[i].addQuantity == "" || $scope.addItems[i].addQuantity == 0){
+                    console.log("Here");
+                    continue;
+                }
                 changedItems.push({
                     'item_id':$scope.addItems[i].id,
                     'user_id':user_id,
@@ -162,7 +166,7 @@ Please fill out all the feilds in the table
                     'comment':$scope.addItems[i].comment
                     })
             }
-            //if($scope.addItems.length == 0) return;
+            if($scope.changedItems.length == 0) return;
             jQuery.ajax({
                 url: 'transactions',
                 method: 'POST',
