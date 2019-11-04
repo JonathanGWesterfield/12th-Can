@@ -42,6 +42,11 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 }
 @endphp
 
+@transactionSums = array();
+for ($i = count($activeTransactions)-1; $i >= 0; --$i) {
+  $transactionSums[] = $activeTransactions[$i]
+}
+
 @section('content')
 <head>
   <style>
@@ -91,6 +96,14 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
       chart.update();
     }
 
+    function lineSearch(name, lines){
+      for (var i = 0; i < lines.length; i++){
+        if (name == lines[i].label){
+          return i;
+        }
+      }
+      return -1;
+    }
 
   </script>
 
@@ -294,51 +307,44 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
             var threeWeeks = today - 3*604800000;
             var twoWeeks = today - 2*604800000;
             var oneWeek = today - 604800000;
-            var thisWeek = today;
 
             var lines = [];
-            var dummyArray = [0, 0, 0, 0];
             for (var i = 0; i < activeNames.length; i++){
               var itemLine = {
                 label: activeNames[i],
-                data: dummyArray
+                data: [0, 0, 0, activeQuantities[i]]
               }
               lines.push(itemLine);
             }
 
-            for (var i = 0; i < lines.length; i++){
-              for (var j = 0; j < transactionDates.length; j++){
-                var targetDate = Date.parse(transactionDates[j]);
-                if (transactionNames[j] == lines[i].label){
-                  if (targetDate > fourWeeks && targetDate <= threeWeeks){
-                    lines[i].data[0] = transactionChanges[j];
-                  }
-                  if (targetDate > threeWeeks && targetDate <= twoWeeks){
-                    lines[i].data[1] = transactionChanges[j];
-                  }
-                  if (targetDate > twoWeeks && targetDate <= oneWeek){
-                    lines[i].data[2] = transactionChanges[j];
-                  }
-                  if (targetDate > oneWeek && targetDate <= thisWeek){
-                    lines[i].data[3] = transactionChanges[j];
-                  }
+
+
+            //Fills data for each line object
+            for (var i = 0; i < transactionNames.length; i++){
+              var nameIndex = lineSearch(transactionNames[i], lines);
+              if (nameIndex >= 0){
+                var targetDate = Date.parse(transactionDates[i]);
+                if (targetDate > fourWeeks && targetDate <= threeWeeks){
+                  lines[nameIndex].data[0] = parseInt(lines[nameIndex].data[0]) + parseInt(transactionChanges[i]);
+                }
+                if (targetDate > threeWeeks && targetDate <= twoWeeks){
+                  lines[nameIndex].data[1] = parseInt(lines[nameIndex].data[1]) + parseInt(transactionChanges[i]);
+                }
+                if (targetDate > twoWeeks && targetDate <= oneWeek){
+                  lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) + parseInt(transactionChanges[i]);
+                }
+                if (targetDate > oneWeek && targetDate <= today){
+                  //lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) + parseInt(transactionChanges[i]);
+                  //lines[nameIndex].data[3] = parseInt(activeQuantities[i]);
                 }
               }
             }
 
-            /*
-            //Handles selected items to appear in line graph
-            var activeLines = [];
-            for (var i = 0; i < activeNames.length; i++){
-              var tempData = {
-                label: activeNames[i],
-                data: [transactionChanges[i], transactionChanges[i], transactionChanges[i], transactionChanges[i]]
-              };
-              activeLines.push(tempData);
+            for (var i = 0; i < lines.length; i++){
+              lines[i].data[2] = parseInt(lines[i].data[2]) + parseInt(lines[i].data[3]);
+              lines[i].data[1] = parseInt(lines[i].data[1]) + parseInt(lines[i].data[2]);
+              lines[i].data[0] = parseInt(lines[i].data[0]) + parseInt(lines[i].data[1]);
             }
-            for (var i = 0; i < activeLines.length; i++){
-              monthlyChart.data.datasets.push(activeLines[i]);
-            }*/
 
 
             //Loads line graph
