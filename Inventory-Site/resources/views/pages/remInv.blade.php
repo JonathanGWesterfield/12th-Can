@@ -84,7 +84,7 @@ Please fill out all the feilds in the table
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><input ng-model = "item.addQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.addQuantity" type = "number" only-num min = "0"></td>
                             <td><input ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
