@@ -38,7 +38,7 @@
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <button name="hamburgerButton" type="button" id="sidebarCollapse" class="btn btn-light">
                         <i class="fas fa-align-left"></i>
                         <div id="hamburger"></div>
                         <div id="hamburger"></div>
