@@ -29,7 +29,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
     public function testSidebarRemoveInventory()
@@ -53,7 +53,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
     public function testSidebarAddNewInventory()
@@ -77,7 +77,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
     public function testSidebarModifyItems()
@@ -101,7 +101,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
     public function testSidebarDashboard()
@@ -125,7 +125,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
     public function testSidebarHistory()
@@ -149,7 +149,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->assertSee('Dashboard')
-                    ->clickLink('History')
+                    ->clickLink('History');
         });
     }
 }
