@@ -1,5 +1,5 @@
 @inject('dashboardCont', 'App\Http\Controllers\DashboardController')
-@extends('layouts.app')
+@extends('layouts.sidebar')
 @php
     $inventoryNames = array();
     $inventoryQuantities = array();
