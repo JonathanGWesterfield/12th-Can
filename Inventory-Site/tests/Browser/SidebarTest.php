@@ -23,7 +23,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/add_inventory')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -47,7 +47,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/remove_inventory')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -71,7 +71,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -95,7 +95,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/modify_items')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -119,7 +119,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/dashboard')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -139,11 +139,12 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('History');
         });
     }
+    /* Uncomment once History page exists
     public function testSidebarHistory()
     {
         $this->browse(function ($browser) {
             $browser->visit('/history')
-                    ->click('hamburgerButton')
+                    ->press('hamburgerButton')
                     ->assertSee('Add Inventory')
                     ->assertSee('Remove Inventory')
                     ->assertSee('Add New Items')
@@ -163,4 +164,5 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('History');
         });
     }
+    */
 }
