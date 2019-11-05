@@ -84,7 +84,7 @@ Please fill out all the feilds in the table
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><input ng-model = "item.addQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.addQuantity" type = "number" only-num min="0"></td>
                             <td><input ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
@@ -110,19 +110,23 @@ Please fill out all the feilds in the table
 
     app.controller('addItems', function($scope) {
         console.log("Hello")
-        console.log({{$Item->getQuantity(1)}})
         jQuery(function() {
 
             //document.getElementById("alert").slideUp(500);
 
             $scope.addItems = []
+            
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.responseText)
+                    //console.log(this.responseText)
                     $scope.items = JSON.parse(this.responseText)
-                    for (var i = 0; i<$scope.items.length; ++i){
 
+                    for (var i = 0; i<$scope.items.length; ++i){
+                        if($scope.items[i].removed == true){
+                            $scope.items.splice(i,1);
+                            i-=1;
+                        }
                     }
                     $scope.addItems = []
                     $scope.$apply()
@@ -186,7 +190,10 @@ Please fill out all the feilds in the table
                             console.log(this.responseText)
                             $scope.items = JSON.parse(this.responseText)
                             for (var i = 0; i<$scope.items.length; ++i){
-
+                                if($scope.items[i].removed == true){
+                                    $scope.items.splice(i,1);
+                                    i-=1;
+                                }
                             }
                             $scope.addItems = []
                             $scope.$apply()
