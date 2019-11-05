@@ -98,19 +98,19 @@
 
                     <ul class="list-unstyled components">
                         <li>
-                            <a href="#">Add Inventory</a>
+                            <a href="/add_inventory">Add Inventory</a>
                         </li>
                         <li>
-                            <a href="#">Remove Inventory</a>
+                            <a href="/remove_inventory">Remove Inventory</a>
                         </li>
                         <li>
-                            <a href="#">Add New Items</a>
+                            <a href="/new_items">Add New Items</a>
                         </li>
                         <li>
-                            <a href="#">Modify Items</a>
+                            <a href="/modify_items">Modify Items</a>
                         </li>
                         <li>
-                            <a href="#">Dashboard</a>
+                            <a href="/dashboard">Dashboard</a>
                         </li>
                         <li>
                             <a href="#">History</a>

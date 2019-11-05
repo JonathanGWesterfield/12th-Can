@@ -84,7 +84,7 @@ Please fill out all the feilds in the table
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><input ng-model = "item.addQuantity" type = "number" only-num></td>
+                            <td><input ng-model = "item.addQuantity" type = "number" only-num min = "0"></td>
                             <td><input ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
@@ -119,8 +119,12 @@ Please fill out all the feilds in the table
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.items = JSON.parse(this.responseText)
-                    $scope.completeItems = JSON.parse(this.responseText)
-                    console.log($scope.completeItems)
+                    for (var i = 0; i<$scope.items.length; ++i){
+                        if($scope.items[i].removed == true){
+                            $scope.items.splice(i,1);
+                            i-=1;
+                        }
+                    }
                     $scope.addItems = []
                     $scope.$apply()
                 }
@@ -181,8 +185,12 @@ Please fill out all the feilds in the table
                         if (this.readyState == 4 && this.status == 200) {
                             console.log(this.responseText)
                             $scope.items = JSON.parse(this.responseText)
-                            $scope.completeItems = JSON.parse(this.responseText)
-                            console.log($scope.completeItems)
+                            for (var i = 0; i<$scope.items.length; ++i){
+                                if($scope.items[i].removed == true){
+                                    $scope.items.splice(i,1);
+                                    i-=1;
+                                }
+                            }
                             $scope.addItems = []
                             $scope.$apply()
                         }
