@@ -41,6 +41,30 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
   }
 }
 
+//$shittyArray = array();
+//for ($i = 0; $i < $inventoryNames; ++$i){
+//  $shittyArray[$i+1] = 0;
+//}
+
+$arrayOfSums = array();
+for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
+  $arrayOfSums[$transactionIDs[$i]] = $inventoryQuantities[$i];
+}
+$transactionQuantities = array();
+for ($i = count($transactionChanges)-1; $i >= 0; --$i){
+  $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+  $arrayOfSums[$transactionIDs[$i]] -=- $transactionChanges[$i];
+
+}
+
+//if ($shittyArray[$transactionIDs[$i]] == 0){
+//  $shittyArray[$transactionIDs[$i]] == 1;
+//  $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+//}
+//elseif ($shittyArray[$transactionIDs[$i]] == 1){
+//
+//}
+
 @endphp
 
 @section('content')
@@ -199,6 +223,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
       var inventoryIDs = <?php echo json_encode($inventoryIDs); ?>;
       var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
       var transactionNames = <?php echo json_encode($transactionNames); ?>;
+      var transactionQuantities = <?php echo json_encode($transactionQuantities); ?>;
     </script>
     <h2>Recent Inventory</h2>
     <div class="table-scroll">
@@ -216,7 +241,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
               <tr style="background-color:#ffdede">
                 <th scope="row">{{$transactionNames[$i]}}</th>
                 <td>{{$transactionChanges[$i]}}</td>
-                <td>Not done yet</td>
+                <td>{{$transactionQuantities[$i]}}</td>
                 <td>{{$transactionDates[$i]}}</td>
               </tr>
             @endif
@@ -224,7 +249,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
               <tr style="background-color:#e0ffde">
                 <th scope="row">{{$transactionNames[$i]}}</th>
                 <td>{{$transactionChanges[$i]}}</td>
-                <td>Not done yet</td>
+                <td>{{$transactionQuantities[$i]}}</td>
                 <td>{{$transactionDates[$i]}}</td>
               </tr>
             @endif
