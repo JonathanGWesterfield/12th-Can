@@ -83,7 +83,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
               i = 0;
             }
             else if (sortOrder.order == 'inc' && date1 > date2){
-              rows[i].parentNode.insertBefore(rows[i], rows[i+1]);
+              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
               i = 0;
             }
             if (i == rows.length - 1){
@@ -112,6 +112,46 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
               i = 1;
             }
             i++;
+          }
+        }
+        else if (sortOrder.sort == 'change'){
+          i = 1;
+          while (switching){
+            var rows = table.rows;
+            var change1 = rows[i].cells[2].innerHTML;
+            var change2 = rows[i+1].cells[2].innerHTML;
+            if (sortOrder.order == 'dec' && change1 < change2){
+              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
+              i = 1;
+            }
+            else if (sortOrder.order == 'inc' && change1 > change2){
+              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
+              i = 1;
+            }
+            if (i == rows.length - 1){
+              switching = false;
+              i = 1;
+            }
+            i++;
+          }
+        }
+
+        if (sortOrder.addrmv == 'add'){
+          for (var i = 1; i < table.rows.length; i++){
+            var change = table.rows[i].cells[2].innerHTML;
+            if (change < 0){
+              table.deleteRow(i);
+              i--;
+            }
+          }
+        }
+        else if (sortOrder.addrmv == 'rmv'){
+          for (var i = 1; i < table.rows.length; i++){
+            var change = table.rows[i].cells[2].innerHTML;
+            if (change > 0){
+              table.deleteRow(i);
+              i--;
+            }
           }
         }
       }
@@ -143,15 +183,21 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
       <form id="sortSelect">
         <input type="submit"><br>
         <select name="sort">
-          <option value=""></option>
+          <option value="">Sort Type</option>
           <option value="alph">Alphabetical</option>
           <option value="date">Date</option>
           <option value="change">Change Size</option>
         </select>
-        <select name="order">
-          <option value=""></option>
+        <select name="order">Test
+          <option value="">Ordering</option>
           <option value="inc">Ascending</option>
           <option value="dec">Descending</option>
+        </select>
+        <select name="addrmv">
+          <option value="">Filter Type</option>
+          <option value="addrmv">Add/Remove</option>
+          <option value="add">Add</option>
+          <option value="rmv">Remove</option>
         </select>
       </form>
     </body>
