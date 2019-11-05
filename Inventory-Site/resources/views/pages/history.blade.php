@@ -154,6 +154,25 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
             }
           }
         }
+
+        if (sortOrder.start != '' || sortOrder.end != ''){
+          var startDate = Date.parse(sortOrder.start);
+          var endDate = Date.parse(sortOrder.end);
+          for (var i = 1; i < table.rows.length; i++){
+            var transDate = Date.parse(table.rows[i].cells[0].innerHTML);
+            if (startDate > transDate){
+              table.deleteRow(i);
+              i--;
+            }
+            if (endDate < transDate){
+              table.deleteRow(i);
+              i--;
+            }
+          }
+        }
+        if (sortOrder.end != ''){
+
+        }
       }
     </script>
 
@@ -199,6 +218,9 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
           <option value="add">Add</option>
           <option value="rmv">Remove</option>
         </select>
+        <br>
+        Start Date: <input name="start" type="date"><br>
+        End Date: <input name="end" type="date"><br>
       </form>
     </body>
 @endsection
