@@ -29,7 +29,7 @@ class AddItemTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add');
+                    ->assertSee('Add Item Page');
         });
     }
 }
