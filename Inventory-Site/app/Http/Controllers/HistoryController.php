@@ -11,6 +11,7 @@ class HistoryController extends Controller
     public function index()
     {
         $activeItems = Item::all()->where('removed','false');
-        return view('pages.history')->with('activeItems', $activeItems);
+        $activeTransactions = Transaction::all();
+        return view('pages.history')->with('activeItems', $activeItems)->with('activeTransactions', $activeTransactions);
     }
 }
