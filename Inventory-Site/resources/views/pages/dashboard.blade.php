@@ -178,9 +178,6 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
             var transactionDates = <?php echo json_encode($transactionDates); ?>;
             var transactionChanges = <?php echo json_encode($transactionChanges); ?>;
             var transactionIDs = <?php echo json_encode($transactionIDs); ?>;
-            var recentChanges = <?php echo json_encode($recentChanges); ?>;
-            var inventoryIDs = <?php echo json_encode($inventoryIDs); ?>;
-            var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
             var transactionNames = <?php echo json_encode($transactionNames); ?>;
           </script>
           <h2>Recent Inventory</h2>
