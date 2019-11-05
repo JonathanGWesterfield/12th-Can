@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
+use App\User;
+use App\Item;
 use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
@@ -46,32 +48,23 @@ class TransactionsController extends Controller
             // Go through every item submitted and create it
             foreach($transactions as $elem)
             {
-//                $transaction = new Transaction();
-//                $transaction->item_id = $elem['item_id'];
-//                $transaction->member_id = $elem['user_id']; // ID of the currently logged in user.
-//                $transaction->item_quantity_change = $elem['quantity_change'];
-//                $transaction->transaction_date = date("Y-m-d H:i:s"); // current time
-//                $transactions->comment = "";
+                $item = Item::find($elem['item_id']);
+                $user = User::find($elem['user_id']);
 
-                $comment = "";
+                $transaction = new Transaction();
+                $transaction->item()->associate($item);
+                $transaction->user()->associate($user);
+                $transaction->item_quantity_change = $elem['quantity_change'];
+                $transaction->transaction_date = date("Y-m-d H:i:s"); // current time
+                $transaction->comment = "";
 
-                if($elem['comment'] != null)
-                    $comment = $elem['comment'];
+                // The user commenting on a transaction is optional
+                if(array_key_exists('comment', $elem))
+                    $transaction->comment = $elem['comment'];
 
-                DB::table('Order_Transaction')->insert(
-                    [
-                        'item_id' => $elem['item_id'],
-                        'member_id' => $elem['user_id'],
-                        'item_quantity_change' => $elem['quantity_change'],
-                        'transaction_date' => date("Y-m-d H:i:s"), // current time
-                        'comment' => $comment
-                    ]
-                );
+                $transaction->save();
 
-//                if($elem['comment'] != null)
-//                    $transaction->comment = $elem['comment'];
-
-//                $transaction->save();
+                $this->updateItemQuantity($elem['item_id']);
             }
 
             return response([
@@ -79,15 +72,30 @@ class TransactionsController extends Controller
                 'transactions_count' => count($transactions)], 200)
                 ->header('Content-Type', 'text/plain');
         }
-        catch (\Illuminate\Database\QueryException | Exception $e)
+        catch (Exception $e)
         {
             dd($e->getMessage());
             // Attempt to catch a bad database store
             return response([
                 'status' => 'item modification failed',
                 'error' => $e->getMessage()
-            ], 500);
+            ], 422);
         }
+    }
+
+    /**
+     * Updates the quantity of the specified item by summing up all of the quantity changes
+     * for that item in the transactions table.
+     * @param $id The ID of the item that needs to have it's quantity updated.
+     */
+    public function updateItemQuantity($id)
+    {
+        $item = Item::find($id);
+        $item->quantity = DB::table('Order_Transaction')
+            ->where('item_id', $id)
+            ->sum('item_quantity_change');
+
+        $item->save();
     }
 
 

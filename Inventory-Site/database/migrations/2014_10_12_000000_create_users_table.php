@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->useCurrent();
             $table->string('phone');
-            $table->boolean('current_member');
-            $table->integer('position_id');
+            $table->boolean('current_member')->nullable();
+            $table->integer('position_id')->nullable();
             $table->foreign('position_id')->references('id')->on('Member_Position');
         });
 

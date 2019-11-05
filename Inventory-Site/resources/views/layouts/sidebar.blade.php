@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="{{ csrf_token() }}">
 
     <title>The 12th Can</title>
-
+    <link href="{{ asset('css/Normalize.css') }}" rel="stylesheet">
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
@@ -18,42 +18,19 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-               
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#">Add Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Remove Inventory</a>
-                </li>
-                <li>
-                    <a href="#">Add New Items</a>
-                </li>
-                <li>
-                    <a href="#">Modify Items</a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">History</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Page Content  -->
         <div id="content">
@@ -61,11 +38,11 @@
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <button name="hamburgerButton" type="button" id="sidebarCollapse" class="btn btn-light">
                         <i class="fas fa-align-left"></i>
                         <div id="hamburger"></div>
                         <div id="hamburger"></div>
-                        <div id="hamburger"></div>  
+                        <div id="hamburger"></div>
                     </button>
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
@@ -113,16 +90,39 @@
                             @endguest
                         </ul>
                     </div>
-
                 </div>
             </nav>
+            <!-- Sidebar  -->
+            <div id="bottomContent">
+                <nav id="sidebar">
 
-            <main class="py-4">
-                @yield('content')
-            </main>
+                    <ul class="list-unstyled components">
+                        <li>
+                            <a href="/add_inventory">Add Inventory</a>
+                        </li>
+                        <li>
+                            <a href="/remove_inventory">Remove Inventory</a>
+                        </li>
+                        <li>
+                            <a href="/new_items">Add New Items</a>
+                        </li>
+                        <li>
+                            <a href="/modify_items">Modify Items</a>
+                        </li>
+                        <li>
+                            <a href="/dashboard">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#">History</a>
+                        </li>
+                    </ul>
+                </nav>
+                <main id="main_content" class="py-4">
+                    @yield('content')
+                </main>
+            </div>
         </div>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {

@@ -10,4 +10,16 @@ class PagesController extends Controller
     {
         return view('pages.new_items');
     }
+    public function modifyItems()
+    {
+        return view('pages.modifyItems');
+    }
+    public function addInv()
+    {
+        return view('pages.addInv');
+    }
+    public function remInv()
+    {
+        return view('pages.remInv');
+    }
 }

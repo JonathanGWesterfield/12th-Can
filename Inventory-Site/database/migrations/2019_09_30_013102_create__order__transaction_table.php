@@ -15,16 +15,16 @@ class CreateOrderTransactionTable extends Migration
     {
         Schema::create('Order_Transaction', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement();
-            $table->integer('member_id');
-            $table->integer('item_id');
+            $table->bigInteger('member_id')->unsigned();
+            $table->bigInteger('item_id')->unsigned();
             $table->integer('item_quantity_change');
             $table->string('comment')->nullable();
             $table->timestamp('transaction_date')->useCurrent();
-            $table->foreign('member_id')->references('id')->on('users');
-            $table->foreign('item_id')->references('id')->on('Item');
+//            $table->foreign('member_id')->references('id')->on('users');
+//            $table->foreign('item_id')->references('id')->on('Item');
         });
 
-        Schema::enableForeignKeyConstraints();
+//        Schema::enableForeignKeyConstraints();
 
 //        Schema::table('User', function(Blueprint $table){
 //            $table->foreign('member_id')->references('id')->on('User');
