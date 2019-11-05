@@ -48,10 +48,14 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
         table th{
           padding-right: 20px;
           border: 1px solid black;
+          background-color: #e0e0e0;
         }
         table td{
           border: 1px solid black;
           padding-right: 8px;
+        }
+        table tr:nth-child(even){
+          background-color: #e0e0e0;
         }
         table tr:hover{
           background-color: #ccc;
@@ -177,50 +181,59 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
     </script>
 
     <body onload="sortTable()">
-      <h1>Database History</h1>
 
-    <div class="table-scroll">
-      <table id="transTable" class="table table-sm">
-        <thead>
-          <th scope="col">Transaction Date</th>
-          <th scope="col">Item</th>
-          <th scope="col">Change</th>
-          <th scope="col">Comment</th>
-        </thead>
-        <tbody>
-          @for ($i = 0; $i < count($activeTransactions); ++$i)
-            <tr>
-              <td>{{$transactionDates[$i]}}</td>
-              <td>{{$transactionIDs[$i]}}</td>
-              <td>{{$transactionChanges[$i]}}</td>
-              <td>{{$transactionComments[$i]}}</td>
-            </tr>
-          @endfor
-        </tbody>
+      <div class="container">
+        <h1>Database History</h1>
+        <div class="row">
+          <div class="col-md-4">
+            <form id="sortSelect">
+              <input type="submit"><br>
+              <select name="sort">
+                <option value="">Sort Type</option>
+                <option value="alph">Alphabetical</option>
+                <option value="date">Date</option>
+                <option value="change">Change Size</option>
+              </select>
+              <select name="order">Test
+                <option value="">Ordering</option>
+                <option value="inc">Ascending</option>
+                <option value="dec">Descending</option>
+              </select>
+              <select name="addrmv">
+                <option value="">Filter Type</option>
+                <option value="addrmv">Add/Remove</option>
+                <option value="add">Add</option>
+                <option value="rmv">Remove</option>
+              </select>
+              <br>
+              Start Date: <input name="start" type="date"><br>
+              End Date: <input name="end" type="date"><br>
+            </form>
+          </div>
+          <div class="col-md-8">
+            <div class="table-scroll">
+              <table id="transTable" class="table table-sm">
+                <thead>
+                  <th scope="col">Transaction Date</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Change</th>
+                  <th scope="col">Comment</th>
+                </thead>
+                <tbody>
+                  @for ($i = 0; $i < count($activeTransactions); ++$i)
+                  <tr>
+                    <td>{{$transactionDates[$i]}}</td>
+                    <td>{{$transactionIDs[$i]}}</td>
+                    <td>{{$transactionChanges[$i]}}</td>
+                    <td>{{$transactionComments[$i]}}</td>
+                  </tr>
+                  @endfor
+                </tbody>
+              </div>
+          </div>
 
-      <br>
-      <form id="sortSelect">
-        <input type="submit"><br>
-        <select name="sort">
-          <option value="">Sort Type</option>
-          <option value="alph">Alphabetical</option>
-          <option value="date">Date</option>
-          <option value="change">Change Size</option>
-        </select>
-        <select name="order">Test
-          <option value="">Ordering</option>
-          <option value="inc">Ascending</option>
-          <option value="dec">Descending</option>
-        </select>
-        <select name="addrmv">
-          <option value="">Filter Type</option>
-          <option value="addrmv">Add/Remove</option>
-          <option value="add">Add</option>
-          <option value="rmv">Remove</option>
-        </select>
-        <br>
-        Start Date: <input name="start" type="date"><br>
-        End Date: <input name="end" type="date"><br>
-      </form>
+
+            <br>
+
     </body>
 @endsection
