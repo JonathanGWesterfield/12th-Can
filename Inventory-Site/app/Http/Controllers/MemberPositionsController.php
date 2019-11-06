@@ -18,15 +18,15 @@ class MemberPositionsController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+//    /**
+//     * Show the form for creating a new resource.
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function create()
+//    {
+//        //
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -71,27 +71,27 @@ class MemberPositionsController extends Controller
             ->header('Content-Type', 'text/plain');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function show($id)
+//    {
+//        //
+//    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+//    /**
+//     * Show the form for editing the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function edit($id)
+//    {
+//        //
+//    }
 
     /**
      * Update the specified resource in storage.
