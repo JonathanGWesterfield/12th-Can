@@ -13,11 +13,11 @@ class LoginTest extends DuskTestCase
      *
      * @return void
      */
+    //Create dummy accounts for testing
     public function testMakeAccounts()
     {
-        $this->browse(function ($browser) {
-            $browser->visit('/register')
-            Need to logout the user once the account is created, probably need to look at dropdown menu in dusk documentation
+        $this->browse(function ($first, $second, $third, $fourth, $fifth, $sixth, $seventh, $eigth) {
+            $first->visit('/register')
                     //ensure correct fields
                     ->assertSee('Name')
                     ->assertSee('E-Mail Address')
@@ -32,6 +32,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $second->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Apple')
                     ->type('email', 'johnapple@aol.com')
                     ->type('phone', '3143563413')
@@ -39,6 +48,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password1')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $third->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Bpple')
                     ->type('email', 'johnbpple@aol.com')
                     ->type('phone', '3143563414')
@@ -46,6 +64,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password2')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $fourth->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Cpple')
                     ->type('email', 'johncpple@aol.com')
                     ->type('phone', '3143563415')
@@ -53,6 +80,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password3')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $fifth->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Dpple')
                     ->type('email', 'johndpple@aol.com')
                     ->type('phone', '3143563416')
@@ -60,6 +96,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password4')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $sixth->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Epple')
                     ->type('email', 'johnepple@aol.com')
                     ->type('phone', '3143563417')
@@ -67,6 +112,15 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password5')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $seventh->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Fpple')
                     ->type('email', 'johnfpple@aol.com')
                     ->type('phone', '3143563418')
@@ -74,13 +128,131 @@ class LoginTest extends DuskTestCase
                     ->type('password_confirmation', 'password6')
                     ->press('Register')
                     ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+            $eigth->visit('/register')
+                    ->assertSee('Name')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Phone')
+                    ->assertSee('Password')
+                    ->assertSee('Confirm Password')
                     ->type('name', 'John Gpple')
                     ->type('email', 'johngpple@aol.com')
                     ->type('phone', '3143563419')
                     ->type('password', 'password7')
                     ->type('password_confirmation', 'password7')
                     ->press('Register')
-                    ->AssertSee('Inventory Dashboard Page');
+                    ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
         });
     }
+    //verify account access to registered accounts
+    public function testVerifyAccounts0()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'johnsmith@aol.com')
+                    ->type('password', 'password')
+                    ->press('Login')
+                    ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+        });
+    }
+    public function testVerifyAccounts1()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail Address')
+                    ->assertSee('Password')
+                    ->type('email', 'johnapple@aol.com')
+                    ->type('password', 'password1')
+                    ->press('Login')
+                    ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+        });
+    }
+    //verify incorrect credentials
+    public function testVerifyAccounts2()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'johnsmith@aol.com')
+                    ->type('password', 'wrongpassword')
+                    ->press('Login')
+                    ->assertSee('These credentials do not match our records.');
+        });
+    }
+    public function testVerifyAccounts3()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'wrongjohnsmith@aol.com')
+                    ->type('password', 'password')
+                    ->press('Login')
+                    ->assertSee('These credentials do not match our records.');
+        });
+    }
+    //verify access is not given without form inputs
+    public function testVerifyAccounts4()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->press('Login')
+                    ->AssertSee('Login');
+        });
+    }
+    public function testVerifyAccounts5()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('password', 'password')
+                    ->press('Login')
+                    ->AssertSee('Login');
+        });
+    }
+    
+    public function testVerifyAccounts6()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'johnsmith@aol.com')
+                    ->press('Login')
+                    ->AssertSee('Login');
+        });
+    }
+    //verify account access
+    public function testVerifyAccounts7()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'johnbpple@aol.com')
+                    ->type('password', 'password2')
+                    ->press('Login')
+                    ->AssertSee('Inventory Dashboard Page')
+                    ->click('#navbarDropdown')
+                    ->click('#logout')
+                    ->assertSee('Login');
+        });
+    }       
 }
