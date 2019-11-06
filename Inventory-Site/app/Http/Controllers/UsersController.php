@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -71,18 +72,21 @@ class UsersController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|string',
-            'phone' => 'required|integer',
-            'current_member' => 'required|boolean',
-            'position_id' => 'required|integer'
+            'phone' => 'required',
+            'current_member' => 'required',
+            'position_id' => 'required'
         ]);
         // TODO: WRITE TESTS FOR THIS
         try
         {
+            $position = Member_Position::find($request->input('position_id'));
             $user = User::find($id);
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
             $user->current_member = $request->input('current_member');
-            $user->position_id = $request->input('position_id');
+            $user->position()->associate($position);
+
+//            $user->position_id = $request->input('position_id');
 
             $user->save();
         }
@@ -100,7 +104,7 @@ class UsersController extends Controller
             'user_email' => $user->email,
             'user_phone' => $user->phone,
             'user_current_member' =>  $user->current_member,
-            'user_position_id' => $user->position_id], 200)
+            'user_position_id' => strval($user->position_id)], 200)
             ->header('Content-Type', 'text/plain');
     }
 

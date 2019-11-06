@@ -43,3 +43,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('admin', 'AdminController')->middleware('auth');
 
 Route::resource('member_position', 'MemberPositionsController')->middleware('auth');
+
+Route::resource('users', 'UsersController')->middleware('auth');
