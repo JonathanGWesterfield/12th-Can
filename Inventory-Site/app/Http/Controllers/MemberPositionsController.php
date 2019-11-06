@@ -65,9 +65,9 @@ class MemberPositionsController extends Controller
 
         return response([
             'status' => 'position creation succeeded',
-            'position_item' => $position->position,
-            'position_user' => $position->privilege,
-            'position_change' =>  $position->email], 200)
+            'position' => $position->position,
+            'position_privilege' => $position->privilege,
+            'position_email' =>  $position->email], 200)
             ->header('Content-Type', 'text/plain');
     }
 
@@ -131,9 +131,9 @@ class MemberPositionsController extends Controller
 
         return response([
             'status' => 'position modification succeeded',
-            'position_item' => $position->position,
-            'position_user' => $position->privilege,
-            'position_change' =>  $position->email], 200)
+            'position' => $position->position,
+            'position_privilege' => $position->privilege,
+            'position_email' =>  $position->email], 200)
             ->header('Content-Type', 'text/plain');
     }
 
