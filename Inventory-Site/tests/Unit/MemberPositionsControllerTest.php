@@ -48,10 +48,27 @@ class MemberPositionsControllerTest extends TestCase
         ]);
     }
 
-//    public function testDestroy()
-//    {
-// TODO: FINISH THIS!!!
-//    }
+    public function testDestroy()
+    {
+        $this->seed();
+
+        // Delete the Big Boss member position
+        $this->withoutMiddleware();
+        $response = $this->json('DELETE', 'member_position/7');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+            'status' => 'position deleted',
+            'position_deleted' => '7'
+        ]);
+
+        // Check to make sure that the Big Boss position is gone.
+        $this->assertDatabaseMissing('Member_Position',
+            [
+                'id' => 7,
+            ]);
+    }
 
     /**
      * Tests the store function so we can see if our function properly adds new member positions to

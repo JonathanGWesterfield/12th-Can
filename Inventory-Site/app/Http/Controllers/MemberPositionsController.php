@@ -108,7 +108,6 @@ class MemberPositionsController extends Controller
             'description' => 'required|string',
             'email' => 'required|string'
         ]);
-        // TODO: WRITE TESTS FOR THIS
         try
         {
             $position = Member_Position::find($id);
@@ -145,8 +144,24 @@ class MemberPositionsController extends Controller
      */
     public function destroy($id)
     {
-        // TODO: WRITE A TEST FOR THIS
-        $position = Member_Position::find($id);
-        $position->delete();
+        try
+        {
+            $position = Member_Position::find($id);
+            $position->delete();
+
+        }
+        catch (Exception $e)
+        {
+            // Attempt to catch a bad database store
+            return response([
+                'status' => 'Member Position deletion failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+        return response([
+            'status' => 'position deleted',
+            'position_deleted' => $id
+        ]);
     }
 }
