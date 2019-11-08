@@ -235,6 +235,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         <tbody>
           <!--For loops runs one less time than you think it will, this displays 5 most recent changes-->
           @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-10; --$i)
+          @if ($i >= 0)
             @if ($transactionChanges[$i] < 0)
               <tr style="background-color:#ffdede">
                 <th scope="row">{{$transactionNames[$i]}}</th>
@@ -250,6 +251,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
                 <td>{{$transactionQuantities[count($transactionQuantities) - $i - 1]}}</td>
                 <td>{{$transactionDates[$i]}}</td>
               </tr>
+            @endif
             @endif
           @endfor
         </tbody>
