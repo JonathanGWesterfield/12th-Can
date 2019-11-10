@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionsControllerTest extends TestCase
 {
-//   use RefreshDatabase;
+   use RefreshDatabase;
 
     /**
      * Shouldn't need a test for editing transactions
@@ -66,7 +66,6 @@ class TransactionsControllerTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('Order_Transaction', [
-            'id' => 3,
             'item_id' => 1,
             'member_id' => 2,
             'item_quantity_change' => -20,
@@ -160,7 +159,7 @@ class TransactionsControllerTest extends TestCase
 
         $this->assertDatabaseHas('Item', [
             'id' => 1,
-            'quantity' => 90
+            'quantity' => 228
         ]);
     }
 }
