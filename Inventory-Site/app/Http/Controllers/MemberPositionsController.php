@@ -18,15 +18,15 @@ class MemberPositionsController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+//    /**
+//     * Show the form for creating a new resource.
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function create()
+//    {
+//        //
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -65,33 +65,33 @@ class MemberPositionsController extends Controller
 
         return response([
             'status' => 'position creation succeeded',
-            'position_item' => $position->position,
-            'position_user' => $position->privilege,
-            'position_change' =>  $position->email], 200)
+            'position' => $position->position,
+            'position_privilege' => $position->privilege,
+            'position_email' =>  $position->email], 200)
             ->header('Content-Type', 'text/plain');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function show($id)
+//    {
+//        //
+//    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+//    /**
+//     * Show the form for editing the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function edit($id)
+//    {
+//        //
+//    }
 
     /**
      * Update the specified resource in storage.
@@ -108,7 +108,6 @@ class MemberPositionsController extends Controller
             'description' => 'required|string',
             'email' => 'required|string'
         ]);
-        // TODO: WRITE TESTS FOR THIS
         try
         {
             $position = Member_Position::find($id);
@@ -131,9 +130,9 @@ class MemberPositionsController extends Controller
 
         return response([
             'status' => 'position modification succeeded',
-            'position_item' => $position->position,
-            'position_user' => $position->privilege,
-            'position_change' =>  $position->email], 200)
+            'position' => $position->position,
+            'position_privilege' => $position->privilege,
+            'position_email' =>  $position->email], 200)
             ->header('Content-Type', 'text/plain');
     }
 
@@ -145,8 +144,24 @@ class MemberPositionsController extends Controller
      */
     public function destroy($id)
     {
-        // TODO: WRITE A TEST FOR THIS
-        $position = Member_Position::find($id);
-        $position->delete();
+        try
+        {
+            $position = Member_Position::find($id);
+            $position->delete();
+
+        }
+        catch (Exception $e)
+        {
+            // Attempt to catch a bad database store
+            return response([
+                'status' => 'Member Position deletion failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+        return response([
+            'status' => 'position deleted',
+            'position_deleted' => $id
+        ]);
     }
 }

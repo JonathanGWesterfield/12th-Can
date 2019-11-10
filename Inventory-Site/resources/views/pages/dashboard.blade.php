@@ -8,6 +8,7 @@ $inventoryQuantities = array();
 $inventoryCapacities = array();
 $inventoryThresholds = array();
 $inventoryIDs = array();
+$visitedArray = array();
 
 for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
@@ -16,6 +17,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryCapacities[] = $activeItems[$i]->capacity;
     $inventoryThresholds[] = $activeItems[$i]->low_threshold;
     $inventoryIDs[] = $activeItems[$i]->id;
+    $visitedArray[$i+1] = 0;
 }
 
 $transactionChanges = array();
@@ -28,7 +30,7 @@ for ($i = 0; $i < count($activeTransactions); ++$i) {
   $transactionDates[] = $activeTransactions[$i]->transaction_date;
   $transactionIDs[] = $activeTransactions[$i]->item_id;
 }
-for ($i = count($activeTransactions); $i > count($activeTransactions)-3; --$i) {
+for ($i = count($activeTransactions); $i > count($activeTransactions)-10; --$i) {
   if ($i > 0) {
     $recentChanges[] = $activeTransactions[$i-1];
   }
@@ -41,6 +43,26 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
   }
 }
 
+
+$arrayOfSums = array();
+for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
+  $arrayOfSums[$transactionIDs[$i]] = $inventoryQuantities[$i];
+}
+$transactionQuantities = array();
+for ($i = count($transactionChanges)-1; $i >= 0; --$i){
+  //$transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+  //$arrayOfSums[$transactionIDs[$i]] -=- $transactionChanges[$i];
+  if ($visitedArray[$transactionIDs[$i]] == 0){
+    $visitedArray[$transactionIDs[$i]] = 1;
+    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+  }
+  elseif ($visitedArray[$transactionIDs[$i]] == 1){
+    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+  }
+
+}
 @endphp
 
 @section('content')
@@ -199,6 +221,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
       var inventoryIDs = <?php echo json_encode($inventoryIDs); ?>;
       var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
       var transactionNames = <?php echo json_encode($transactionNames); ?>;
+      var transactionQuantities = <?php echo json_encode($transactionQuantities); ?>;
     </script>
     <h2>Recent Inventory</h2>
     <div class="table-scroll">
@@ -211,12 +234,13 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
         </thead>
         <tbody>
           <!--For loops runs one less time than you think it will, this displays 5 most recent changes-->
-          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-6; --$i)
+          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-10; --$i)
+          @if ($i >= 0)
             @if ($transactionChanges[$i] < 0)
               <tr style="background-color:#ffdede">
                 <th scope="row">{{$transactionNames[$i]}}</th>
                 <td>{{$transactionChanges[$i]}}</td>
-                <td>Not done yet</td>
+                <td>{{$transactionQuantities[count($transactionQuantities) - $i - 1]}}</td>
                 <td>{{$transactionDates[$i]}}</td>
               </tr>
             @endif
@@ -224,9 +248,10 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
               <tr style="background-color:#e0ffde">
                 <th scope="row">{{$transactionNames[$i]}}</th>
                 <td>{{$transactionChanges[$i]}}</td>
-                <td>Not done yet</td>
+                <td>{{$transactionQuantities[count($transactionQuantities) - $i - 1]}}</td>
                 <td>{{$transactionDates[$i]}}</td>
               </tr>
+            @endif
             @endif
           @endfor
         </tbody>

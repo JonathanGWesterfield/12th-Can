@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="{{ csrf_token() }}">
 
     <title>The 12th Can</title>
-
+    <link href="{{ asset('css/Normalize.css') }}" rel="stylesheet">
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
@@ -39,7 +39,7 @@
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #94333a;">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <button name="hamburgerButton" type="button" id="sidebarCollapse" class="btn btn-light">
                         <i class="fas fa-align-left"></i>
                         <div id="hamburger"></div>
                         <div id="hamburger"></div>
@@ -99,26 +99,26 @@
 
                     <ul class="list-unstyled components">
                         <li>
-                            <a href="#">Add Inventory</a>
+                            <a href="/add_inventory">Add Inventory</a>
                         </li>
                         <li>
-                            <a href="#">Remove Inventory</a>
+                            <a href="/remove_inventory">Remove Inventory</a>
                         </li>
                         <li>
-                            <a href="#">Add New Items</a>
+                            <a href="/new_items">Add New Items</a>
                         </li>
                         <li>
-                            <a href="#">Modify Items</a>
+                            <a href="/modify_items">Modify Items</a>
                         </li>
                         <li>
-                            <a href="#">Dashboard</a>
+                            <a href="/dashboard">Dashboard</a>
                         </li>
                         <li>
                             <a href="#">History</a>
                         </li>
                     </ul>
                 </nav>
-                <main class="py-4">
+                <main id="main_content" class="py-4">
                     @yield('content')
                 </main>
             </div>

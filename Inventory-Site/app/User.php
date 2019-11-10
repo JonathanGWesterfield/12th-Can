@@ -44,12 +44,22 @@ class User extends Authenticatable
     protected $primaryKey = 'id'; // primary key
     public $timestamps = true; // timestamps
 
+    /**
+     * Defines the relationship that the user has with the transaction in the Order_Transactions table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function transaction()
     {
         // Define the table relationships
         return $this->hasMany('App\Transaction');
     }
 
+    /**
+     * Defines the relationship that a user has with the Member_Position in the database table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function position()
     {
         return $this->belongsTo('App\Member_Position');
