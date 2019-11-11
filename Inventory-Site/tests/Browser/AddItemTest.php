@@ -29,7 +29,56 @@ class AddItemTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add Item Page');
+                    ->assertSee('Add Item Page')
+                    ->assertSee('Item')
+                    ->assertSee('Capacity')
+                    ->assertSee('Low Inventory Threshold')
+                    ->assertSee('Food Item')
+                    ->assertSee('Needs to be refrigerated')
+                    ->assertSee('Remove Row?')
+                    ->assertSee('Search')
+                    ->assertSee('Available Items');
+        });
+    }
+
+    public function testExample2()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/new_items')
+                    ->assertSee('Add Item Page')
+                    ->click('#addItemBtn')
+                    ->assertSee('Add New Item')
+                    ->assertSee('Capacity')
+                    ->assertSee('Threshold')
+                    ->assertSee('Needs to be refrigerated')
+                    ->type('itemName','Yeet Issa Test Item Hehe')
+                    ->type('capacity','100')
+                    ->type('threshold','30')
+                    ->assertSee('Submit')
+                    //->assertSee('Yeet Issa Test Item Hehe')
+                    ->assertSee('100')
+                    ->assertSee('30')
+                    //->click('#modalSubmit')
+                    ->assertDontSee('Add New Item')
+                    ->click('#sub')
+                    ;
+                    
+        });
+    }
+
+    public function testExample3()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/new_items')
+                    ->assertSee('Add Item Page')
+                    ->assertSee('Item')
+                    ->assertSee('Capacity')
+                    ->assertSee('Low Inventory Threshold')
+                    ->assertSee('Food Item')
+                    ->assertSee('Needs to be refrigerated')
+                    ->assertSee('Remove Row?')
+                    ->assertSee('Search')
+                    ->assertSee('Available Items');
         });
     }
 }

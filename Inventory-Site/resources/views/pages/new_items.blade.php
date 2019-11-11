@@ -25,11 +25,11 @@
                     </div>
                     <div class="form-group">
                         <label for="capacity">Capacity</label>
-                        <input required type="number" class="form-control" id="capacity" placeholder="Capacity" required>
+                        <input required type="number" class="form-control" id="capacity" name="capacity" placeholder="Capacity" required>
                     </div>
                     <div class="form-group">
                         <label for="threshold">Threshold</label>
-                        <input required type="number" class="form-control" id="threshold" placeholder="Threshold" required>
+                        <input required type="number" class="form-control" id="threshold" name="threshold" placeholder="Threshold" required>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="foodItem">
@@ -43,15 +43,15 @@
                 <form ng-submit = "addItem()">
                     <div class="form-row">
                         <label for="itemName">Item name</label>
-                        <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
+                        <input type="text" class="form-control" id="itemName" name = "itemName" placeholder="Item Name" required>
                     </div>
                     <div class="form-row">
                         <label for="capacity">Capacity</label>
-                        <input type="number" class="form-control" id="capacity" placeholder="Capcity" required>
+                        <input type="number" class="form-control" id="capacity" name = "capacity" placeholder="Capcity" required>
                     </div>
                     <div class="form-row">
                         <label for="threshold">Threshold</label>
-                        <input type="number" class="form-control" id="threshold" placeholder="Threshold" required>
+                        <input type="number" class="form-control" id="threshold" name = "threshold" placeholder="Threshold" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button class="btn btn-primary" name = "modalSubmit" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -133,7 +133,7 @@
     <div class="col mx-md-5">
         <div class="row py-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" id = "addItemBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Add Item
                 </button>
             </div>
@@ -158,7 +158,7 @@
                             <td><%item.low_threshold%></td>
                             <td><%item.is_food%></td>
                             <td><%item.refrigerated%></td>
-                            <td><button class="btn btn-primary" ng-click="remove($index)">Remove</button></td>
+                            <td><button class="btn btn-primary" ng-click="remove($index)" name="removeItem">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -166,7 +166,7 @@
         </div>
         <div class="row pt-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                <button type="button" id = "sub" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
                     Submit
                 </button>
             </div>
