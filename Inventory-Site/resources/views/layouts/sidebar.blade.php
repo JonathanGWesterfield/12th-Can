@@ -27,7 +27,7 @@
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    
+
 </head>
 
 <body>
@@ -111,7 +111,7 @@
                             <a href="/modify_items">Modify Items</a>
                         </li>
                         <li>
-                            <a href="/dashboard">Dashboard</a>
+                            <a href="/dashboard?totalInventory=on">Dashboard</a>
                         </li>
                         <li>
                             <a href="#">History</a>
