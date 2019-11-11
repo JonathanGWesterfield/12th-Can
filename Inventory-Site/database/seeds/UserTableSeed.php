@@ -24,7 +24,7 @@ class UserTableSeed extends Seeder
 
         // Insert a test user for this test to work
         DB::table('users')->insert([
-            'name' => 'Abdul ',
+            'name' => 'Abdul Campos',
             'email' => 'abdul@gay.com',
             'password' => '$2y$10$VbA0IkDbHOgU1aa7NWJk2erTd5E/v5Ia4NPE3DJarkSO9Y.dGp2Ou',
             'created_at' => '2019-10-16 18:01:17',

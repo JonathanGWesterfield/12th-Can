@@ -65,11 +65,10 @@
                             <label class="form-check-label" for="refrigeration">Needs to be refrigerated</label>
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Submit form</button>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -192,8 +191,12 @@
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.items = JSON.parse(this.responseText)
-                    $scope.completeItems = JSON.parse(this.responseText)
-                    console.log($scope.completeItems)
+                    for (var i = 0; i<$scope.items.length; ++i){
+                        if($scope.items[i].removed == true){
+                            $scope.items.splice(i,1);
+                            i-=1;
+                        }
+                    }
                     $scope.addItems = []
                     $scope.$apply()
                 }

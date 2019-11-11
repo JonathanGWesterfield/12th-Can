@@ -66,7 +66,6 @@ class TransactionsControllerTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('Order_Transaction', [
-            'id' => 3,
             'item_id' => 1,
             'member_id' => 2,
             'item_quantity_change' => -20,
@@ -124,16 +123,43 @@ class TransactionsControllerTest extends TestCase
             ]);
     }
 
+    public function testUpdateQuantity()
+    {
+        $this->seed();
+        // Test a good request
+        $this->withoutMiddleware();
+        $response = $this->json('POST', 'transactions',
+            [
+                [
+                    'item_id' => '1',
+                    'user_id' => '2',
+                    'quantity_change' => '10',
+                    'comment' => 'Yeety Meet'
+                ],
+                [
+                    'item_id' => '1',
+                    'user_id' => '2',
+                    'quantity_change' => '100',
+                    'comment' => 'Add me some of that.'
+                ],
+                [
+                    'item_id' => '1',
+                    'user_id' => '2',
+                    'quantity_change' => '-20',
+                    'comment' => 'Subtract me some'
+                ]
+            ]);
+        // evaluate
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => 'transaction(s) stored',
+                'transactions_count' => '3'
+            ]);
 
-    /**
-     * Test the show function to get the transactions that we need.
-     */
-//    public function testShow()
-//    {}
-
-    /**
-     * No testing needed for updating because transactions should be immutable.
-     */
-//    public function testUpdate()
-//    {}
+        $this->assertDatabaseHas('Item', [
+            'id' => 1,
+            'quantity' => 228
+        ]);
+    }
 }
