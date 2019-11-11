@@ -29,7 +29,17 @@ class DashboardTest extends DuskTestCase
                     ->assertVisible('#recentInventory')
                     ->assertVisible('#viewSelect')
                     ->assertVisible('#monthlyChart')
-                    ->assertVisible('#capacityChart')
+                    ->assertVisible('#capacityChart');
         });
+    }
+    public function testFormSubmit()
+    {
+      $this->browse(function ($browser) {
+          $url = $browser->driver->getCurrentURL();
+          $browser->visit('/dashboard')
+                  ->check('totalInventory')
+                  ->press('submitButton')
+                  ->assertUrlIs($url);
+      });
     }
 }
