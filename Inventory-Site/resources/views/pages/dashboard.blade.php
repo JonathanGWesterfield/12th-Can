@@ -126,12 +126,12 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   </script>
 
 </head>
-
+<body>
 <h1>Inventory Dashboard Page</h1>
 <div class="row">
   <div class="col-md-2">
     <h2>Low Inventory</h2>
-      <div class="vertical-menu">
+      <div class="vertical-menu" id="lowInventory">
           @for ($i = 0; $i < count($inventoryQuantities); ++$i)
               @if ($inventoryQuantities[$i] < $inventoryThresholds[$i])
                   <a>{{$inventoryDisplayNames[$i]}}</a>
@@ -224,7 +224,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       var transactionQuantities = <?php echo json_encode($transactionQuantities); ?>;
     </script>
     <h2>Recent Inventory</h2>
-    <div class="table-scroll">
+    <div class="table-scroll" id="recentInventory">
       <table class="table table-sm">
         <thead>
           <th scope="col">Item</th>
@@ -493,7 +493,6 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
     </script>
   </div>
 </div>
-
-
+</body>
 
 @endsection
