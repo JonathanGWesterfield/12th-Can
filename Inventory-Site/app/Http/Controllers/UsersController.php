@@ -6,10 +6,6 @@ use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/dev
 class UsersController extends Controller
 {
     /**
