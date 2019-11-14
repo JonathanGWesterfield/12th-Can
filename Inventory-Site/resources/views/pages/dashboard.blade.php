@@ -128,12 +128,12 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 
 </head>
 <body>
-{{--<div class="row">--}}
-{{--    <div class="col" style="text-align: center">--}}
-{{--        <h2>Inventory Dashboard</h2>--}}
-{{--        <br>--}}
-{{--    </div>--}}
-{{--</div>--}}
+<div class="row">
+  <div class="col" style="text-align: center">
+    <h2>Inventory Dashboard</h2>
+    <br>
+    </div>
+</div>
 <div class="row">
   <div class="col-md-2">
     <h4><strong>Low Inventory</strong></h4>
@@ -350,7 +350,8 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           label: activeNames[i],
           data: [0, 0, 0, activeQuantities[i]],
           fill: false,
-          //i%5 ensures quantity bars are not same color as their capactiy bar
+          //i%5 makes colors loop after 5
+          //Might need to add more colors, readability concern
           backgroundColor: backgrounds[i%5],
           borderColor: borders[i%5],
           borderWidth: 2
