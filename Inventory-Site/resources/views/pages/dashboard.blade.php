@@ -70,7 +70,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 <head>
   <style>
   .vertical-menu {
-    height: 100px;
+    height: 230px;
     overflow-y: auto;
   }
   .vertical-menu a {
@@ -88,7 +88,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   }
 
   .table-scroll {
-    height: 200px;
+    height: 230px;
     overflow-y: auto;
   }
   </style>
@@ -234,8 +234,10 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           <th scope="col">Date</th>
         </thead>
         <tbody>
-          <!--For loops runs one less time than you think it will, this displays 5 most recent changes-->
-          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-10; --$i)
+          <!--Displays the X-1 most recent transactions in order of recency
+              X meaning the integer in $i > count($transactionChanges)-X
+              So if its $i > count($transactionChanges)-10, the 9 most recent transactions are shown-->
+          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-16; --$i)
           @if ($i >= 0)
             @if ($transactionChanges[$i] < 0)
               <tr style="background-color:#ffdede">
@@ -325,13 +327,6 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       });
 
-      var today = Date.now();
-      //604800000 is the number of milliseconds in a week
-      var fourWeeks = today - 4*604800000;
-      var threeWeeks = today - 3*604800000;
-      var twoWeeks = today - 2*604800000;
-      var oneWeek = today - 604800000;
-
       var lines = [];
       var backgrounds=[
         'rgba(255, 20, 20, .2)',
@@ -358,7 +353,15 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         lines.push(itemLine);
       }
 
+      var today = Date.now();
+      //604800000 is the number of milliseconds in a week
+      var fourWeeks = today - 4*604800000;
+      var threeWeeks = today - 3*604800000;
+      var twoWeeks = today - 2*604800000;
+      var oneWeek = today - 604800000;
+
       //DO THIS BY PULLING VALUES FROM RECENT CHANGES TABLE --- getElementById
+      //Can't do that b/c the needed values might not be in the ~15 most recent changes
       //Fills data for each line object
       for (var i = 0; i < transactionNames.length; i++){
         var nameIndex = lineSearch(transactionNames[i], lines);
@@ -374,7 +377,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
             lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > oneWeek && targetDate <= today){
-            lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) - parseInt(transactionChanges[i]);
+            //lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) + parseInt(transactionChanges[i]);
             //lines[nameIndex].data[3] = parseInt(activeQuantities[i]);
           }
         }
