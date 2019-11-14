@@ -358,8 +358,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         lines.push(itemLine);
       }
 
-
-
+      //DO THIS BY PULLING VALUES FROM RECENT CHANGES TABLE --- getElementById
       //Fills data for each line object
       for (var i = 0; i < transactionNames.length; i++){
         var nameIndex = lineSearch(transactionNames[i], lines);
