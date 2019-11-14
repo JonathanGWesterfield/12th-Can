@@ -165,7 +165,7 @@
             $scope.pastAcc = [];
             $scope.pendingAcc = [];
             $scope.currentPos = [];
-            $scope.accNameVal = "3ads";
+            $scope.accNameVal = "";
             $scope.accPhoneVal = "";
             $scope.accEmailVal = "";
             $scope.accArcVal = false;
