@@ -129,12 +129,6 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 </head>
 <body>
 <div class="row">
-  <div class="col" style="text-align: center">
-    <h2>Inventory Dashboard</h2>
-    <br>
-    </div>
-</div>
-<div class="row">
   <div class="col-md-2">
     <h4><strong>Low Inventory</strong></h4>
       <div class="vertical-menu" id="lowInventory">
@@ -269,7 +263,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 </div>
 <div class="row">
   <div class="col-md-2">
-    <form id="viewSelect">
+    <form id="viewSelect" class="">
       <input type="submit" value="Submit" name="submitButton"><br>
       <input type="checkbox" name="totalInventory">Total Inventory<br>
       @for ($i = 0; $i < count($inventoryNames); ++$i)
