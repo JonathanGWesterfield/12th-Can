@@ -45,8 +45,9 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 
 
 $arrayOfSums = array();
-for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
-  $arrayOfSums[$transactionIDs[$i]] = $inventoryQuantities[$i];
+//for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
+for ($i = 0; $i < count($inventoryIDs); ++$i) {
+  $arrayOfSums[$inventoryIDs[$i]] = $inventoryQuantities[$i];
 }
 $transactionQuantities = array();
 for ($i = count($transactionChanges)-1; $i >= 0; --$i){
@@ -349,6 +350,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           label: activeNames[i],
           data: [0, 0, 0, activeQuantities[i]],
           fill: false,
+          //i%5 ensures quantity bars are not same color as their capactiy bar
           backgroundColor: backgrounds[i%5],
           borderColor: borders[i%5],
           borderWidth: 2
@@ -364,16 +366,16 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         if (nameIndex >= 0){
           var targetDate = Date.parse(transactionDates[i]);
           if (targetDate > fourWeeks && targetDate <= threeWeeks){
-            lines[nameIndex].data[0] = parseInt(lines[nameIndex].data[0]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[0] = parseInt(lines[nameIndex].data[0]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > threeWeeks && targetDate <= twoWeeks){
-            lines[nameIndex].data[1] = parseInt(lines[nameIndex].data[1]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[1] = parseInt(lines[nameIndex].data[1]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > twoWeeks && targetDate <= oneWeek){
-            lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > oneWeek && targetDate <= today){
-            //lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) - parseInt(transactionChanges[i]);
             //lines[nameIndex].data[3] = parseInt(activeQuantities[i]);
           }
         }
