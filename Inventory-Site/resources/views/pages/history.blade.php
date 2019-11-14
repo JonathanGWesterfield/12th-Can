@@ -212,7 +212,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
           </div>
           <div class="col-md-8">
             <div class="table-scroll">
-              <table id="transTable" class="table table-sm">
+              <table id="transTable" class="table table-striped table-bordered">
                 <thead>
                   <th scope="col">Transaction Date</th>
                   <th scope="col">Item</th>
