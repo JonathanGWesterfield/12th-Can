@@ -45,6 +45,10 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 @section('content')
     <head>
       <style>
+        .table-scroll {
+          height: 90%;
+          overflow-y: auto;
+        }
         table th{
           padding-right: 20px;
           border: 1px solid black;
@@ -56,9 +60,6 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
         }
         table tr:nth-child(even){
           background-color: #e0e0e0;
-        }
-        table tr:hover{
-          background-color: #ccc;
         }
       </style>
     </head>
