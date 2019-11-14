@@ -22,4 +22,9 @@ class PagesController extends Controller
     {
         return view('pages.remInv');
     }
+
+    public function adminPanel()
+    {
+        return view('pages.adminPanel');
+    }
 }

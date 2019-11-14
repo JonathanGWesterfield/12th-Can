@@ -19,6 +19,7 @@ Route::get('/new_items', 'PagesController@newItems')->middleware('auth');
 Route::get('/modify_items', 'PagesController@modifyItems')->middleware('auth');
 Route::get('/add_inventory', 'PagesController@addInv')->middleware('auth');
 Route::get('/remove_inventory', 'PagesController@remInv')->middleware('auth');
+Route::get('/admin_panel', 'PagesController@adminPanel')->middleware('auth');
 
 Auth::routes();
 
