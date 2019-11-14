@@ -263,7 +263,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 </div>
 <div class="row">
   <div class="col-md-2">
-    <form id="viewSelect" class="">
+    <form id="viewSelect" class="viewSelect">
       <input type="submit" value="Submit" name="submitButton"><br>
       <input type="checkbox" name="totalInventory">Total Inventory<br>
       @for ($i = 0; $i < count($inventoryNames); ++$i)
