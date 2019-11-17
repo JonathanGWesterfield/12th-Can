@@ -170,7 +170,7 @@
             $scope.accEmailVal = "";
             $scope.accArcVal = false;
             $scope.currentMod = false;
-            $scope.index = index;
+            $scope.index = -1;
             //Over here do get calls to get evrything from the admin panel
             //Adding random values to showcase evrything rn
             $scope.currentAcc = [
