@@ -20,6 +20,11 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $visitedArray[$i+1] = 0;
 }
 
+$sortedNames = $inventoryNames;
+usort($sortedNames, 'strnatcasecmp');
+$sortedDisplayNames = $inventoryDisplayNames;
+usort($sortedDisplayNames, 'strnatcasecmp');
+
 $transactionChanges = array();
 $transactionDates = array();
 $transactionIDs = array();
@@ -91,6 +96,9 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
     height: 230px;
     overflow-y: auto;
   }
+  .col-md-2 {
+    padding-left: 3%;
+  }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script>
@@ -124,11 +132,26 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       return -1;
     }
 
+    function rememberChecks() {
+      var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+      var form = document.getElementById("viewSelect");
+      var checkedNames = getUrlVars();
+      //form["totalInventory"].checked = "on";
+      if (checkedNames["totalInventory"] == "on"){
+        form["totalInventory"].checked = "on";
+      }
+      for (var i = 0; i < inventoryNames.length; i++){
+        if (checkedNames[inventoryNames[i]] == "on"){
+          form[inventoryNames[i]].checked = "on";
+        }
+      }
+    }
   </script>
 
 </head>
-<body>
+<body onload="rememberChecks()">
 <div class="row">
+  <!--Low Inventory Notifier-->
   <div class="col-md-2">
     <h4><strong>Low Inventory</strong></h4>
       <div class="vertical-menu" id="lowInventory">
@@ -139,6 +162,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           @endfor
     </div>
   </div>
+  <!--Current Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="inventoryChart"></canvas>
@@ -212,6 +236,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       });
     </script>
   </div>
+  <!--Recent Inventory Table-->
   <div class="col-md-5">
     <script>
       var transactionDates = <?php echo json_encode($transactionDates); ?>;
@@ -262,15 +287,17 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   </div>
 </div>
 <div class="row">
+  <!--Form Selection for displayed inventory-->
   <div class="col-md-2">
     <form id="viewSelect" class="viewSelect">
       <input type="submit" value="Submit" name="submitButton"><br>
       <input type="checkbox" name="totalInventory">Total Inventory<br>
-      @for ($i = 0; $i < count($inventoryNames); ++$i)
-        <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryDisplayNames[$i]}}<br>
+      @for ($i = 0; $i < count($sortedNames); ++$i)
+        <input type="checkbox" id="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}<br>
       @endfor
     </form>
   </div>
+  <!--Weekly Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="monthlyChart"></canvas>
@@ -399,6 +426,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 
     </script>
   </div>
+  <!--Inventory vs Capacity chart-->
   <div class="col-md-5">
     <div>
       <canvas id="capacityChart"></canvas>
