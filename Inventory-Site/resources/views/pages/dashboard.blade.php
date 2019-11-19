@@ -20,6 +20,11 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $visitedArray[$i+1] = 0;
 }
 
+$sortedNames = $inventoryNames;
+usort($sortedNames, 'strnatcasecmp');
+$sortedDisplayNames = $inventoryDisplayNames;
+usort($sortedDisplayNames, 'strnatcasecmp');
+
 $transactionChanges = array();
 $transactionDates = array();
 $transactionIDs = array();
@@ -45,8 +50,9 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 
 
 $arrayOfSums = array();
-for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
-  $arrayOfSums[$transactionIDs[$i]] = $inventoryQuantities[$i];
+//for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
+for ($i = 0; $i < count($inventoryIDs); ++$i) {
+  $arrayOfSums[$inventoryIDs[$i]] = $inventoryQuantities[$i];
 }
 $transactionQuantities = array();
 for ($i = count($transactionChanges)-1; $i >= 0; --$i){
@@ -69,7 +75,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 <head>
   <style>
   .vertical-menu {
-    height: 100px;
+    height: 230px;
     overflow-y: auto;
   }
   .vertical-menu a {
@@ -87,8 +93,11 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   }
 
   .table-scroll {
-    height: 200px;
+    height: 230px;
     overflow-y: auto;
+  }
+  .col-md-2 {
+    padding-left: 3%;
   }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -123,15 +132,29 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       return -1;
     }
 
+    function rememberChecks() {
+      var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+      var form = document.getElementById("viewSelect");
+      var checkedNames = getUrlVars();
+      //form["totalInventory"].checked = "on";
+      if (checkedNames["totalInventory"] == "on"){
+        form["totalInventory"].checked = "on";
+      }
+      for (var i = 0; i < inventoryNames.length; i++){
+        if (checkedNames[inventoryNames[i]] == "on"){
+          form[inventoryNames[i]].checked = "on";
+        }
+      }
+    }
   </script>
 
 </head>
-
-<h1>Inventory Dashboard Page</h1>
+<body onload="rememberChecks()">
 <div class="row">
+  <!--Low Inventory Notifier-->
   <div class="col-md-2">
-    <h2>Low Inventory</h2>
-      <div class="vertical-menu">
+    <h4><strong>Low Inventory</strong></h4>
+      <div class="vertical-menu" id="lowInventory">
           @for ($i = 0; $i < count($inventoryQuantities); ++$i)
               @if ($inventoryQuantities[$i] < $inventoryThresholds[$i])
                   <a>{{$inventoryDisplayNames[$i]}}</a>
@@ -139,6 +162,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           @endfor
     </div>
   </div>
+  <!--Current Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="inventoryChart"></canvas>
@@ -212,6 +236,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       });
     </script>
   </div>
+  <!--Recent Inventory Table-->
   <div class="col-md-5">
     <script>
       var transactionDates = <?php echo json_encode($transactionDates); ?>;
@@ -223,8 +248,8 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       var transactionNames = <?php echo json_encode($transactionNames); ?>;
       var transactionQuantities = <?php echo json_encode($transactionQuantities); ?>;
     </script>
-    <h2>Recent Inventory</h2>
-    <div class="table-scroll">
+    <h4><strong>Recent Inventory</strong></h4>
+    <div class="table-scroll" id="recentInventory">
       <table class="table table-sm">
         <thead>
           <th scope="col">Item</th>
@@ -233,8 +258,10 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           <th scope="col">Date</th>
         </thead>
         <tbody>
-          <!--For loops runs one less time than you think it will, this displays 5 most recent changes-->
-          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-10; --$i)
+          <!--Displays the X-1 most recent transactions in order of recency
+              X meaning the integer in $i > count($transactionChanges)-X
+              So if its $i > count($transactionChanges)-10, the 9 most recent transactions are shown-->
+          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-16; --$i)
           @if ($i >= 0)
             @if ($transactionChanges[$i] < 0)
               <tr style="background-color:#ffdede">
@@ -260,15 +287,17 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   </div>
 </div>
 <div class="row">
+  <!--Form Selection for displayed inventory-->
   <div class="col-md-2">
-    <form id="viewSelect">
-      <input type="submit" value="Submit"><br>
+    <form id="viewSelect" class="viewSelect">
+      <input type="submit" value="Submit" name="submitButton"><br>
       <input type="checkbox" name="totalInventory">Total Inventory<br>
-      @for ($i = 0; $i < count($inventoryNames); ++$i)
-        <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryDisplayNames[$i]}}<br>
+      @for ($i = 0; $i < count($sortedNames); ++$i)
+        <input type="checkbox" id="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}<br>
       @endfor
     </form>
   </div>
+  <!--Weekly Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="monthlyChart"></canvas>
@@ -324,13 +353,6 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       });
 
-      var today = Date.now();
-      //604800000 is the number of milliseconds in a week
-      var fourWeeks = today - 4*604800000;
-      var threeWeeks = today - 3*604800000;
-      var twoWeeks = today - 2*604800000;
-      var oneWeek = today - 604800000;
-
       var lines = [];
       var backgrounds=[
         'rgba(255, 20, 20, .2)',
@@ -349,6 +371,8 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           label: activeNames[i],
           data: [0, 0, 0, activeQuantities[i]],
           fill: false,
+          //i%5 makes colors loop after 5
+          //Might need to add more colors, readability concern
           backgroundColor: backgrounds[i%5],
           borderColor: borders[i%5],
           borderWidth: 2
@@ -356,21 +380,28 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         lines.push(itemLine);
       }
 
+      var today = Date.now();
+      //604800000 is the number of milliseconds in a week
+      var fourWeeks = today - 4*604800000;
+      var threeWeeks = today - 3*604800000;
+      var twoWeeks = today - 2*604800000;
+      var oneWeek = today - 604800000;
 
-
+      //DO THIS BY PULLING VALUES FROM RECENT CHANGES TABLE --- getElementById
+      //Can't do that b/c the needed values might not be in the ~15 most recent changes
       //Fills data for each line object
       for (var i = 0; i < transactionNames.length; i++){
         var nameIndex = lineSearch(transactionNames[i], lines);
         if (nameIndex >= 0){
           var targetDate = Date.parse(transactionDates[i]);
           if (targetDate > fourWeeks && targetDate <= threeWeeks){
-            lines[nameIndex].data[0] = parseInt(lines[nameIndex].data[0]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[0] = parseInt(lines[nameIndex].data[0]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > threeWeeks && targetDate <= twoWeeks){
-            lines[nameIndex].data[1] = parseInt(lines[nameIndex].data[1]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[1] = parseInt(lines[nameIndex].data[1]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > twoWeeks && targetDate <= oneWeek){
-            lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) + parseInt(transactionChanges[i]);
+            lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > oneWeek && targetDate <= today){
             //lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) + parseInt(transactionChanges[i]);
@@ -395,6 +426,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 
     </script>
   </div>
+  <!--Inventory vs Capacity chart-->
   <div class="col-md-5">
     <div>
       <canvas id="capacityChart"></canvas>
@@ -493,7 +525,6 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
     </script>
   </div>
 </div>
-
-
+</body>
 
 @endsection
