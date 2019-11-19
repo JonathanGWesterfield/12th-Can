@@ -52,6 +52,55 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="acceptAccModal" tabindex="-1" role="dialog" aria-labelledby="acceptAccLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acceptAccLabel">Accept Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit = "acceptAccSub()">
+                    <div class="form-row">
+                        Are you sure you wanna accept ma man <span id = "acceptName"></span>
+                    </div>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rejectAccModal" tabindex="-1" role="dialog" aria-labelledby="rejectAccLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectAccLabel">Reject Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit = "rejectAccSub()">
+                    <div class="form-row">
+                        Are you sure you wanna reject ma man <span id = "rejectName"></span>
+                    </div>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-primary" role="alert" id ="alert" hidden>
+</div>
+
+<div class="alert alert-primary" role="alert" id ="alert2" hidden>
+</div>
     <div class="row">
         <div class="col" style="text-align: center">
             <h2>Admin Panel</h2>
@@ -70,12 +119,12 @@
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="acct in currentAcc">
+                    <tbody ng-repeat="acct in allAcounts | filter :{current_member : null}">
                         <tr>
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyCurrent($index)">Modify</button></td>
+                            <td><button class="btn btn-primary" ng-click="modifyCurrent(acct.id)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,6 +211,7 @@
     app.controller('adminPanel', function($scope){
         jQuery(function() {
             $scope.currentAcc = [];
+            $scope.allAcounts = [];
             $scope.pastAcc = [];
             $scope.pendingAcc = [];
             $scope.currentPos = [];
@@ -173,53 +223,7 @@
             $scope.index = -1;
             //Over here do get calls to get evrything from the admin panel
             //Adding random values to showcase evrything rn
-            $scope.currentAcc = [
-            {
-                'name': 'Mike',
-                'phone': '(123)-456-7890',
-                'email': 'abc@mail.com',
-                'position': 'Exec'
-            },
-            {
-                'name': 'Mike2',
-                'phone': '(122)-456-7890',
-                'email': 'abcd@mail.com',
-                'position': 'Exec'
-            },
-            {
-                'name': 'Mike3',
-                'phone': '(124)-456-7890',
-                'email': 'abce@mail.com',
-                'position': 'Exec'
-            },
-            {
-                'name': 'Mike4',
-                'phone': '(125)-456-7890',
-                'email': 'abcf@mail.com',
-                'position': 'Exec'
-            }]
-
-            $scope.pastAcc = [
-            {
-                'name': 'Mike',
-                'phone': '(123)-456-7890',
-                'email': 'abc@mail.com'
-            },
-            {
-                'name': 'Mike2',
-                'phone': '(122)-456-7890',
-                'email': 'abcd@mail.com'
-            },
-            {
-                'name': 'Mike3',
-                'phone': '(124)-456-7890',
-                'email': 'abce@mail.com'
-            },
-            {
-                'name': 'Mike4',
-                'phone': '(125)-456-7890',
-                'email': 'abcf@mail.com'
-            }]
+            
             $scope.pendingAcc = [
             {
                 'name': 'Mike',
@@ -262,24 +266,37 @@
                 'access': true,
                 'description': 'Market this Can'
             }]
-            $scope.$apply();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText)
+                    $scope.allAcounts = JSON.parse(this.responseText)
+                    /*for (var i = 0; i<$scope.items.length; ++i){
+                        if($scope.items[i].removed == true){
+                            $scope.items.splice(i,1);
+                            i-=1;
+                        }
+                    }
+                    $scope.addItems = []*/
+                    $scope.$apply()
+                }
+            };
+            xhttp.open("GET", "users", true);
+            xhttp.send();
 
         })
         $scope.modifyCurrent = function(index){
-            $scope.currentMod = true;
-            account = $scope.currentAcc[index]
+            account = $scope.allAcounts[index-1]
             $scope.accNameVal = account.name;
             $scope.accPhoneVal = account.phone;
             $scope.accEmailVal = account.email;
             $scope.accPosVal = account.position;
             $scope.accArcVal = false;
-            $scope.index = index;
             $('#modifyAccModal').modal('show');
         }
 
         $scope.modifyPast = function(index){
-            $scope.currentMod = false;
-            account = $scope.pastAcc[index]
+            account = $scope.allAcounts[index-1]
             $scope.accNameVal = account.name;
             $scope.accNameVal = account.phone;
             $scope.accNameVal = account.email;
@@ -290,11 +307,43 @@
         }
 
         $scope.acceptAcc = function(index){
+            $scope.index = index;
+            document.getElementById("acceptName").innerHTML =  " " + $scope.pendingAcc[$scope.index].name;
+            $('#acceptAccModal').modal('show');
+        }
 
+        $scope.acceptAccSub = function(){
+            $('#acceptAccModal').modal('hide');
+
+            document.getElementById("alert").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully accepted. ";
+            document.getElementById("alert").hidden = false;
+                jQuery("#alert").slideDown(200, function() {
+                    //jQuery(this).alert('close');
+                });
+                jQuery("#alert").delay(5000).slideUp(200, function() {
+                    //jQuery(this).alert('close');
+                    //document.getElementById("alert").hidden = true;
+                });
         }
 
         $scope.rejectAcc = function(index){
+            $scope.index = index;
+            document.getElementById("rejectName").innerHTML =  " " + $scope.pendingAcc[$scope.index].name;
+            $('#rejectAccModal').modal('show');
+        }
 
+        $scope.rejectAccSub = function(){
+            $('#rejectAccModal').modal('hide');
+
+            document.getElementById("alert2").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully rejected. ";
+            document.getElementById("alert2").hidden = false;
+                jQuery("#alert2").slideDown(200, function() {
+                    //jQuery(this).alert('close');
+                });
+                jQuery("#alert2").delay(5000).slideUp(200, function() {
+                    //jQuery(this).alert('close');
+                    //document.getElementById("alert").hidden = true;
+                });
         }
 
         $scope.modifyPos = function(index){
