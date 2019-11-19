@@ -19,7 +19,8 @@ class AdminMiddleware
     {
         if(Auth::check())
         {
-            if($request->user()->position_id == 8 or $request->user()->position_id == 6)
+            //remove ==7 when done as big boss account shouldnt roll into production
+            if($request->user()->position_id == 8 or $request->user()->position_id == 6 or $request->user()->position_id == 7)
             {
                 return $next($request);
             }
