@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,12 +17,17 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+        if(Auth::check())
+        {
+            if($request->user()->position_id == 8 or $request->user()->position_id == 6)
+            {
+                return $next($request);
+            }
+            return redirect('/dashboard');
         }
 
-        return $next($request);
+        return redirect('/login');
     }
 
-    
+
 }
