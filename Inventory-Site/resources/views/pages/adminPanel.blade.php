@@ -124,7 +124,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyCurrent(acct.id)">Modify</button></td>
+                            <td><button class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -147,7 +147,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyPast($index)">Modify</button></td>
+                            <td><button class="btn btn-primary" ng-click="modifyPast(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -285,8 +285,8 @@
             xhttp.send();
 
         })
-        $scope.modifyCurrent = function(index){
-            account = $scope.allAcounts[index-1]
+        $scope.modifyCurrent = function(account){
+            $scope.index = account.id;
             $scope.accNameVal = account.name;
             $scope.accPhoneVal = account.phone;
             $scope.accEmailVal = account.email;
@@ -295,15 +295,37 @@
             $('#modifyAccModal').modal('show');
         }
 
-        $scope.modifyPast = function(index){
-            account = $scope.allAcounts[index-1]
+        $scope.modifyPast = function(account){
+            $scope.index = account.id;
             $scope.accNameVal = account.name;
-            $scope.accNameVal = account.phone;
-            $scope.accNameVal = account.email;
+            $scope.accPhoneVal = account.phone;
+            $scope.accEmailVal = account.email;
             $scope.accPosVal = "";
             $scope.accArcVal = true;
-            $scope.index = index;
             $('#modifyAccModal').modal('show');
+        }
+
+        $scope.modifyAcc = function(){
+            $('#modifyAccModal').modal('hide');
+            account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
+            console.log(account);
+            jQuery.ajax({
+                url: 'users/1',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(account),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
         }
 
         $scope.acceptAcc = function(index){
@@ -317,13 +339,13 @@
 
             document.getElementById("alert").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully accepted. ";
             document.getElementById("alert").hidden = false;
-                jQuery("#alert").slideDown(200, function() {
-                    //jQuery(this).alert('close');
-                });
-                jQuery("#alert").delay(5000).slideUp(200, function() {
-                    //jQuery(this).alert('close');
-                    //document.getElementById("alert").hidden = true;
-                });
+            jQuery("#alert").slideDown(200, function() {
+                //jQuery(this).alert('close');
+            });
+            jQuery("#alert").delay(5000).slideUp(200, function() {
+                //jQuery(this).alert('close');
+                //document.getElementById("alert").hidden = true;
+            });
         }
 
         $scope.rejectAcc = function(index){
@@ -335,24 +357,18 @@
         $scope.rejectAccSub = function(){
             $('#rejectAccModal').modal('hide');
 
-            document.getElementById("alert2").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully rejected. ";
-            document.getElementById("alert2").hidden = false;
-                jQuery("#alert2").slideDown(200, function() {
-                    //jQuery(this).alert('close');
-                });
-                jQuery("#alert2").delay(5000).slideUp(200, function() {
-                    //jQuery(this).alert('close');
-                    //document.getElementById("alert").hidden = true;
-                });
+            document.getElementById("alert").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully rejected. ";
+            document.getElementById("alert").hidden = false;
+            jQuery("#alert").slideDown(200, function() {
+                //jQuery(this).alert('close');
+            });
+            jQuery("#alert").delay(5000).slideUp(200, function() {
+                //jQuery(this).alert('close');
+                //document.getElementById("alert").hidden = true;
+            });
         }
 
         $scope.modifyPos = function(index){
-            
-        }
-
-        $scope.modifyAcc = function(){
-            console.log($scope.accEmailVal);
-            console.log($scope.accPosVal);
             
         }
     })
