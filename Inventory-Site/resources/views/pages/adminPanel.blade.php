@@ -6,6 +6,8 @@
 
 @section('content')
 @inject('Item', 'App\Item')
+@inject('UserController','App\Http\Controllers\UsersController')
+use \App\Http\Controllers\UsersController;
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <div ng-app="admin" ng-controller="adminPanel">
 <div class="modal fade" id="modifyAccModal" tabindex="-1" role="dialog" aria-labelledby="modifyAccModalLabel" aria-hidden="true">
@@ -179,12 +181,12 @@
             </div>
         </div>
         <div class="col mx-md-5">
-                <h5 class="text-center">Current Possitions</h5>
+                <h5 class="text-center">Current Positions</h5>
             <div class="row">
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Possition</th>
+                            <th scope="col">Position</th>
                             <th scope="col">Admin Access?</th>
                             <th scope="col">Description</th>
                             <th scope="col">Modify?</th>
@@ -245,27 +247,6 @@
                 'phone': '(125)-456-7890',
                 'email': 'abcf@mail.com'
             }]
-            $scope.currentPos = [
-            {
-                'position': 'Exec',
-                'access': true,
-                'description': 'The big boiz'
-            },
-            {
-                'position': 'Assistant',
-                'access': true,
-                'description': 'The big boiz\'s bitches'
-            },
-            {
-                'position': 'Finance',
-                'access': false,
-                'description': '$$$$'
-            },
-            {
-                'position': 'PR',
-                'access': true,
-                'description': 'Market this Can'
-            }]
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -283,6 +264,24 @@
             };
             xhttp.open("GET", "users", true);
             xhttp.send();
+
+            var xhttp2 = new XMLHttpRequest();
+            xhttp2.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText)
+                    $scope.currentPos = JSON.parse(this.responseText)
+                    /*for (var i = 0; i<$scope.items.length; ++i){
+                        if($scope.items[i].removed == true){
+                            $scope.items.splice(i,1);
+                            i-=1;
+                        }
+                    }
+                    $scope.addItems = []*/
+                    $scope.$apply()
+                }
+            };
+            xhttp2.open("GET", "member_position", true);
+            xhttp2.send();
 
         })
         $scope.modifyCurrent = function(account){

@@ -21,9 +21,9 @@ class UsersController extends Controller
      * Gets all of the users who are current members of the 12th Can.
      * @return array Returns all information for users who are members.
      */
-    public function getCurrentMembers()
+    public static function getCurrentMembers()
     {
-        return DB::select('select * from users where current_member=TRUE ');
+        return json_encode(DB::select('select * from users'));
     }
 
 //    /**
