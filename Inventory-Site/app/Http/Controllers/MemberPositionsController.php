@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Member_Position;
 use PhpParser\Node\Expr\PostDec;
+use Illuminate\Support\Facades\DB;
 
 class MemberPositionsController extends Controller
 {
@@ -15,7 +16,8 @@ class MemberPositionsController extends Controller
      */
     public function index()
     {
-        //
+        $positions = DB::select('select * from Member_Position');
+        return $positions;
     }
 
 //    /**
