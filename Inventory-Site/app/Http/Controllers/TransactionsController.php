@@ -8,6 +8,7 @@ use App\User;
 use App\Item;
 use Notification;
 use App\Notifications\ThresholdEmail;
+use App\Notificaions\CapacityEmail;
 use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
@@ -102,10 +103,15 @@ class TransactionsController extends Controller
         $itemName = $item->name;
         $itemQuantity = $item->quantity;
         $itemThreshold = $item->low_threshold;
+        $itemCapacity = $item->capacity;
+
+
+
         //CHANGE THIS EMAIL TO PULL FROM member_position table
         //only happens when removing below threshold
-        if($item->quantity < $item->low_threshold)
-            Notification::route('mail', 'abdulcampos02@gmail.com')->notify(new ThresholdEmail($itemName,$itemQuantity, $itemThreshold));
+        if($item->quantity < $item->low_threshold and !$item->updated_at->isToday())
+            Notification::route('mail', 'abdulcampos02@gmail.com')->notify(new ThresholdEmail($itemName,
+                $itemQuantity, $itemThreshold));
     }
 
 
