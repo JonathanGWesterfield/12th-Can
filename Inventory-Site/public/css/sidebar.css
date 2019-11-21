@@ -9905,10 +9905,17 @@ a:focus {
 ----------------------------------------------------- */
 
 .wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: stretch;
+  display: -webkit-flex; /* Safari */
+  -webkit-align-items: stretch; /* Safari 7.0+ */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+#wrapper div {
+  -webkit-flex: 1; /* Safari 6.1+ */
+   flex: 1;
 }
 
 #sidebar {
@@ -9919,6 +9926,7 @@ a:focus {
     color: #fff;
     transition: all 0.3s;
     float: left;
+    margin-left: -150px;
 }
 
 #sidebarCollapse {
@@ -9926,7 +9934,7 @@ a:focus {
 }
 
 #sidebar.active {
-    margin-left: -150px;
+    margin-left: 0px;
 }
 
 #sidebar ul.components {
@@ -10019,6 +10027,10 @@ Menu Icon
     transition: all 0.3s;
 }
 
+#main_content {
+   resize: both;
+   overflow: auto;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
