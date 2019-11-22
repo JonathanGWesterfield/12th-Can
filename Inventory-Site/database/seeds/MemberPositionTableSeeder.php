@@ -89,7 +89,7 @@ class MemberPositionTableSeeder extends Seeder
             'description' => 'Lord of the 12th Can. A resource for everyone on the team and helps make sure everything done is working towards the goals set for the 12th Can.',
             'created_at' => '2019-09-22 23:53:38',
 //            'updated_at' => '2019-09-22 23:53:38',
-            'email' => '12thcan.director@gmail.com'
+            'email' => '12thcannoreply@gmail.com'
         ]);
 
         DB::table('Member_Position')->insert([
