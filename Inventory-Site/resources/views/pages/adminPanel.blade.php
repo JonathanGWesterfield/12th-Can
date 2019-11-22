@@ -53,6 +53,52 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modifyPosModal" tabindex="-1" role="dialog" aria-labelledby="modifyPosModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifyPosModalLabel">Modify Position</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit = "modifyPosSub()">
+                    <div class="form-row">
+                        <label for="posName">Position</label>
+                        <input ng-modal = "posNameVal" value = "<%posNameVal%>" type="text" class="form-control" id="posName" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="posEmail">Email</label>
+                        <input ng-modal = "posEmailVal" value = "<%posEmailVal%>" type="email" class="form-control" id="posEmail" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="posDesc">Description</label>
+                        <input ng-modal = "posDescVal" value = "<%posDescVal%>" type="email" class="form-control" id="posDesc" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input ng-modal = "posLowNotifyVal" ng-checked = "posLowNotifyVal" type="checkbox" class="form-check-input" id="posLowNotify">
+                            <label class="form-check-label" for="posLowNotify">Send Low Notification?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row">
+                        <label for = "posPriviledge">Position Privilege</label>
+                            <select ng-model="posPriviledgeVal" id = "posPriviledge">
+                                <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="acceptAccModal" tabindex="-1" role="dialog" aria-labelledby="acceptAccLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -120,7 +166,7 @@
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="acct in allAcounts | filter :{current_member : null}">
+                    <tbody ng-repeat="acct in allAcounts | filter :{current_member : 1}">
                         <tr>
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
@@ -143,7 +189,7 @@
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="acct in pastAcc">
+                    <tbody ng-repeat="acct in allAcounts | filter :{current_member : 0}">
                         <tr>
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
@@ -168,7 +214,7 @@
                             <th scope="col">Reject?</th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="acct in pendingAcc">
+                    <tbody ng-repeat="acct in allAcounts | filter :{current_member : null}">
                         <tr>
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
@@ -186,17 +232,19 @@
                     <thead>
                         <tr>
                             <th scope="col">Position</th>
-                            <th scope="col">Admin Access?</th>
-                            <th scope="col">Description</th>
+                            <th scope = "col">Email</th>
+                            <th scope="col">Privilege</th>
+                            <th scope="col">Notify on Low?</th>
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
                         <tr>
                             <td><%pos.position%></td>
-                            <td><%pos.access%></td>
-                            <td><%pos.description%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyPos($index)">Modify</button></td>
+                            <td><%pos.email%></td>
+                            <td><%pos.privilege%></td>
+                            <td><%pos.low_notify%></td>
+                            <td><button class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -211,10 +259,7 @@
     });
     app.controller('adminPanel', function($scope){
         jQuery(function() {
-            $scope.currentAcc = [];
             $scope.allAcounts = [];
-            $scope.pastAcc = [];
-            $scope.pendingAcc = [];
             $scope.currentPos = [];
             $scope.accNameVal = "";
             $scope.accPhoneVal = "";
@@ -222,30 +267,31 @@
             $scope.accArcVal = false;
             $scope.currentMod = false;
             $scope.index = -1;
-            //Over here do get calls to get evrything from the admin panel
-            //Adding random values to showcase evrything rn
-            
-            $scope.pendingAcc = [
-            {
-                'name': 'Mike',
-                'phone': '(123)-456-7890',
-                'email': 'abc@mail.com'
-            },
-            {
-                'name': 'Mike2',
-                'phone': '(122)-456-7890',
-                'email': 'abcd@mail.com'
-            },
-            {
-                'name': 'Mike3',
-                'phone': '(124)-456-7890',
-                'email': 'abce@mail.com'
-            },
-            {
-                'name': 'Mike4',
-                'phone': '(125)-456-7890',
-                'email': 'abcf@mail.com'
-            }]
+            $scope.posIdVal = -1;
+            $scope.posNameVal = "";
+            $scope.posEmailVal = "";
+            $scope.posPriviledgeVal = "";
+            $scope.posLowNotifyVal = "";
+            $scope.posDescVal = "";
+            $scope.posPriviledges =[
+                {
+                    id: 0,
+                    value: "Only Dashboard"
+                },
+                {
+                    id: 1,
+                    value: "Make changes to Inventory"
+                },
+                {
+                    id: 2,
+                    value: "Admin Priviledges"
+                },
+                {
+                    id: 3,
+                    value: "Biggg Boi"
+                }
+            ];
+            //Over here do get calls to get evrything from the admin pane
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -366,8 +412,39 @@
             });
         }
 
-        $scope.modifyPos = function(index){
-            
+        $scope.modifyPos = function(pos){
+            $scope.posIdVal = pos.id;
+            $scope.posNameVal = pos.position;
+            $scope.posEmailVal = pos.email;
+            $scope.posPriviledgeVal = pos.privilege;
+            $scope.posLowNotifyVal = pos.low_notify;
+            $scope.posDescVal = pos.description;
+            $('#modifyPosModal').modal('show');
+        }
+
+        $scope.modifyPosSub = function(){
+            $('#modifyPosModal').modal('hide');
+            //account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
+            position = {id:$scope.posIdVal, position: $scope.posNameVal, email: $scope.posEmailVal, description: $scope.posDescVal, privilege: $scope.posPriviledgeVal}
+
+            console.log($scope.posLowNotifyVal);
+            jQuery.ajax({
+                url: 'member_position//1',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(position),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
         }
     })
 </script>
