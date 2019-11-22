@@ -28,6 +28,7 @@ class MemberPositionsControllerTest extends TestCase
                 'privilege' => '3',
                 'description' => 'Is the biggest boss that can ever exist ever.',
                 'email' => 'biggest.boss@ever.com',
+                'low_notify' => true
             ]);
         // evaluate
         $response
@@ -44,7 +45,8 @@ class MemberPositionsControllerTest extends TestCase
             'position' => 'Biggest Boss',
             'privilege' => 3,
             'description' => 'Is the biggest boss that can ever exist ever.',
-            'email' => 'biggest.boss@ever.com'
+            'email' => 'biggest.boss@ever.com',
+            'low_notify' => true
         ]);
     }
 
@@ -101,7 +103,8 @@ class MemberPositionsControllerTest extends TestCase
             'position' => 'Biggest Boss',
             'privilege' => 3,
             'description' => 'Is the biggest boss that can ever exist ever.',
-            'email' => 'biggest.boss@ever.com'
+            'email' => 'biggest.boss@ever.com',
+            'low_notify' => false
         ]);
     }
 }
