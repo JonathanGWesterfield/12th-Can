@@ -7,7 +7,6 @@
 @section('content')
 @inject('Item', 'App\Item')
 @inject('UserController','App\Http\Controllers\UsersController')
-use \App\Http\Controllers\UsersController;
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <div ng-app="admin" ng-controller="adminPanel">
 <div class="modal fade" id="modifyAccModal" tabindex="-1" role="dialog" aria-labelledby="modifyAccModalLabel" aria-hidden="true">
