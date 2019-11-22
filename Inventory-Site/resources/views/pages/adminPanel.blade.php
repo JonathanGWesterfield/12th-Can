@@ -294,7 +294,7 @@
             ];
             //Over here do get calls to get evrything from the admin pane
             $scope.getAccounts();
-            $scope.getMemeberPos();
+            $scope.getMemberPos();
         })
 
         $scope.getAccounts = function(){
@@ -317,7 +317,7 @@
             xhttp.send();
         }
 
-        $scope.getMemeberPos = function(){
+        $scope.getMemberPos = function(){
             var xhttp2 = new XMLHttpRequest();
             xhttp2.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -360,8 +360,9 @@
             $('#modifyAccModal').modal('hide');
             account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
             console.log(account);
+            url = 'users/' + account.id.toString();
             jQuery.ajax({
-                url: 'users/1',
+                url: url,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(account),
@@ -394,18 +395,29 @@
                 if(currAcct.id == $scope.index) break;
             }
             currAcct.current_member = 1;
-            currAcct.position_id = 0;
+            currAcct.position_id = 1;
+            url = 'users/' + currAcct.id.toString();
             //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
             console.log(currAcct);
             jQuery.ajax({
-                url: 'users/1',
+                url: url,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(currAcct),
+                //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
                     console.log(data);
                     $scope.getAccounts();
+                    document.getElementById("alert").innerHTML =  currAcct.name + " was successfully accepted. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -414,15 +426,7 @@
                     console.log(error);
                 }
             });
-            document.getElementById("alert").innerHTML =  currAcct.name + " was successfully accepted. ";
-            document.getElementById("alert").hidden = false;
-            jQuery("#alert").slideDown(200, function() {
-                //jQuery(this).alert('close');
-            });
-            jQuery("#alert").delay(5000).slideUp(200, function() {
-                //jQuery(this).alert('close');
-                //document.getElementById("alert").hidden = true;
-            });
+            
         }
 
         $scope.rejectAcc = function(account){
@@ -433,15 +437,42 @@
 
         $scope.rejectAccSub = function(){
             $('#rejectAccModal').modal('hide');
-
-            document.getElementById("alert").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully rejected. ";
-            document.getElementById("alert").hidden = false;
-            jQuery("#alert").slideDown(200, function() {
-                //jQuery(this).alert('close');
-            });
-            jQuery("#alert").delay(5000).slideUp(200, function() {
-                //jQuery(this).alert('close');
-                //document.getElementById("alert").hidden = true;
+            var currAcct = $scope.allAcounts[0];
+            for(var i = 0; i<$scope.allAcounts.length; ++i){
+                currAcct = $scope.allAcounts[i];
+                if(currAcct.id == $scope.index) break;
+            }
+            currAcct.current_member = 1;
+            currAcct.position_id = 1;
+            url = 'users/' + currAcct.id.toString();
+            //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            console.log(currAcct);
+            jQuery.ajax({
+                url: url,
+                method: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(currAcct),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getAccounts();
+                    document.getElementById("alert").innerHTML =  currAcct.name + " was successfully rejected. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
             });
         }
 
@@ -465,9 +496,10 @@
                 position.low_notify = 1
             }
             console.log(position)
+            url = 'member_position/' + position.id.toString();
             //console.log(document.getElementById("posLowNotify").checked);
             jQuery.ajax({
-                url: 'member_position/1',
+                url: url,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(position),
