@@ -66,19 +66,19 @@
                 <form ng-submit = "modifyPosSub()">
                     <div class="form-row">
                         <label for="posName">Position</label>
-                        <input ng-modal = "posNameVal" value = "<%posNameVal%>" type="text" class="form-control" id="posName" required>
+                        <input type="text" class="form-control" id="posName" required>
                     </div>
                     <div class="form-row">
                         <label for="posEmail">Email</label>
-                        <input ng-modal = "posEmailVal" value = "<%posEmailVal%>" type="email" class="form-control" id="posEmail" required>
+                        <input type="email" class="form-control" id="posEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="posDesc">Description</label>
-                        <input ng-modal = "posDescVal" value = "<%posDescVal%>" type="email" class="form-control" id="posDesc" required>
+                        <input class="form-control" id="posDesc" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input ng-modal = "posLowNotifyVal" ng-checked = "posLowNotifyVal" type="checkbox" class="form-check-input" id="posLowNotify">
+                            <input type="checkbox" class="form-check-input" id="posLowNotify">
                             <label class="form-check-label" for="posLowNotify">Send Low Notification?</label>
                         </div>
                     </div>
@@ -413,23 +413,28 @@
         }
 
         $scope.modifyPos = function(pos){
+            document.getElementById("posName").value = pos.position;
             $scope.posIdVal = pos.id;
-            $scope.posNameVal = pos.position;
-            $scope.posEmailVal = pos.email;
+            //$scope.posNameVal = pos.position;
+            document.getElementById("posEmail").value = pos.email;
             $scope.posPriviledgeVal = pos.privilege;
-            $scope.posLowNotifyVal = pos.low_notify;
-            $scope.posDescVal = pos.description;
+            document.getElementById("posLowNotify").value = pos.low_notify;
+            document.getElementById("posDesc").value = pos.description;
             $('#modifyPosModal').modal('show');
         }
 
         $scope.modifyPosSub = function(){
             $('#modifyPosModal').modal('hide');
             //account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
-            position = {id:$scope.posIdVal, position: $scope.posNameVal, email: $scope.posEmailVal, description: $scope.posDescVal, privilege: $scope.posPriviledgeVal}
-
-            console.log($scope.posLowNotifyVal);
+            position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: 0}
+            
+            if(document.getElementById("posLowNotify").checked){
+                position.low_notify = 1
+            }
+            console.log(position)
+            //console.log(document.getElementById("posLowNotify").checked);
             jQuery.ajax({
-                url: 'member_position//1',
+                url: 'member_position/1',
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(position),
