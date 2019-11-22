@@ -22,15 +22,15 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input ng-modal = "accNameVal" value = "<%accNameVal%>" type="text" class="form-control" id="accName" required>
+                        <input type="text" class="form-control" id="accName" required>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
-                        <input ng-modal = "accEmailVal" value = "<%accEmailVal%>" type="email" class="form-control" id="accEmail" required>
+                        <input type="email" class="form-control" id="accEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input ng-modal = "accPhoneVal" value = "<%accPhoneVal%>" type="text" class="form-control" id="accPhone" required>
+                        <input type="text" class="form-control" id="accPhone" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -218,8 +218,8 @@
                         <tr>
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="acceptAcc($index)">Accept</button></td>
-                            <td><button class="btn btn-primary" ng-click="rejectAcc($index)">Reject</button></td>
+                            <td><button class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -258,6 +258,7 @@
         $interpolateProvider.endSymbol('%>');
     });
     app.controller('adminPanel', function($scope){
+
         jQuery(function() {
             $scope.allAcounts = [];
             $scope.currentPos = [];
@@ -292,6 +293,11 @@
                 }
             ];
             //Over here do get calls to get evrything from the admin pane
+            $scope.getAccounts();
+            $scope.getMemeberPos();
+        })
+
+        $scope.getAccounts = function(){
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -309,7 +315,9 @@
             };
             xhttp.open("GET", "users", true);
             xhttp.send();
+        }
 
+        $scope.getMemeberPos = function(){
             var xhttp2 = new XMLHttpRequest();
             xhttp2.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -327,13 +335,12 @@
             };
             xhttp2.open("GET", "member_position", true);
             xhttp2.send();
-
-        })
+        }
         $scope.modifyCurrent = function(account){
             $scope.index = account.id;
-            $scope.accNameVal = account.name;
-            $scope.accPhoneVal = account.phone;
-            $scope.accEmailVal = account.email;
+            document.getElementById("accName").value = account.name;
+            document.getElementById("accPhone").value = account.phone;
+            document.getElementById("accEmail").value = account.email;
             $scope.accPosVal = account.position;
             $scope.accArcVal = false;
             $('#modifyAccModal').modal('show');
@@ -351,7 +358,7 @@
 
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
-            account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
+            account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
             console.log(account);
             jQuery.ajax({
                 url: 'users/1',
@@ -362,6 +369,7 @@
                 success: function(data) {
                     // handle success
                     console.log(data);
+                    $scope.getAccounts();
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -372,16 +380,41 @@
             });
         }
 
-        $scope.acceptAcc = function(index){
-            $scope.index = index;
-            document.getElementById("acceptName").innerHTML =  " " + $scope.pendingAcc[$scope.index].name;
+        $scope.acceptAcc = function(account){
+            $scope.index = account.id;
+            document.getElementById("acceptName").innerHTML =  ":\t" + account.name;
             $('#acceptAccModal').modal('show');
         }
 
         $scope.acceptAccSub = function(){
             $('#acceptAccModal').modal('hide');
-
-            document.getElementById("alert").innerHTML =  $scope.pendingAcc[$scope.index].name + " was successfully accepted. ";
+            var currAcct = $scope.allAcounts[0];
+            for(var i = 0; i<$scope.allAcounts.length; ++i){
+                currAcct = $scope.allAcounts[i];
+                if(currAcct.id == $scope.index) break;
+            }
+            currAcct.current_member = 1;
+            currAcct.position_id = 0;
+            //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            console.log(currAcct);
+            jQuery.ajax({
+                url: 'users/1',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(currAcct),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getAccounts();
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
+            document.getElementById("alert").innerHTML =  currAcct.name + " was successfully accepted. ";
             document.getElementById("alert").hidden = false;
             jQuery("#alert").slideDown(200, function() {
                 //jQuery(this).alert('close');
@@ -392,9 +425,9 @@
             });
         }
 
-        $scope.rejectAcc = function(index){
-            $scope.index = index;
-            document.getElementById("rejectName").innerHTML =  " " + $scope.pendingAcc[$scope.index].name;
+        $scope.rejectAcc = function(account){
+            $scope.index = account.id;
+            document.getElementById("rejectName").innerHTML =  ":\t" + account.name;
             $('#rejectAccModal').modal('show');
         }
 
@@ -442,6 +475,7 @@
                 success: function(data) {
                     // handle success
                     console.log(data);
+                    $scope.getMemberPos();
                 },
                 error: function(request,msg,error) {
                     // handle failure
