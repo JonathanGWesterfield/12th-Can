@@ -34,14 +34,14 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input ng-modal = "accArcVal" ng-checked = "accArcVal" type="checkbox" class="form-check-input" id="accArchive">
+                            <input type="checkbox" class="form-check-input" id="accArchive">
                             <label class="form-check-label" for="accArchive">Archive Account?</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-row">
                             <select ng-model="accPosVal">
-                                <option ng-repeat="x in currentPos" value = "<%x.position%>"><%x.position%></option>
+                                <option ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -226,12 +226,12 @@
             </div>
         </div>
         <div class="col mx-md-5">
-        <div class="row">
-        <div class="col-9">
+        <div class="row mx-md-0">
+        <div class="offset-3 col-6">
         <h5 class="text-center">Current Positions</h5>
 
         </div>
-        <div class="col-3 my-2">
+        <div class="col-auto my-1 px-md-0 ml-auto">
         <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
 
         </div>
@@ -253,7 +253,7 @@
                             <td><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
-                            <td><%pos.low_notify%></td>
+                            <td><%displayLow(pos.low_notify)%></td>
                             <td><button class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
                         </tr>
                     </tbody>
@@ -313,13 +313,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.allAcounts = JSON.parse(this.responseText)
-                    /*for (var i = 0; i<$scope.items.length; ++i){
-                        if($scope.items[i].removed == true){
-                            $scope.items.splice(i,1);
-                            i-=1;
-                        }
-                    }
-                    $scope.addItems = []*/
                     $scope.$apply()
                 }
             };
@@ -333,13 +326,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.currentPos = JSON.parse(this.responseText)
-                    /*for (var i = 0; i<$scope.items.length; ++i){
-                        if($scope.items[i].removed == true){
-                            $scope.items.splice(i,1);
-                            i-=1;
-                        }
-                    }
-                    $scope.addItems = []*/
                     $scope.$apply()
                 }
             };
@@ -351,7 +337,7 @@
             document.getElementById("accName").value = account.name;
             document.getElementById("accPhone").value = account.phone;
             document.getElementById("accEmail").value = account.email;
-            $scope.accPosVal = account.position;
+            $scope.accPosVal = account.position_id;
             $scope.accArcVal = false;
             $('#modifyAccModal').modal('show');
         }
@@ -361,14 +347,22 @@
             $scope.accNameVal = account.name;
             $scope.accPhoneVal = account.phone;
             $scope.accEmailVal = account.email;
-            $scope.accPosVal = "";
+            $scope.accPosVal = account.position_id;
             $scope.accArcVal = true;
             $('#modifyAccModal').modal('show');
         }
 
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
-            account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            account = {
+                id:$scope.index, 
+                name:document.getElementById("accName").value, 
+                phone: document.getElementById("accPhone").value, 
+                email: document.getElementById("accEmail").value, 
+                current_member:!document.getElementById("accArchive").checked,
+                position_id: $scope.accPosVal
+                };
+            account.current_memeber = !document.getElementById("accArchive").checked
             console.log(account);
             url = 'users/' + account.id.toString();
             jQuery.ajax({
@@ -381,6 +375,15 @@
                     // handle success
                     console.log(data);
                     $scope.getAccounts();
+                    document.getElementById("alert").innerHTML =  account.name + " was successfully modified. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -514,16 +517,25 @@
         $scope.addPosSub = function(){
             position = {position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
             console.log(position)
-            url = 
+            url = 'member_position/'
             jQuery.ajax({
                 url: url,
-                method: 'PUT',
+                method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(position),
                 success: function(data) {
                     // handle success
                     console.log(data);
                     $scope.getMemberPos();
+                    document.getElementById("alert").innerHTML =  position.position + " was successfully added. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -553,6 +565,15 @@
                     // handle success
                     console.log(data);
                     $scope.getMemberPos();
+                    document.getElementById("alert").innerHTML =  position.position + " was successfully modified. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -561,6 +582,10 @@
                     console.log(error);
                 }
             });
+        }
+        $scope.displayLow = function(val){
+            if (val == 1) return "Yes"
+            return "No"
         }
     })
 </script>
