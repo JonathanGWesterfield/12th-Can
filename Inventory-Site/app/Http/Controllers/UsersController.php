@@ -2,63 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Gets all of the users from the database to display in the admin panel.
+     * @return array Returns all information for all users
      */
     public function index()
     {
-        //
+        return DB::select('select * from users');
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Gets all of the users who are current members of the 12th Can.
+     * @return array Returns all information for users who are members.
      */
-    public function create()
+    public function getCurrentMembers()
     {
-        //
+        return DB::select('select * from users where current_member=TRUE ');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+//    /**
+//     * Show the form for creating a new resource.
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function create()
+//    {
+//        //
+//    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+//    /**
+//     * Store a newly created resource in storage.
+//     *
+//     * @param  \Illuminate\Http\Request  $request
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function store(Request $request)
+//    {
+//        //
+//    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function show($id)
+//    {
+//        //
+//    }
+
+//    /**
+//     * Show the form for editing the specified resource.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function edit($id)
+//    {
+//        //
+//    }
 
     /**
      * Update the specified resource in storage.
@@ -71,18 +81,21 @@ class UsersController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|string',
-            'phone' => 'required|integer',
-            'current_member' => 'required|boolean',
-            'position_id' => 'required|integer'
+            'phone' => 'required',
+            'current_member' => 'required',
+            'position_id' => 'required'
         ]);
         // TODO: WRITE TESTS FOR THIS
         try
         {
+            $position = Member_Position::find($request->input('position_id'));
             $user = User::find($id);
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
             $user->current_member = $request->input('current_member');
-            $user->position_id = $request->input('position_id');
+            $user->position()->associate($position);
+
+//            $user->position_id = $request->input('position_id');
 
             $user->save();
         }
@@ -100,18 +113,18 @@ class UsersController extends Controller
             'user_email' => $user->email,
             'user_phone' => $user->phone,
             'user_current_member' =>  $user->current_member,
-            'user_position_id' => $user->position_id], 200)
+            'user_position_id' => strval($user->position_id)], 200)
             ->header('Content-Type', 'text/plain');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param  int  $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function destroy($id)
+//    {
+//        //
+//    }
 }

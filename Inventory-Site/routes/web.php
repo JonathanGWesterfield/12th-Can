@@ -25,6 +25,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/dashboard', 'DashboardController@index')->middleware('auth');
+Route::get('/history', 'HistoryController@index')->middleware('auth');
 
 // Route for interacting with items in the database
 Route::resource('items', 'ItemsController')->middleware('auth');
@@ -41,3 +42,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('admin', 'AdminController')->middleware('auth');
+
+Route::resource('member_position', 'MemberPositionsController')->middleware('auth');
+
+Route::resource('users', 'UsersController')->middleware('auth');
