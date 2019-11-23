@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Member_Position;
 
 class AdminMiddleware
 {
@@ -19,8 +21,12 @@ class AdminMiddleware
     {
         if(Auth::check())
         {
-            //remove ==7 when done as big boss account shouldnt roll into production
-            if($request->user()->position_id == 8 or $request->user()->position_id == 6 or $request->user()->position_id == 7)
+            //Only users with privilege 2 or higher should be able to access admin page
+            $position_id =  $request->user()->position_id;
+            //check privilege of the user by looking up their position_id in the member_position table
+            $member = Member_Position::find($position_id);
+            $privilege = $member->privilege;
+            if($privilege>=2)
             {
                 return $next($request);
             }
