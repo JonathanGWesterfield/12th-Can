@@ -14,14 +14,11 @@
 use App\Http\Controllers\ItemsController;
 
 
-
-
-
 //Route::get('/admin_panel', 'PagesController@adminPanel')->middleware('auth');
 
 Route::group(['middleware' => ['App\Http\Middleware\AdminMiddleware']], function () {
     //admin routes
-    Route::get('/admin_panel', 'PagesController@adminPanel');
+    Route::get('/admin_panel', 'PagesController@adminPanel')->middleware('auth');
 });
 
 Route::group(['middleware' => ['App\Http\Middleware\AddModifyMiddleware']], function () {
