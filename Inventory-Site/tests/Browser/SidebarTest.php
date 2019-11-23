@@ -40,11 +40,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }
@@ -69,11 +65,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }
@@ -98,11 +90,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }
@@ -127,11 +115,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }
@@ -156,11 +140,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }
@@ -186,11 +166,7 @@ class SidebarTest extends DuskTestCase
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
                     ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity')
                     ->clickLink('History');
         });
     }

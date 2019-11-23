@@ -31,11 +31,7 @@ class CreateAccount extends DuskTestCase
                     ->type('password_confirmation', 'password')
                     ->press('Register')
                     ->AssertSee('Low Inventory')
-                    ->AssertSee('Current Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->AssertSee('Weekly Inventory')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Inventory vs. Capacity');
+                    ->AssertSee('Recent Inventory');
         });
     }
 }
