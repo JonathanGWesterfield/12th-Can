@@ -85,7 +85,7 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select ng-model="posPriviledgeVal" id = "posPriviledge">
+                            <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
                             
@@ -226,7 +226,17 @@
             </div>
         </div>
         <div class="col mx-md-5">
-                <h5 class="text-center">Current Positions</h5>
+        <div class="row">
+        <div class="col-9">
+        <h5 class="text-center">Current Positions</h5>
+
+        </div>
+        <div class="col-3 my-2">
+        <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
+
+        </div>
+        </div>
+                
             <div class="row">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -476,34 +486,69 @@
             });
         }
 
+        $scope.addPos = function(){
+            document.getElementById("posName").value = "";
+            $scope.posIdVal = -1;
+            //$scope.posNameVal = pos.position;
+            document.getElementById("posEmail").value = "";
+            document.getElementById("posLowNotify").checked = false;
+            $scope.posPriviledgeVal = '0';
+            
+            document.getElementById("posDesc").value = "";
+            $('#modifyPosModal').modal('show');
+        }
+
         $scope.modifyPos = function(pos){
             document.getElementById("posName").value = pos.position;
             $scope.posIdVal = pos.id;
-            //$scope.posNameVal = pos.position;
             document.getElementById("posEmail").value = pos.email;
             $scope.posPriviledgeVal = pos.privilege;
-            document.getElementById("posLowNotify").value = pos.low_notify;
+            document.getElementById("posLowNotify").checked = true;
+            if(pos.low_notify == '0' || pos.low_notify == 0 || pos.low_notify == false){
+                document.getElementById("posLowNotify").checked = false;
+            }
             document.getElementById("posDesc").value = pos.description;
             $('#modifyPosModal').modal('show');
         }
 
-        $scope.modifyPosSub = function(){
-            $('#modifyPosModal').modal('hide');
-            //account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
-            position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: 0}
-            
-            if(document.getElementById("posLowNotify").checked){
-                position.low_notify = 1
-            }
+        $scope.addPosSub = function(){
+            position = {position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
             console.log(position)
-            url = 'member_position/' + position.id.toString();
-            //console.log(document.getElementById("posLowNotify").checked);
+            url = 
             jQuery.ajax({
                 url: url,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(position),
-                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getMemberPos();
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
+        }
+        
+        $scope.modifyPosSub = function(){
+            $('#modifyPosModal').modal('hide');
+            if($scope.posIdVal == -1){
+                $scope.addPosSub();
+                return;
+            }
+            position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
+            
+            console.log(position)
+            url = 'member_position/' + position.id.toString();
+            jQuery.ajax({
+                url: url,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(position),
                 success: function(data) {
                     // handle success
                     console.log(data);

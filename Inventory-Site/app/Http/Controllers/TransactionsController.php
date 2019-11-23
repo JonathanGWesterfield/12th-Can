@@ -106,8 +106,8 @@ class TransactionsController extends Controller
 
         //CHANGE THIS EMAIL TO PULL FROM member_position table
         //only happens when removing below threshold
-        if($item->quantity < $item->low_threshold and !$item->updated_at->isToday())
-            Notification::route('mail', 'abdulcampos02@gmail.com')->notify(new ThresholdEmail($itemName,
+        if ($item->quantity < $item->low_threshold)
+            Notification::route('mail', '12thcannoreply@gmail.com')->notify(new ThresholdEmail($itemName,
                 $itemQuantity, $itemThreshold));
     }
 
