@@ -513,7 +513,25 @@
 
         $scope.addPosSub = function(){
             position = {position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
-
+            console.log(position)
+            url = 
+            jQuery.ajax({
+                url: url,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(position),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getMemberPos();
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
         }
         
         $scope.modifyPosSub = function(){
