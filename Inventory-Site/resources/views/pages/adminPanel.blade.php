@@ -143,6 +143,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="deletePosModal" tabindex="-1" role="dialog" aria-labelledby="deletePosLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePosLabel">Delete Position Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit = "deletePosSub()">
+                    <div class="form-row">
+                        Are you sure you wanna delete the folowing position<span id = "deletePos"></span>
+                    </div>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="alert alert-primary" role="alert" id ="alert" hidden>
 </div>
 
@@ -163,6 +185,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Email Address</th>
+                            <th scope="col">Position</th>
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
@@ -171,6 +194,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
+                            <td><%displayPos(acct.position_id)%></td>
                             <td><button class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
@@ -246,6 +270,7 @@
                             <th scope="col">Privilege</th>
                             <th scope="col">Notify on Low?</th>
                             <th scope="col">Modify?</th>
+                            <th scope="col">Remove?</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
@@ -255,6 +280,7 @@
                             <td><%pos.privilege%></td>
                             <td><%displayLow(pos.low_notify)%></td>
                             <td><button class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
+                            <td><button class="btn btn-primary" ng-click="deletePos(pos)">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -338,17 +364,17 @@
             document.getElementById("accPhone").value = account.phone;
             document.getElementById("accEmail").value = account.email;
             $scope.accPosVal = account.position_id;
-            $scope.accArcVal = false;
+            document.getElementById("accArchive").checked = false;
             $('#modifyAccModal').modal('show');
         }
 
         $scope.modifyPast = function(account){
             $scope.index = account.id;
-            $scope.accNameVal = account.name;
-            $scope.accPhoneVal = account.phone;
-            $scope.accEmailVal = account.email;
+            document.getElementById("accName").value = account.name;
+            document.getElementById("accPhone").value = account.phone;
+            document.getElementById("accEmail").value = account.email;
             $scope.accPosVal = account.position_id;
-            $scope.accArcVal = true;
+            document.getElementById("accArchive").checked = true;
             $('#modifyAccModal').modal('show');
         }
 
@@ -446,6 +472,52 @@
             $scope.index = account.id;
             document.getElementById("rejectName").innerHTML =  ":\t" + account.name;
             $('#rejectAccModal').modal('show');
+        }
+
+        $scope.deletePos = function(pos){
+            $scope.removePosId = pos.id;
+            //console.log(pos.position)
+            document.getElementById("deletePos").innerHTML =  ":\t" + pos.position;
+            $('#deletePosModal').modal('show');
+        }
+
+        $scope.deletePosSub = function(){
+            $('#deletePosModal').modal('hide');
+            var pos = $scope.currentPos[0];
+            for(var i = 0; i<$scope.currentPos.length; ++i){
+                pos = $scope.currentPos[i];
+                if(pos.id == $scope.removePosId) break;
+            }
+            url = '/member_position/' + pos.id.toString();
+            //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            console.log(pos);
+            jQuery.ajax({
+                url: url,
+                method: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(pos),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getAccounts();
+                    document.getElementById("alert").innerHTML =  pos.position + " was successfully deleted. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
         }
 
         $scope.rejectAccSub = function(){
@@ -586,6 +658,13 @@
         $scope.displayLow = function(val){
             if (val == 1) return "Yes"
             return "No"
+        }
+        $scope.displayPos = function(val){
+            for(var i = 0; i<$scope.currentPos.length; ++i){
+                if($scope.currentPos[i].id == val){
+                    return $scope.currentPos[i].position;
+                }
+            }
         }
     })
 </script>
