@@ -49,7 +49,7 @@ td input{
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
+                <button name="saveChanges" type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@ Please fill out all the feilds in the table
                 <th>Available Items</th>
             </tr>
             <tr ng-repeat="item in items | filter:searchText">
-                <td class="btn btn-link" ng-click="addToTable(item)"><%item.name%></td>
+                <td id="item-<%$index%>" class="btn btn-link" ng-click="addToTable(item)"><%item.name%></td>
             </tr>
         </table>
     </div>
@@ -93,12 +93,12 @@ Please fill out all the feilds in the table
                     </thead>
                     <tbody ng-repeat="item in addItems">
                         <tr>
-                            <td><input ng-model = "item.name" type = "text"></td>
-                            <td><input ng-model = "item.capacity" type = "number" only-num></td>
-                            <td><input ng-model = "item.low_threshold" type = "number" only-num></td>
-                            <td><input ng-model = "item.is_food" type = "checkbox"></td>
-                            <td><input ng-model = "item.refrigerated" type = "checkbox"></td>
-                            <td><input ng-model = "item.removed" type="checkbox"></td>
+                            <td><input id="itemName" ng-model = "item.name" type = "text"></td>
+                            <td><input id="capacity" ng-model = "item.capacity" type = "number" only-num></td>
+                            <td><input id="threshold" ng-model = "item.low_threshold" type = "number" only-num></td>
+                            <td><input id="foodItem" name=cheng-model = "item.is_food" type = "checkbox"></td>
+                            <td><input id="refrigeration" ng-model = "item.refrigerated" type = "checkbox"></td>
+                            <td><input id="delete" ng-model = "item.removed" type="checkbox"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
@@ -107,7 +107,7 @@ Please fill out all the feilds in the table
         </div>
         <div class="row pt-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="preview()">
+                <button name="submitItem" type="button" class="btn btn-primary" data-toggle="modal" ng-click="preview()">
                     Submit
                 </button>
             </div>
