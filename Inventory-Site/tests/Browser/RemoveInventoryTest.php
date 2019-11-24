@@ -60,5 +60,4 @@ class RemoveInventoryTest extends DuskTestCase
                     ->waitForText('Inventory was removed');
         });
     }
-
 }
