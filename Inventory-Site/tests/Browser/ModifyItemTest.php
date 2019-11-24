@@ -8,6 +8,11 @@ use Tests\DuskTestCase;
 
 class ModifyItemTest extends DuskTestCase
 {
+   /**
+     * Put in group 'site'
+     *
+     * @group site
+     */
    //login to the website
    public function testLogin()
    {
@@ -35,7 +40,7 @@ class ModifyItemTest extends DuskTestCase
                    ->check('#foodItem')
                    ->check('#refrigeration')
                    ->press('submitModal')
-                   ->pause('1000') //pause/wait for 1000ms for the modal to disappear
+                   ->pause('2000') //pause/wait for 1000ms for the modal to disappear
                    ->press('submitItem')
                    ->waitForText('Confirmation')
                    ->press('saveChanges')
@@ -54,7 +59,7 @@ class ModifyItemTest extends DuskTestCase
                    ->type('#threshold', 100)
                    ->check('#foodItem')
                    ->check('#refrigeration')
-                   ->check('#delete')
+                   //->check('#delete')
                    ->press('submitItem')
                    //wait for confirmation modal
                    ->waitForText('Confirmation')

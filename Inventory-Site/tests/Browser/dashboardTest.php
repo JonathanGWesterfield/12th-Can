@@ -9,6 +9,11 @@ use Facebook\WebDriver\WebDriverBy;
 
 class DashboardTest extends DuskTestCase
 {
+    /**
+     * Put in group 'site'
+     *
+     * @group site
+     */
     public function testLogin()
     {
         $this->browse(function ($browser) {

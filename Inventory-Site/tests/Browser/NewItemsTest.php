@@ -8,6 +8,11 @@ use Tests\DuskTestCase;
 
 class NewItemsTest extends DuskTestCase
 {
+    /**
+     * Put in group 'site'
+     *
+     * @group site
+     */
     public function testLogin()
     {
         $this->browse(function ($browser) {

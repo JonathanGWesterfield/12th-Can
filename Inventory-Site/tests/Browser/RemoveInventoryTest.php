@@ -8,6 +8,11 @@ use Tests\DuskTestCase;
 
 class RemoveInventoryTest extends DuskTestCase
 {
+    /**
+     * Put in group 'site'
+     *
+     * @group site
+     */
     //login to the website
     public function testLogin()
     {

@@ -9,9 +9,9 @@ use Tests\DuskTestCase;
 class LoginTest extends DuskTestCase
 {
     /**
-     * A Dusk test example.
+     * Put in group 'register'
      *
-     * @return void
+     * @group register
      */
     //Create dummy accounts for testing
     public function testMakeAccounts()
