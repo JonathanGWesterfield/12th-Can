@@ -500,7 +500,7 @@
                 success: function(data) {
                     // handle success
                     console.log(data);
-                    $scope.getAccounts();
+                    $scope.getMemberPos();
                     document.getElementById("alert").innerHTML =  pos.position + " was successfully deleted. ";
                     document.getElementById("alert").hidden = false;
                     jQuery("#alert").slideDown(200, function() {
