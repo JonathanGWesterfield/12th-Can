@@ -7,7 +7,19 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
 class NewItemsTest extends DuskTestCase
-{public function testAddNewItem()
+{
+    public function testLogin()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', 'johnsmith@aol.com')
+                    ->type('password', 'password')
+                    ->press('Login');
+        });
+    }
+    public function testAddNewItem()
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
