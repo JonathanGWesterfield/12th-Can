@@ -11,14 +11,15 @@ class UserAcceptance extends Notification
 {
     use Queueable;
 
+    protected $userName;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userName)
     {
-        //
+        $this->userName = $userName;
     }
 
     /**
@@ -41,9 +42,11 @@ class UserAcceptance extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('Account rejected')
+                    ->greeting('Howdy'.$this->userName) //add user name
+                    ->level('info')
+                    ->line('Your account has been rejected by the administrator.')
+                    ->line('If you believe this to be a mistake please give us a call');
     }
 
     /**

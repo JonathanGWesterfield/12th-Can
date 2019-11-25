@@ -6,6 +6,8 @@ use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\UserAcceptance;
+
 class UsersController extends Controller
 {
     /**
@@ -125,6 +127,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+        Notification::route('mail', $user->email)->notify(new UserAcceptance($user->name));
         $user->delete();
     }
 }
