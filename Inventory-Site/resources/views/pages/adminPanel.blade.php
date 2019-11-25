@@ -527,7 +527,7 @@
                 currAcct = $scope.allAcounts[i];
                 if(currAcct.id == $scope.index) break;
             }
-            currAcct.current_member = 1;
+            currAcct.current_member = 0;
             currAcct.position_id = 1;
             url = 'users/' + currAcct.id.toString();
             //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
