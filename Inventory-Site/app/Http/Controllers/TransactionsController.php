@@ -107,7 +107,7 @@ class TransactionsController extends Controller
 
         //only happens when removing below threshold
         //pulls emails that are marked as low_notify and sends them an email update
-        for($i = 1; $i<=9; $i++) {
+        for($i = 1; $i<=Member_Position::count(); $i++) {
             $member = Member_Position::find($i);
             if($member->low_notify)
                 Notification::route('mail', $member->email)->notify(new ThresholdEmail($itemName,
