@@ -119,27 +119,6 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
             i++;
           }
         }
-        else if (sortOrder.sort == 'change'){
-          i = 1;
-          while (switching){
-            var rows = table.rows;
-            var change1 = rows[i].cells[2].innerHTML;
-            var change2 = rows[i+1].cells[2].innerHTML;
-            if (sortOrder.order == 'dec' && change1 < change2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            else if (sortOrder.order == 'inc' && change1 > change2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            if (i == rows.length - 1){
-              switching = false;
-              i = 1;
-            }
-            i++;
-          }
-        }
 
         if (sortOrder.addrmv == 'add'){
           for (var i = 1; i < table.rows.length; i++){
@@ -182,33 +161,42 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
     </script>
 
     <body onload="sortTable()">
+      <div class="row">
+        <div class="col text-center" style="...">
+          <h1>Database History</h1>
+        </div>
+      </div>
 
       <div class="container">
-        <h1>Database History</h1>
         <div class="row">
           <div class="col-md-4">
             <form id="sortSelect">
-              <input type="submit"><br>
-              <select name="sort">
-                <option value="">Sort Type</option>
-                <option value="alph">Alphabetical</option>
-                <option value="date">Date</option>
-                <option value="change">Change Size</option>
-              </select>
-              <select name="order">Test
-                <option value="">Ordering</option>
-                <option value="inc">Ascending</option>
-                <option value="dec">Descending</option>
-              </select>
-              <select name="addrmv">
-                <option value="">Filter Type</option>
-                <option value="addrmv">Add/Remove</option>
-                <option value="add">Add</option>
-                <option value="rmv">Remove</option>
-              </select>
-              <br>
-              Start Date: <input name="start" type="date"><br>
-              End Date: <input name="end" type="date"><br>
+              <div class="form-group">
+                <select class="form-control" name="sort" id="sort">
+                  <!--<option value="date">Date</option>-->
+                  <option value="alph">Alphabetical</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="order" id="order">
+                  <option value="dec">Descending</option>
+                  <option value="inc">Ascending</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="addrmv" id="addrmv">
+                  <option value="addrmv">Add/Remove</option>
+                  <option value="add">Add</option>
+                  <option value="rmv">Remove</option>
+                </select>
+              </div>
+              <div class="form-group">
+                Start Date: <input class="form-control" name="start" type="date"><br>
+                End Date: <input class="form-control" name="end" type="date">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
             </form>
           </div>
           <div class="col-md-8">
@@ -221,7 +209,7 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
                   <th scope="col">Comment</th>
                 </thead>
                 <tbody>
-                  @for ($i = 0; $i < count($activeTransactions); ++$i)
+                  @for ($i = count($activeTransactions) - 1; $i > 0; --$i)
                   <tr>
                     <td>{{$transactionDates[$i]}}</td>
                     <td>{{$transactionIDs[$i]}}</td>
