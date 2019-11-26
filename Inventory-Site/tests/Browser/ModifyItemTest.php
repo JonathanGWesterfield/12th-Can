@@ -23,7 +23,8 @@ class ModifyItemTest extends DuskTestCase
                    ->assertSee('Password')
                    ->type('email', 'johnsmith@aol.com')
                    ->type('password', 'password')
-                   ->press('Login');
+                   ->press('Login')
+                   ->assertSee('Low Inventory');
        });
    }
    //add an item to ensure one item exists
@@ -59,7 +60,7 @@ class ModifyItemTest extends DuskTestCase
                    ->type('#threshold', 100)
                    ->check('#foodItem')
                    ->check('#refrigeration')
-                   //->check('#delete')
+                   ->check('#delete')
                    ->press('submitItem')
                    //wait for confirmation modal
                    ->waitForText('Confirmation')

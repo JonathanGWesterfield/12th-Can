@@ -89,7 +89,7 @@
                             <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
-                            
+
                         </div>
                     </div>
                     <div class="form-row" style="float:right">
@@ -261,7 +261,7 @@
 
         </div>
         </div>
-                
+
             <div class="row">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -383,10 +383,10 @@
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
             account = {
-                id:$scope.index, 
-                name:document.getElementById("accName").value, 
-                phone: document.getElementById("accPhone").value, 
-                email: document.getElementById("accEmail").value, 
+                id:$scope.index,
+                name:document.getElementById("accName").value,
+                phone: document.getElementById("accPhone").value,
+                email: document.getElementById("accEmail").value,
                 current_member:!document.getElementById("accArchive").checked,
                 position_id: $scope.accPosVal
                 };
@@ -467,7 +467,7 @@
                     console.log(error);
                 }
             });
-            
+
         }
 
         $scope.rejectAcc = function(account){
@@ -570,7 +570,7 @@
             document.getElementById("posEmail").value = "";
             document.getElementById("posLowNotify").checked = false;
             $scope.posPriviledgeVal = '0';
-            
+
             document.getElementById("posDesc").value = "";
             $('#modifyPosModal').modal('show');
         }
@@ -619,7 +619,7 @@
                 }
             });
         }
-        
+
         $scope.modifyPosSub = function(){
             $('#modifyPosModal').modal('hide');
             if($scope.posIdVal == -1){
@@ -627,7 +627,7 @@
                 return;
             }
             position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
-            
+
             console.log(position)
             url = 'member_position/' + position.id.toString();
             jQuery.ajax({
