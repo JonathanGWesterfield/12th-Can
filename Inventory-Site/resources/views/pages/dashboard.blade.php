@@ -10,13 +10,14 @@ $inventoryThresholds = array();
 $inventoryIDs = array();
 $visitedArray = array();
 
+/*
 $activeItemsFiltered = $activeItems->toArray();
-
 for ($i = 0; $i < count($activeItems); ++$i) {
   if ($activeItems[$i]->removed == 1) {
     array_splice($activeItemsFiltered, $i, 1);
   }
 }
+*/
 
 for ($i = 0; $i < count($activeItems); ++$i) {
   if ($activeItems[$i]->removed == 0) {
@@ -41,10 +42,11 @@ $transactionIDs = array();
 $recentChanges = array();
 
 for ($i = 0; $i < count($activeTransactions); ++$i) {
-  //if ($activeTransactions[$i])
-  $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
-  $transactionDates[] = $activeTransactions[$i]->transaction_date;
-  $transactionIDs[] = $activeTransactions[$i]->item_id;
+  if ($activeItems[$activeTransactions[$i]->item_id-1]->removed == 0){
+    $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
+    $transactionDates[] = $activeTransactions[$i]->transaction_date;
+    $transactionIDs[] = $activeTransactions[$i]->item_id;
+  }
 }
 for ($i = count($activeTransactions); $i > count($activeTransactions)-10; --$i) {
   if ($i > 0) {
