@@ -9,7 +9,7 @@ use App\Transaction;
 class DashboardController extends Controller
 {
 
-    public function getItemName($itemNumber)
+    /*public function getItemName($itemNumber)
     {
         $item = Item::all()->where('id', $itemNumber);
         return $item->first()->name;
@@ -44,7 +44,7 @@ class DashboardController extends Controller
             $itemIdSeen[] = $itemId;
         }
         return $transactionsArray;
-    }
+    }*/
 
     public function index()
     {

@@ -15,6 +15,9 @@ class DashboardControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $this->assertTrue(true);
+        $this->call('/dashboard');
+        
+        $this->assertViewHas('activeItems');
+        $this->assertViewHas('activeTransactions');
     }
 }
