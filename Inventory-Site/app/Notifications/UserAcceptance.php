@@ -43,7 +43,7 @@ class UserAcceptance extends Notification
     {
         return (new MailMessage)
                     ->subject('Account rejected')
-                    ->greeting('Howdy'.$this->userName) //add user name
+                    ->greeting('Howdy '.$this->userName) //add user name
                     ->level('info')
                     ->line('Your account has been rejected by the administrator.')
                     ->line('If you believe this to be a mistake please give us a call');
