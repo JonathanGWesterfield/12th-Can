@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button name="submitModal" class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -106,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
+                <button name="saveChanges" type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -133,14 +133,14 @@
     <div class="col mx-md-5">
         <div class="row py-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button id="addItemButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Add Item
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <table class="table table-striped table-bordered">
+                <table id="newItemsTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Item</th>
@@ -166,7 +166,7 @@
         </div>
         <div class="row pt-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                <button name="submitItem" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
                     Submit
                 </button>
             </div>

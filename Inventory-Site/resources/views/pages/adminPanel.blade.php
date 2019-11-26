@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button name="modifyAccountSubmit" class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button name="modifyPositionSubmit" class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -115,7 +115,7 @@
                         Are you sure you wanna accept ma man <span id = "acceptName"></span>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button name="acceptAccountSubmit" class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -137,7 +137,7 @@
                         Are you sure you wanna reject ma man <span id = "rejectName"></span>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button name="rejectAccountSubmit" class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -159,7 +159,7 @@
                         Are you sure you wanna delete the folowing position<span id = "deletePos"></span>
                     </div>
                     <div class="form-row" style="float:right">
-                        <button class="btn btn-primary" type="submit">Delete</button>
+                        <button name="positionDelete" class="btn btn-primary" type="submit">Delete</button>
                     </div>
                 </form>
             </div>
@@ -191,12 +191,12 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : 1}">
-                        <tr>
+                        <tr id="currentAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
                             <td><%displayPos(acct.position_id)%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
+                            <td><button name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -215,11 +215,11 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : 0}">
-                        <tr>
+                        <tr id="pastAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyPast(acct)">Modify</button></td>
+                            <td><button name="pastAccountsModify" class="btn btn-primary" ng-click="modifyPast(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -240,11 +240,11 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : null}">
-                        <tr>
+                        <tr id="pendingAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
-                            <td><button class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
+                            <td><button name="pendingAccountsAccept" "class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button name="pendingAccountReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -275,13 +275,13 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
-                        <tr>
+                        <tr id="currentPositions-<%$index%>">
                             <td><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
                             <td><%displayLow(pos.low_notify)%></td>
-                            <td><button class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
-                            <td><button class="btn btn-primary" ng-click="deletePos(pos)">Remove</button></td>
+                            <td><button name="currentPositionsModify" class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
+                            <td><button name="currentPositionsRemove" class="btn btn-primary" ng-click="deletePos(pos)">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
