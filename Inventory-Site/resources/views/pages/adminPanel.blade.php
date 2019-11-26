@@ -180,7 +180,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table class="table table-striped table-bordered" id="example">
+                <table dusk="tabletest" class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -244,7 +244,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
                             <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
-                            <td><button name="pendingAccountReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
+                            <td><button name="pendingAccountsReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
                 </table>
