@@ -1,6 +1,7 @@
 @extends('layouts.sidebar')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
 <script src="app/Item.php" type="php"></script>
 <!-- Modal -->
 
@@ -179,7 +180,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -331,6 +332,7 @@
             //Over here do get calls to get evrything from the admin pane
             $scope.getAccounts();
             $scope.getMemberPos();
+            $('#example').DataTable();
         })
 
         $scope.getAccounts = function(){
