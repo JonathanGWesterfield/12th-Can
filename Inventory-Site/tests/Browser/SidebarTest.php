@@ -8,6 +8,11 @@ use Tests\DuskTestCase;
 
 class SidebarTest extends DuskTestCase
 {
+    /**
+     * Put in group 'site'
+     *
+     * @group site
+     */
     public function testLogin()
     {
         $this->browse(function ($browser) {
@@ -39,7 +44,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
@@ -63,7 +69,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
@@ -87,7 +94,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
@@ -111,7 +119,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
@@ -135,7 +144,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
@@ -160,7 +170,8 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('Modify Items')
                     ->assertSee('Modify Items')
                     ->clickLink('Dashboard')
-                    ->assertSee('Dashboard')
+                    ->AssertSee('Low Inventory')
+                    ->AssertSee('Recent Inventory')
                     ->clickLink('History');
         });
     }
