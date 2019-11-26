@@ -1,6 +1,7 @@
 @extends('layouts.sidebar')
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
 <script src="app/Item.php" type="php"></script>
 <!-- Modal -->
 
@@ -34,14 +35,14 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input ng-modal = "accArcVal" ng-checked = "accArcVal" type="checkbox" class="form-check-input" id="accArchive">
+                            <input type="checkbox" class="form-check-input" id="accArchive">
                             <label class="form-check-label" for="accArchive">Archive Account?</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-row">
                             <select ng-model="accPosVal">
-                                <option ng-repeat="x in currentPos" value = "<%x.position%>"><%x.position%></option>
+                                <option ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -85,7 +86,7 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select ng-model="posPriviledgeVal" id = "posPriviledge">
+                            <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
                             
@@ -143,6 +144,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="deletePosModal" tabindex="-1" role="dialog" aria-labelledby="deletePosLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePosLabel">Delete Position Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit = "deletePosSub()">
+                    <div class="form-row">
+                        Are you sure you wanna delete the folowing position<span id = "deletePos"></span>
+                    </div>
+                    <div class="form-row" style="float:right">
+                        <button class="btn btn-primary" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="alert alert-primary" role="alert" id ="alert" hidden>
 </div>
 
@@ -157,12 +180,13 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Email Address</th>
+                            <th scope="col">Position</th>
                             <th scope="col">Modify?</th>
                         </tr>
                     </thead>
@@ -171,6 +195,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
+                            <td><%displayPos(acct.position_id)%></td>
                             <td><button class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
@@ -226,7 +251,17 @@
             </div>
         </div>
         <div class="col mx-md-5">
-                <h5 class="text-center">Current Positions</h5>
+        <div class="row mx-md-0">
+        <div class="offset-3 col-6">
+        <h5 class="text-center">Current Positions</h5>
+
+        </div>
+        <div class="col-auto my-1 px-md-0 ml-auto">
+        <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
+
+        </div>
+        </div>
+                
             <div class="row">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -236,6 +271,7 @@
                             <th scope="col">Privilege</th>
                             <th scope="col">Notify on Low?</th>
                             <th scope="col">Modify?</th>
+                            <th scope="col">Remove?</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
@@ -243,8 +279,9 @@
                             <td><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
-                            <td><%pos.low_notify%></td>
+                            <td><%displayLow(pos.low_notify)%></td>
                             <td><button class="btn btn-primary" ng-click="modifyPos(pos)">Modify</button></td>
+                            <td><button class="btn btn-primary" ng-click="deletePos(pos)">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -295,6 +332,7 @@
             //Over here do get calls to get evrything from the admin pane
             $scope.getAccounts();
             $scope.getMemberPos();
+            $('#example').DataTable();
         })
 
         $scope.getAccounts = function(){
@@ -303,13 +341,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.allAcounts = JSON.parse(this.responseText)
-                    /*for (var i = 0; i<$scope.items.length; ++i){
-                        if($scope.items[i].removed == true){
-                            $scope.items.splice(i,1);
-                            i-=1;
-                        }
-                    }
-                    $scope.addItems = []*/
                     $scope.$apply()
                 }
             };
@@ -323,13 +354,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText)
                     $scope.currentPos = JSON.parse(this.responseText)
-                    /*for (var i = 0; i<$scope.items.length; ++i){
-                        if($scope.items[i].removed == true){
-                            $scope.items.splice(i,1);
-                            i-=1;
-                        }
-                    }
-                    $scope.addItems = []*/
                     $scope.$apply()
                 }
             };
@@ -341,24 +365,32 @@
             document.getElementById("accName").value = account.name;
             document.getElementById("accPhone").value = account.phone;
             document.getElementById("accEmail").value = account.email;
-            $scope.accPosVal = account.position;
-            $scope.accArcVal = false;
+            $scope.accPosVal = account.position_id;
+            document.getElementById("accArchive").checked = false;
             $('#modifyAccModal').modal('show');
         }
 
         $scope.modifyPast = function(account){
             $scope.index = account.id;
-            $scope.accNameVal = account.name;
-            $scope.accPhoneVal = account.phone;
-            $scope.accEmailVal = account.email;
-            $scope.accPosVal = "";
-            $scope.accArcVal = true;
+            document.getElementById("accName").value = account.name;
+            document.getElementById("accPhone").value = account.phone;
+            document.getElementById("accEmail").value = account.email;
+            $scope.accPosVal = account.position_id;
+            document.getElementById("accArchive").checked = true;
             $('#modifyAccModal').modal('show');
         }
 
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
-            account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            account = {
+                id:$scope.index, 
+                name:document.getElementById("accName").value, 
+                phone: document.getElementById("accPhone").value, 
+                email: document.getElementById("accEmail").value, 
+                current_member:!document.getElementById("accArchive").checked,
+                position_id: $scope.accPosVal
+                };
+            account.current_memeber = !document.getElementById("accArchive").checked
             console.log(account);
             url = 'users/' + account.id.toString();
             jQuery.ajax({
@@ -371,6 +403,15 @@
                     // handle success
                     console.log(data);
                     $scope.getAccounts();
+                    document.getElementById("alert").innerHTML =  account.name + " was successfully modified. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -435,6 +476,52 @@
             $('#rejectAccModal').modal('show');
         }
 
+        $scope.deletePos = function(pos){
+            $scope.removePosId = pos.id;
+            //console.log(pos.position)
+            document.getElementById("deletePos").innerHTML =  ":\t" + pos.position;
+            $('#deletePosModal').modal('show');
+        }
+
+        $scope.deletePosSub = function(){
+            $('#deletePosModal').modal('hide');
+            var pos = $scope.currentPos[0];
+            for(var i = 0; i<$scope.currentPos.length; ++i){
+                pos = $scope.currentPos[i];
+                if(pos.id == $scope.removePosId) break;
+            }
+            url = '/member_position/' + pos.id.toString();
+            //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
+            console.log(pos);
+            jQuery.ajax({
+                url: url,
+                method: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(pos),
+                //data: JSON.stringify($scope.modifyItems),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getMemberPos();
+                    document.getElementById("alert").innerHTML =  pos.position + " was successfully deleted. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
+        }
+
         $scope.rejectAccSub = function(){
             $('#rejectAccModal').modal('hide');
             var currAcct = $scope.allAcounts[0];
@@ -442,7 +529,7 @@
                 currAcct = $scope.allAcounts[i];
                 if(currAcct.id == $scope.index) break;
             }
-            currAcct.current_member = 1;
+            currAcct.current_member = 0;
             currAcct.position_id = 1;
             url = 'users/' + currAcct.id.toString();
             //account = {id:$scope.index, name:document.getElementById("accName").value, phone: document.getElementById("accPhone").value, email: document.getElementById("accEmail").value, current_member:true,position_id: 1};
@@ -476,38 +563,53 @@
             });
         }
 
+        $scope.addPos = function(){
+            document.getElementById("posName").value = "";
+            $scope.posIdVal = -1;
+            //$scope.posNameVal = pos.position;
+            document.getElementById("posEmail").value = "";
+            document.getElementById("posLowNotify").checked = false;
+            $scope.posPriviledgeVal = '0';
+            
+            document.getElementById("posDesc").value = "";
+            $('#modifyPosModal').modal('show');
+        }
+
         $scope.modifyPos = function(pos){
             document.getElementById("posName").value = pos.position;
             $scope.posIdVal = pos.id;
-            //$scope.posNameVal = pos.position;
             document.getElementById("posEmail").value = pos.email;
             $scope.posPriviledgeVal = pos.privilege;
-            document.getElementById("posLowNotify").value = pos.low_notify;
+            document.getElementById("posLowNotify").checked = true;
+            if(pos.low_notify == '0' || pos.low_notify == 0 || pos.low_notify == false){
+                document.getElementById("posLowNotify").checked = false;
+            }
             document.getElementById("posDesc").value = pos.description;
             $('#modifyPosModal').modal('show');
         }
 
-        $scope.modifyPosSub = function(){
-            $('#modifyPosModal').modal('hide');
-            //account = {id:$scope.index, name:$scope.accNameVal, phone: $scope.accPhoneVal, email: $scope.accEmailVal, current_member:true,position_id: 1};
-            position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: 0}
-            
-            if(document.getElementById("posLowNotify").checked){
-                position.low_notify = 1
-            }
+        $scope.addPosSub = function(){
+            position = {position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
             console.log(position)
-            url = 'member_position/' + position.id.toString();
-            //console.log(document.getElementById("posLowNotify").checked);
+            url = 'member_position/'
             jQuery.ajax({
                 url: url,
-                method: 'PUT',
+                method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(position),
-                //data: JSON.stringify($scope.modifyItems),
                 success: function(data) {
                     // handle success
                     console.log(data);
                     $scope.getMemberPos();
+                    document.getElementById("alert").innerHTML =  position.position + " was successfully added. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
                 },
                 error: function(request,msg,error) {
                     // handle failure
@@ -516,6 +618,55 @@
                     console.log(error);
                 }
             });
+        }
+        
+        $scope.modifyPosSub = function(){
+            $('#modifyPosModal').modal('hide');
+            if($scope.posIdVal == -1){
+                $scope.addPosSub();
+                return;
+            }
+            position = {id:$scope.posIdVal, position: document.getElementById("posName").value, email: document.getElementById("posEmail").value, description: document.getElementById("posDesc").value, privilege: $scope.posPriviledgeVal, low_notify: document.getElementById("posLowNotify").checked}
+            
+            console.log(position)
+            url = 'member_position/' + position.id.toString();
+            jQuery.ajax({
+                url: url,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(position),
+                success: function(data) {
+                    // handle success
+                    console.log(data);
+                    $scope.getMemberPos();
+                    document.getElementById("alert").innerHTML =  position.position + " was successfully modified. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                },
+                error: function(request,msg,error) {
+                    // handle failure
+                    console.log(request);
+                    console.log(msg);
+                    console.log(error);
+                }
+            });
+        }
+        $scope.displayLow = function(val){
+            if (val == 1) return "Yes"
+            return "No"
+        }
+        $scope.displayPos = function(val){
+            for(var i = 0; i<$scope.currentPos.length; ++i){
+                if($scope.currentPos[i].id == val){
+                    return $scope.currentPos[i].position;
+                }
+            }
         }
     })
 </script>

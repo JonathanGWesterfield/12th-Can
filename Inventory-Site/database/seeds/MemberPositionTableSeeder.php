@@ -12,6 +12,15 @@ class MemberPositionTableSeeder extends Seeder
     public function run()
     {
         DB::table('Member_Position')->insert([
+            'position' => 'Big Boss',
+            'privilege' => 3,
+            'description' => 'Has full admin rights to the website for troubleshooting and development purposes.',
+            'created_at' => '2019-09-22 18:19:12',
+//            'updated_at' => '2019-09-22 18:19:12',
+            'email' => 'jgwesterfield@gmail.com'
+        ]);
+
+        DB::table('Member_Position')->insert([
             'position' => 'Development Director',
             'privilege' => 0,
             'description' => 'Works on grant writing, meeting with people who are interested in large monetary donations, setting up profit shares, going to Aggie Moms Club meetings, Sully donations, and help work towards making sure the 12th Can is financially secure',
@@ -63,15 +72,6 @@ class MemberPositionTableSeeder extends Seeder
             'created_at' => '2019-09-22 18:11:09',
 //            'updated_at' => '2019-09-22 18:11:09',
             'email' => '12thcan.ad@gmail.com'
-        ]);
-
-        DB::table('Member_Position')->insert([
-            'position' => 'Big Boss',
-            'privilege' => 3,
-            'description' => 'Has full admin rights to the website for troubleshooting and development purposes.',
-            'created_at' => '2019-09-22 18:19:12',
-//            'updated_at' => '2019-09-22 18:19:12',
-            'email' => 'jgwesterfield@gmail.com'
         ]);
 
 /*        DB::table('Member_Position')->insert([

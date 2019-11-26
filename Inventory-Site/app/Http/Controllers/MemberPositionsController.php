@@ -42,7 +42,8 @@ class MemberPositionsController extends Controller
             'position' => 'required|string',
             'privilege' => 'required|integer',
             'description' => 'required|string',
-            'email' => 'required|string'
+            'email' => 'required|string',
+            'low_notify' => 'required|boolean'
         ]);
 
         try
@@ -53,6 +54,7 @@ class MemberPositionsController extends Controller
             $position->description = $request->input('description');
             $position->email = $request->input('email');
             $position->created_at = date("Y-m-d H:i:s");
+            $position->low_notify = $request->input('low_notify');
 
             $position->save();
         }
