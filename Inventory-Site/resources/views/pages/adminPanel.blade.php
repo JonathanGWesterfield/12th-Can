@@ -243,7 +243,7 @@
                         <tr id="pendingAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button name="pendingAccountsAccept" "class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
                             <td><button name="pendingAccountReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
