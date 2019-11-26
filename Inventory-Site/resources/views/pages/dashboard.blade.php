@@ -10,7 +10,16 @@ $inventoryThresholds = array();
 $inventoryIDs = array();
 $visitedArray = array();
 
+$activeItemsFiltered = $activeItems->toArray();
+
 for ($i = 0; $i < count($activeItems); ++$i) {
+  if ($activeItems[$i]->removed == 1) {
+    array_splice($activeItemsFiltered, $i, 1);
+  }
+}
+
+for ($i = 0; $i < count($activeItems); ++$i) {
+  if ($activeItems[$i]->removed == 0) {
     $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
     $inventoryDisplayNames[] = $activeItems[$i]->name;
     $inventoryQuantities[] = $activeItems[$i]->quantity;
@@ -18,6 +27,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryThresholds[] = $activeItems[$i]->low_threshold;
     $inventoryIDs[] = $activeItems[$i]->id;
     $visitedArray[$i+1] = 0;
+  }
 }
 
 $sortedNames = $inventoryNames;
@@ -31,6 +41,7 @@ $transactionIDs = array();
 $recentChanges = array();
 
 for ($i = 0; $i < count($activeTransactions); ++$i) {
+  //if ($activeTransactions[$i])
   $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
   $transactionDates[] = $activeTransactions[$i]->transaction_date;
   $transactionIDs[] = $activeTransactions[$i]->item_id;
@@ -50,22 +61,21 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 
 
 $arrayOfSums = array();
-//for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
 for ($i = 0; $i < count($inventoryIDs); ++$i) {
   $arrayOfSums[$inventoryIDs[$i]] = $inventoryQuantities[$i];
 }
 $transactionQuantities = array();
 for ($i = count($transactionChanges)-1; $i >= 0; --$i){
-  //$transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-  //$arrayOfSums[$transactionIDs[$i]] -=- $transactionChanges[$i];
-  if ($visitedArray[$transactionIDs[$i]] == 0){
-    $visitedArray[$transactionIDs[$i]] = 1;
-    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
-  }
-  elseif ($visitedArray[$transactionIDs[$i]] == 1){
-    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+  if (isset($transactionIDs[$i]) && isset($visitedArray[$transactionIDs[$i]])) {
+    if ($visitedArray[$transactionIDs[$i]] == 0){
+      $visitedArray[$transactionIDs[$i]] = 1;
+      $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+      $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+    }
+    elseif ($visitedArray[$transactionIDs[$i]] == 1){
+      $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+      $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+    }
   }
 
 }

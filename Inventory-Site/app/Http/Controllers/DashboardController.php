@@ -50,7 +50,7 @@ class DashboardController extends Controller
     {
         #$orderTransactions = Transaction
         #return Transaction::all();
-        $activeItems = Item::all()->where('removed','0');
+        $activeItems = Item::all();//->where('removed','0');
         $activeTransactions = Transaction::all();
         return view('pages.dashboard')->with('activeItems', $activeItems)->with('activeTransactions', $activeTransactions);
     }
