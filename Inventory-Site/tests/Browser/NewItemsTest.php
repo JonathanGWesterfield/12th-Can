@@ -21,7 +21,8 @@ class NewItemsTest extends DuskTestCase
                     ->assertSee('Password')
                     ->type('email', 'johnsmith@aol.com')
                     ->type('password', 'password')
-                    ->press('Login');
+                    ->press('Login')
+                    ->assertSee('Low Inventory');
         });
     }
     public function testAddNewItem()
