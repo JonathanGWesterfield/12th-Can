@@ -59,7 +59,7 @@ class ModifyItemTest extends DuskTestCase
                    ->type('#threshold', 100)
                    ->check('#foodItem')
                    ->check('#refrigeration')
-                   //->check('#delete')
+                   ->check('#delete')
                    ->press('submitItem')
                    //wait for confirmation modal
                    ->waitForText('Confirmation')
