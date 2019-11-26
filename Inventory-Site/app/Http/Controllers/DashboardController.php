@@ -9,7 +9,7 @@ use App\Transaction;
 class DashboardController extends Controller
 {
 
-    public function getItemName($itemNumber)
+    /*public function getItemName($itemNumber)
     {
         $item = Item::all()->where('id', $itemNumber);
         return $item->first()->name;
@@ -44,13 +44,13 @@ class DashboardController extends Controller
             $itemIdSeen[] = $itemId;
         }
         return $transactionsArray;
-    }
+    }*/
 
     public function index()
     {
         #$orderTransactions = Transaction
         #return Transaction::all();
-        $activeItems = Item::all()->where('removed','0');
+        $activeItems = Item::all();//->where('removed','0');
         $activeTransactions = Transaction::all();
         return view('pages.dashboard')->with('activeItems', $activeItems)->with('activeTransactions', $activeTransactions);
     }
