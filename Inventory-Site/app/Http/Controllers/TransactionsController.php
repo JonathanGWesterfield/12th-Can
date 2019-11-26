@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Transaction;
 use App\User;
 use App\Item;
+use Notification;
+use App\Notifications\ThresholdEmail;
 use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
@@ -85,7 +87,7 @@ class TransactionsController extends Controller
 
     /**
      * Updates the quantity of the specified item by summing up all of the quantity changes
-     * for that item in the transactions table.
+     * for that item in the transactions table. And sends email if item goes below threshold.
      * @param $id The ID of the item that needs to have it's quantity updated.
      */
     public function updateItemQuantity($id)
@@ -96,6 +98,17 @@ class TransactionsController extends Controller
             ->sum('item_quantity_change');
 
         $item->save();
+
+        $itemName = $item->name;
+        $itemQuantity = $item->quantity;
+        $itemThreshold = $item->low_threshold;
+        $itemCapacity = $item->capacity;
+
+        //CHANGE THIS EMAIL TO PULL FROM member_position table
+        //only happens when removing below threshold
+        if ($item->quantity < $item->low_threshold)
+            Notification::route('mail', '12thcannoreply@gmail.com')->notify(new ThresholdEmail($itemName,
+                $itemQuantity, $itemThreshold));
     }
 
 

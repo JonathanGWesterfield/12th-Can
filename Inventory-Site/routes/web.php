@@ -19,6 +19,13 @@ Route::get('/new_items', 'PagesController@newItems')->middleware('auth');
 Route::get('/modify_items', 'PagesController@modifyItems')->middleware('auth');
 Route::get('/add_inventory', 'PagesController@addInv')->middleware('auth');
 Route::get('/remove_inventory', 'PagesController@remInv')->middleware('auth');
+Route::get('/admin_panel', 'PagesController@adminPanel')->middleware('auth');
+/*
+Route::group(['middleware' => ['App\Http\Middleware\AdminMiddleware']], function () {
+    //admin routes
+    Route::get('/admin_panel', 'PagesController@adminPanel');
+});*/
+
 
 Auth::routes();
 
@@ -46,3 +53,4 @@ Route::resource('admin', 'AdminController')->middleware('auth');
 Route::resource('member_position', 'MemberPositionsController')->middleware('auth');
 
 Route::resource('users', 'UsersController')->middleware('auth');
+

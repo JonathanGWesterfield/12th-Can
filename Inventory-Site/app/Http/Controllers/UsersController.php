@@ -6,7 +6,6 @@ use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
-
 class UsersController extends Controller
 {
     /**
@@ -22,9 +21,9 @@ class UsersController extends Controller
      * Gets all of the users who are current members of the 12th Can.
      * @return array Returns all information for users who are members.
      */
-    public function getCurrentMembers()
+    public static function getCurrentMembers()
     {
-        return DB::select('select * from users where current_member=TRUE ');
+        return json_encode(DB::select('select * from users'));
     }
 
 //    /**
@@ -117,14 +116,15 @@ class UsersController extends Controller
             ->header('Content-Type', 'text/plain');
     }
 
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+    }
 }
