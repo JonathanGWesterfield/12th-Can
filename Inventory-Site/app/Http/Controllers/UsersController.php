@@ -5,18 +5,27 @@ namespace App\Http\Controllers;
 use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-//    /**
-//     * Display a listing of the resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function index()
-//    {
-//        //
-//    }
+    /**
+     * Gets all of the users from the database to display in the admin panel.
+     * @return array Returns all information for all users
+     */
+    public function index()
+    {
+        return DB::select('select * from users');
+    }
+
+    /**
+     * Gets all of the users who are current members of the 12th Can.
+     * @return array Returns all information for users who are members.
+     */
+    public function getCurrentMembers()
+    {
+        return DB::select('select * from users where current_member=TRUE ');
+    }
 
 //    /**
 //     * Show the form for creating a new resource.
