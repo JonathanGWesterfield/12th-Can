@@ -65,18 +65,18 @@ class AdminPanelTest extends DuskTestCase
     public function testCurrentAccountsModify()
     {
         $this->browse(function ($browser) {
-            $browser->press('currentAccountsModify')
+            $browser->pause(250)
+                    ->press('currentAccountsModify')
                     ->waitForText('Modify Account')
-                    ->type('name', 'dusk')
-                    ->type('email', 'no@dusk.com')
+                    ->type('email', 'no@duskdusk.com')
                     ->type('phone', '0000000000')
                     ->select('#positionDropdown')
                     ->press('modifyAccountSubmit')
                     ->waitForText('was successfully modified.')
                     ->with('@currentAccountsTable', function ($table) {
-                        $table->assertSee('dusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('0000000000')
-                              ->assertSee('no@dusk.com');
+                              ->assertSee('no@duskdusk.com');
                     });
 
         });
@@ -85,16 +85,10 @@ class AdminPanelTest extends DuskTestCase
     public function testCurrentAccountsModifyError()
     {
         $this->browse(function ($browser) {
-            $browser->press('currentAccountsModify')
+            $browser->pause(250)
+                    ->press('currentAccountsModify')
                     ->waitForText('Modify Account')
                     //Put a blank field in form
-                    ->type('name', '')
-                    ->type('email', 'no@dusk.com')
-                    ->type('phone', '0000000000')
-                    ->select('#positionDropdown')
-                    ->press('modifyAccountSubmit')
-                    ->assertSee('Modify Account')
-                    ->type('name', 'test')
                     ->type('email', '')
                     ->type('phone', '0000000000')
                     ->press('modifyAccountSubmit')
@@ -110,7 +104,6 @@ class AdminPanelTest extends DuskTestCase
                     ->type('phone', '')
                     ->press('modifyAccountSubmit')
                     ->assertSee('Modify Account')
-                    ->type('name', '')
                     ->type('email', '')
                     ->type('phone', '')
                     ->press('modifyAccountSubmit')
@@ -119,9 +112,9 @@ class AdminPanelTest extends DuskTestCase
                     ->waitForText('Admin Panel')
                     ->pause('500')
                     ->with('@currentAccountsTable', function ($table) {
-                        $table->assertSee('dusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('0000000000')
-                              ->assertSee('no@dusk.com');
+                              ->assertSee('no@duskdusk.com');
                     });
         });
     }  
@@ -131,7 +124,6 @@ class AdminPanelTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->press('currentAccountsModify')
                     ->waitForText('Modify Account')
-                    ->type('name', 'dusk')
                     ->type('email', 'no@dusk.com')
                     ->type('phone', '0000000000')
                     ->check('#accArchive')
@@ -139,7 +131,7 @@ class AdminPanelTest extends DuskTestCase
                     ->press('modifyAccountSubmit')
                     ->waitForText('was successfully modified.')
                     ->with('@pastAccountsTable', function ($table) {
-                        $table->assertSee('dusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('0000000000')
                               ->assertSee('no@dusk.com');
                     });
@@ -151,14 +143,13 @@ class AdminPanelTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->press('pastAccountsModify')
                     ->waitForText('Modify Account')
-                    ->type('name', 'duskdusk')
                     ->type('email', 'no@duskdusk.com')
                     ->type('phone', '1000000000')
-                    ->select('#positionDropdown')
+                    ->select('#positionDropdown', '#position-1')
                     ->press('modifyAccountSubmit')
                     ->waitForText('was successfully modified.')
                     ->with('@pastAccountsTable', function ($table) {
-                        $table->assertSee('duskdusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('1000000000')
                               ->assertSee('no@duskdusk.com');
                     });
@@ -168,16 +159,10 @@ class AdminPanelTest extends DuskTestCase
     public function testPastAccountsModifyError()
     {
         $this->browse(function ($browser) {
-            $browser->press('pastAccountsModify')
+            $browser->pause(250)
+                    ->press('pastAccountsModify')
                     ->waitForText('Modify Account')
                     //Put a blank field in form
-                    ->type('name', '')
-                    ->type('email', 'no@dusk.com')
-                    ->type('phone', '0000000000')
-                    ->select('#positionDropdown')
-                    ->press('modifyAccountSubmit')
-                    ->assertSee('Modify Account')
-                    ->type('name', 'test')
                     ->type('email', '')
                     ->type('phone', '0000000000')
                     ->press('modifyAccountSubmit')
@@ -193,7 +178,6 @@ class AdminPanelTest extends DuskTestCase
                     ->type('phone', '')
                     ->press('modifyAccountSubmit')
                     ->assertSee('Modify Account')
-                    ->type('name', '')
                     ->type('email', '')
                     ->type('phone', '')
                     ->press('modifyAccountSubmit')
@@ -202,7 +186,7 @@ class AdminPanelTest extends DuskTestCase
                     ->waitForText('Admin Panel')
                     ->pause('500')
                     ->with('@pastAccountsTable', function ($table) {
-                        $table->assertSee('duskdusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('1000000000')
                               ->assertSee('no@duskdusk.com');
                     });
@@ -213,7 +197,6 @@ class AdminPanelTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->press('pastAccountsModify')
                     ->waitForText('Modify Account')
-                    ->type('name', 'dusk')
                     ->type('email', 'no@dusk.com')
                     ->type('phone', '0000000000')
                     ->uncheck('#accArchive')
@@ -221,7 +204,7 @@ class AdminPanelTest extends DuskTestCase
                     ->press('modifyAccountSubmit')
                     ->waitForText('was successfully modified.')
                     ->with('@currentAccountsTable', function ($table) {
-                        $table->assertSee('dusk')
+                        $table->assertSee('Big Boss')
                               ->assertSee('0000000000')
                               ->assertSee('no@dusk.com');
                     });
@@ -236,28 +219,28 @@ class AdminPanelTest extends DuskTestCase
                     ->type('positionEmail', 'no@dusk.com')
                     ->type('description', 'duskduskduskdusk')
                     ->check('#posLowNotify')
-                    ->select('positionPrivilegeDropdown')
+                    ->select('positionPrivilegeDropdown', '#positionPrivilege-1')
                     ->press('modifyPositionSubmit')
                     ->assertSee('Modify Position')
                     ->type('position', '')
                     ->type('positionEmail', '')
                     ->type('description', 'duskduskduskdusk')
                     ->check('#posLowNotify')
-                    ->select('positionPrivilegeDropdown')
+                    ->select('positionPrivilegeDropdown', '#positionPrivilege-2')
                     ->press('modifyPositionSubmit')
                     ->assertSee('Modify Position')
                     ->type('position', '')
                     ->type('positionEmail', 'no@dusk.com')
                     ->type('description', '')
                     ->check('#posLowNotify')
-                    ->select('positionPrivilegeDropdown')
+                    ->select('positionPrivilegeDropdown', '#positionPrivilege-0')
                     ->press('modifyPositionSubmit')
                     ->assertSee('Modify Position')
                     ->type('position', '')
                     ->type('positionEmail', 'test')
                     ->type('description', '')
                     ->check('#posLowNotify')
-                    ->select('positionPrivilegeDropdown')
+                    ->select('positionPrivilegeDropdown', '#positionPrivilege-1')
                     ->press('modifyPositionSubmit')
                     ->assertSee('Modify Position')
                     ->press('modifyPositionClose')
@@ -277,6 +260,25 @@ class AdminPanelTest extends DuskTestCase
                     ->type('position', 'dusk')
                     ->type('positionEmail', 'no@dusk.com')
                     ->type('description', 'duskduskduskdusk')
+                    ->check('#posLowNotify')
+                    ->select('positionPrivilegeDropdown')
+                    ->press('modifyPositionSubmit')
+                    ->waitForText('was successfully modified.')
+                    ->with('@currentPositionsTable', function ($table) {
+                        $table->assertSee('dusk')
+                              ->assertSee('Yes')
+                              ->assertSee('no@dusk.com');
+                    });
+        });
+    }
+    public function testCurrentPositionsModify1()
+    {
+        $this->browse(function ($browser) {
+            $browser->press('currentPositionsModify')
+                    ->waitForText('Modify Position')
+                    ->type('position', 'dusk')
+                    ->type('positionEmail', 'no@dusk.com')
+                    ->type('description', 'duskduskdusk')
                     ->check('#posLowNotify')
                     ->select('positionPrivilegeDropdown')
                     ->press('modifyPositionSubmit')
