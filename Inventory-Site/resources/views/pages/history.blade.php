@@ -69,7 +69,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
     <head>
       <style>
         .table-scroll {
-          height: 74%;
+          height: 450px;
           overflow-y: auto;
         }
         table th{
@@ -155,33 +155,64 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
 
         //For chronological sorting
+
+
+        /*
         var switching = true;
-        var i = 0;
+        var i = 1;
         if (sortOrder.order == 'dec' || sortOrder.order == 'inc'){
           while (switching){
+            if (i == rows.length - 1){
+              switching = false;
+              i = 1;
+            }
             var rows = table.rows;
             var date1 = Date.parse(rows[i].cells[0].innerHTML);
             var date2 = Date.parse(rows[i+1].cells[0].innerHTML);
             if (sortOrder.order == 'dec' && date1 < date2){
               rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 0;
+              i = 1;
             }
             else if (sortOrder.order == 'inc' && date1 > date2){
               rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 0;
-            }
-            if (i == rows.length - 1){
-              switching = false;
-              i = 0;
+              i = 1;
             }
             i++;
           }
         }
+        */
+        var switching = true;
+        var i = 0;
+        if (sortOrder.order == 'dec'){
+          while (i < table.rows.length - 1){
+            var date1 = Date.parse(table.rows[i].cells[0].innerHTML);
+            var date2 = Date.parse(table.rows[i+1].cells[0].innerHTML);
+            if (date1 < date2){
+              table.rows[i].parentNode.insertBefore(table.rows[i+1], table.rows[i]);
+              i = 0;
+            }
+            i++;
+          }
+          table.rows[0].cells[0].innerHTML = 200;
+        }
+        else if (sortOrder.order == 'inc'){
+          while (i < table.rows.length - 1){
+            var date1 = Date.parse(table.rows[i].cells[0].innerHTML);
+            var date2 = Date.parse(table.rows[i+1].cells[0].innerHTML);
+            if (date1 > date2){
+              table.rows[i].parentNode.insertBefore(table.rows[i+1], table.rows[i]);
+              i = 0;
+            }
+            i++;
+          }
+          table.rows[0].cells[0].innerHTML = 300;
+        }
+
 
         //Filter by add or removing quantities
         if (sortOrder.addrmv == 'add'){
           for (var i = 1; i < table.rows.length; i++){
-            var change = table.rows[i].cells[2].innerHTML;
+            var change = parseInt(table.rows[i].cells[2].innerHTML);
             if (change < 0){
               table.deleteRow(i);
               i--;
@@ -190,7 +221,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
         else if (sortOrder.addrmv == 'rmv'){
           for (var i = 1; i < table.rows.length; i++){
-            var change = table.rows[i].cells[2].innerHTML;
+            var change = parseInt(table.rows[i].cells[2].innerHTML);
             if (change > 0){
               table.deleteRow(i);
               i--;
@@ -214,6 +245,18 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             }
           }
         }
+      }
+
+      function filterTable() {
+        var urlVars = getUrlVars();
+        var table = document.getElementById("transTable");
+        if (urlVars.addrmv == 'add'){
+          for (var i = 0; i < table.rows.length; i++){
+            table.rows[i].cells[0].innerHTML = 500;
+
+          }
+        }
+
       }
     </script>
 
