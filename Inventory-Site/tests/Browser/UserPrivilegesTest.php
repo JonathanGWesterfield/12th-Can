@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class MyFirstDuskTest extends DuskTestCase
+class UserPrivilegesTest extends DuskTestCase
 {
     /**
      * A Dusk test example.
@@ -16,8 +16,8 @@ class MyFirstDuskTest extends DuskTestCase
     public function testExample()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/new_items')
-                    ->assertSee("Add");
+            $browser->visit('/')
+                    ->assertSee('Laravel');
         });
     }
 }

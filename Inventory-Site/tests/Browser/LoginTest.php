@@ -6,13 +6,13 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'register'
+*
+* @group register
+*/
 class LoginTest extends DuskTestCase
 {
-    /**
-     * Put in group 'register'
-     *
-     * @group register
-     */
     //Create dummy accounts for testing
     public function testMakeAccounts()
     {

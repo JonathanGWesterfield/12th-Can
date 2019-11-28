@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Member_Position;
 use PhpParser\Node\Expr\PostDec;
+use Illuminate\Support\Facades\DB;
 
 class MemberPositionsController extends Controller
 {
@@ -15,7 +16,8 @@ class MemberPositionsController extends Controller
      */
     public function index()
     {
-        //
+        $positions = DB::select('select * from Member_Position');
+        return $positions;
     }
 
 //    /**
@@ -40,9 +42,10 @@ class MemberPositionsController extends Controller
             'position' => 'required|string',
             'privilege' => 'required|integer',
             'description' => 'required|string',
-            'email' => 'required|string'
+            'email' => 'required|string',
+            'low_notify' => 'required|boolean'
         ]);
-        // TODO: WRITE TESTS FOR THIS
+
         try
         {
             $position = new Member_Position();
@@ -51,6 +54,7 @@ class MemberPositionsController extends Controller
             $position->description = $request->input('description');
             $position->email = $request->input('email');
             $position->created_at = date("Y-m-d H:i:s");
+            $position->low_notify = $request->input('low_notify');
 
             $position->save();
         }
@@ -106,7 +110,8 @@ class MemberPositionsController extends Controller
             'position' => 'required|string',
             'privilege' => 'required|integer',
             'description' => 'required|string',
-            'email' => 'required|string'
+            'email' => 'required|string',
+            'low_notify' => 'required|boolean'
         ]);
         try
         {
@@ -115,7 +120,7 @@ class MemberPositionsController extends Controller
             $position->privilege = $request->input('privilege');
             $position->description = $request->input('description');
             $position->email = $request->input('email');
-            $position->created_at = date("Y-m-d H:i:s");
+            $position->low_notify = $request->input('low_notify');
 
             $position->save();
         }
@@ -132,7 +137,8 @@ class MemberPositionsController extends Controller
             'status' => 'position modification succeeded',
             'position' => $position->position,
             'position_privilege' => $position->privilege,
-            'position_email' =>  $position->email], 200)
+            'position_email' =>  $position->email,
+            'low_notify' => $position->low_notify], 200)
             ->header('Content-Type', 'text/plain');
     }
 

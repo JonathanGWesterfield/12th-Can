@@ -101,7 +101,7 @@ Please fill out all the feilds in the table
         </div>
     </div>
 </div>
-
+</div>
 <script>
     var app = angular.module('add', [], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
@@ -243,5 +243,5 @@ Please fill out all the feilds in the table
 });
 </script>
 
-</div>
+
 @endsection

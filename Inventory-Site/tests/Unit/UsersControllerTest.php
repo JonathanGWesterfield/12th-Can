@@ -84,4 +84,20 @@ class UsersControllerTest extends TestCase
             'position_id' => '7'
         ]);
     }
+
+    /**
+     * Tests if the destroy function actually deletes the user from the database. Should only be called
+     * when a user gets rejected in the admin panel. Deletes the user ID 1.
+     */
+    public function testDestroy()
+    {
+        $this->seed();
+
+        $this->withoutMiddleware();
+        $response = $this->json('DELETE', 'users/1');
+
+        $this->assertDatabaseMissing('users', [
+            'id' => 1
+        ]);
+    }
 }

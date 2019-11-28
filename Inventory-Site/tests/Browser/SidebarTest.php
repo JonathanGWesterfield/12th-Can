@@ -6,22 +6,24 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class SidebarTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     public function testLogin()
     {
         $this->browse(function ($browser) {
+            //fill in the credentials and login to admin account
             $browser->visit('/login')
                     ->assertSee('E-Mail')
                     ->assertSee('Password')
-                    ->type('email', 'johnsmith@aol.com')
-                    ->type('password', 'password')
-                    ->press('Login');
+                    ->type('email', '12thcanNoReply@gmail.com')
+                    ->type('password', 'BigBoss12345')
+                    ->press('Login')
+                    ->assertSee('Low Inventory');
         });
     }
     public function testSidebarAddInventory()
