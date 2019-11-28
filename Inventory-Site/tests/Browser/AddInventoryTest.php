@@ -6,13 +6,13 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class AddInventoryTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     //login to the website
     public function testLogin()
     {

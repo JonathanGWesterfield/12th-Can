@@ -7,13 +7,13 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use Facebook\WebDriver\WebDriverBy;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class DashboardTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     public function testLogin()
     {
         $this->browse(function ($browser) {

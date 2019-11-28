@@ -6,13 +6,14 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class NewItemsTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
+    
     public function testLogin()
     {
         $this->browse(function ($browser) {
