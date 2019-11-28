@@ -17,12 +17,12 @@ class AddInventoryTest extends DuskTestCase
     public function testLogin()
     {
         $this->browse(function ($browser) {
-            //fill in the credentials and login
+            //fill in the credentials and login to admin account
             $browser->visit('/login')
                     ->assertSee('E-Mail')
                     ->assertSee('Password')
-                    ->type('email', 'johnsmith@aol.com')
-                    ->type('password', 'password')
+                    ->type('email', '12thcanNoReply@gmail.com')
+                    ->type('password', 'BigBoss12345')
                     ->press('Login')
                     ->assertSee('Low Inventory');
         });

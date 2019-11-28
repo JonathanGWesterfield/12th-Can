@@ -15,7 +15,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyAccModalLabel">Modify Account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button name="closeModifyAccount" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -23,15 +23,15 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input type="text" class="form-control" id="accName" required>
+                        <input name="name" type="text" class="form-control" id="accName" required>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
-                        <input type="email" class="form-control" id="accEmail" required>
+                        <input name="email" type="email" class="form-control" id="accEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input type="text" class="form-control" id="accPhone" required>
+                        <input name="phone" type="text" class="form-control" id="accPhone" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -41,8 +41,8 @@
                     </div>
                     <div class="form-group">
                         <div class="form-row">
-                            <select ng-model="accPosVal">
-                                <option ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
+                            <select id="positionDropdown" ng-model="accPosVal">
+                                <option id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyPosModalLabel">Modify Position</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button name="modifyPositionClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -67,15 +67,15 @@
                 <form ng-submit = "modifyPosSub()">
                     <div class="form-row">
                         <label for="posName">Position</label>
-                        <input type="text" class="form-control" id="posName" required>
+                        <input name="position" type="text" class="form-control" id="posName" required>
                     </div>
                     <div class="form-row">
                         <label for="posEmail">Email</label>
-                        <input type="email" class="form-control" id="posEmail" required>
+                        <input name="positionEmail" type="email" class="form-control" id="posEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="posDesc">Description</label>
-                        <input class="form-control" id="posDesc" required>
+                        <input name="description" class="form-control" id="posDesc" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -86,7 +86,7 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
+                            <select name="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
 
@@ -180,7 +180,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table dusk="tabletest" class="table table-striped table-bordered" id="example">
+                <table dusk="currentAccountsTable" class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -205,7 +205,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Past Accounts</h5>
             <div class="row">
-                <table class="table table-striped table-bordered">
+                <table dusk="pastAccountsTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -257,13 +257,13 @@
 
         </div>
         <div class="col-auto my-1 px-md-0 ml-auto">
-        <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
+        <button name="addPosition" class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
 
         </div>
         </div>
 
             <div class="row">
-                <table class="table table-striped table-bordered">
+                <table dusk="currentPositionsTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Position</th>
