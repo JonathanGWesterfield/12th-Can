@@ -15,7 +15,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyAccModalLabel">Modify Account</h5>
-                <button name="closeModifyAccount" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -23,15 +23,15 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input name="name" type="text" class="form-control" id="accName" required>
+                        <input type="text" class="form-control" id="accName" required readonly>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
-                        <input name="email" type="email" class="form-control" id="accEmail" required>
+                        <input type="email" class="form-control" id="accEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" id="accPhone" required>
+                        <input type="text" class="form-control" id="accPhone" required only-num maxlength="10" minlength="10">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -41,8 +41,8 @@
                     </div>
                     <div class="form-group">
                         <div class="form-row">
-                            <select id="positionDropdown" ng-model="accPosVal">
-                                <option id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
+                            <select ng-model="accPosVal">
+                                <option ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyPosModalLabel">Modify Position</h5>
-                <button name="modifyPositionClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -67,15 +67,15 @@
                 <form ng-submit = "modifyPosSub()">
                     <div class="form-row">
                         <label for="posName">Position</label>
-                        <input name="position" type="text" class="form-control" id="posName" required>
+                        <input type="text" class="form-control" id="posName" required>
                     </div>
                     <div class="form-row">
                         <label for="posEmail">Email</label>
-                        <input name="positionEmail" type="email" class="form-control" id="posEmail" required>
+                        <input type="email" class="form-control" id="posEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="posDesc">Description</label>
-                        <input name="description" class="form-control" id="posDesc" required>
+                        <input class="form-control" id="posDesc" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -86,7 +86,7 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select name="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
+                            <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
 
@@ -180,7 +180,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table dusk="currentAccountsTable" class="table table-striped table-bordered" id="example">
+                <table class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -205,7 +205,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Past Accounts</h5>
             <div class="row">
-                <table dusk="pastAccountsTable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -244,7 +244,7 @@
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
                             <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
-                            <td><button name="pendingAccountsReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
+                            <td><button name="pendingAccountReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -257,13 +257,13 @@
 
         </div>
         <div class="col-auto my-1 px-md-0 ml-auto">
-        <button name="addPosition" class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
+        <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
 
         </div>
         </div>
 
             <div class="row">
-                <table dusk="currentPositionsTable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Position</th>
@@ -299,9 +299,6 @@
         jQuery(function() {
             $scope.allAcounts = [];
             $scope.currentPos = [];
-            $scope.accNameVal = "";
-            $scope.accPhoneVal = "";
-            $scope.accEmailVal = "";
             $scope.accArcVal = false;
             $scope.currentMod = false;
             $scope.index = -1;
@@ -382,6 +379,23 @@
 
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
+            var email = document.getElementById("accEmail").value
+
+            for (var i = 0; i < $scope.allAcounts.length; ++i){
+                if(email == $scope.allAcounts[i].email){
+                    document.getElementById("alert").innerHTML =  "Account was not modified because the email is in use by another account. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                    return;
+                }
+            }
+            
             account = {
                 id:$scope.index,
                 name:document.getElementById("accName").value,
@@ -415,6 +429,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getAccounts();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -462,6 +477,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getAccounts();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -515,6 +531,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getMemberPos();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -556,6 +573,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getAccounts();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -576,6 +594,7 @@
         }
 
         $scope.modifyPos = function(pos){
+
             document.getElementById("posName").value = pos.position;
             $scope.posIdVal = pos.id;
             document.getElementById("posEmail").value = pos.email;
@@ -613,6 +632,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getMemberPos();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -622,6 +642,22 @@
 
         $scope.modifyPosSub = function(){
             $('#modifyPosModal').modal('hide');
+            var email = document.getElementById("posEmail").value
+
+            for (var i = 0; i < $scope.currentPos.length; ++i){
+                if(email == $scope.currentPos[i].email){
+                    document.getElementById("alert").innerHTML =  "Possition was not added successfully because the email is in use by another position. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                    return;
+                }
+            }
             if($scope.posIdVal == -1){
                 $scope.addPosSub();
                 return;
@@ -651,6 +687,7 @@
                 },
                 error: function(request,msg,error) {
                     // handle failure
+                    $scope.getMemberPos();
                     console.log(request);
                     console.log(msg);
                     console.log(error);
@@ -669,5 +706,22 @@
             }
         }
     })
+    app.directive('onlyNum', function() {
+    return function(scope, element, attrs) {
+
+        var keyCode = [8, 9, 37, 39, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 110];
+        element.bind("keydown", function(event) {
+            //console.log($.inArray(event.which,keyCode));
+            if ($.inArray(event.which, keyCode) === -1) {
+                scope.$apply(function() {
+                    scope.$eval(attrs.onlyNum);
+                    event.preventDefault();
+                });
+                event.preventDefault();
+            }
+
+        });
+    };
+});
 </script>
 @endsection
