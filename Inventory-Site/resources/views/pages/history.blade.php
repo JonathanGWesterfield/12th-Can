@@ -272,7 +272,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           <div class="col-md-4">
             <form id="sortSelect">
               <div class="form-group">
-                <select class="form-control" name="sort" id="sort">
+                <select name="inventoryDropdown" class="form-control" name="sort" id="sort">
                   <!--<option value="date">Date</option>
                   <option value="alph">Alphabetical</option>-->
                   <option value="all">All Inventory</option>
@@ -282,13 +282,13 @@ usort($sortedDisplayNames, 'strnatcasecmp');
                 </select>
               </div>
               <div class="form-group">
-                <select class="form-control" name="order" id="order">
+                <select name="ascendingOrDescendingDropdown" class="form-control" name="order" id="order">
                   <option value="dec">Descending</option>
                   <option value="inc">Ascending</option>
                 </select>
               </div>
               <div class="form-group">
-                <select class="form-control" name="addrmv" id="addrmv">
+                <select name="addOrRemoveDropdown" class="form-control" name="addrmv" id="addrmv">
                   <option value="addrmv">Add/Remove</option>
                   <option value="add">Add</option>
                   <option value="rmv">Remove</option>
