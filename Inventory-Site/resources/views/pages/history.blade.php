@@ -272,23 +272,23 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           <div class="col-md-4">
             <form id="sortSelect">
               <div class="form-group">
-                <select name="inventoryDropdown" class="form-control" name="sort" id="sort">
+                <select id="inventoryDropdown" class="form-control" name="sort" id="sort">
                   <!--<option value="date">Date</option>
                   <option value="alph">Alphabetical</option>-->
                   <option value="all">All Inventory</option>
                   @for ($i = 0; $i < count($sortedNames); ++$i)
-                    <option value="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}</option>
+                    <option id="inventory-{{$i}}" value="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}</option>
                   @endfor
                 </select>
               </div>
               <div class="form-group">
-                <select name="ascendingOrDescendingDropdown" class="form-control" name="order" id="order">
+                <select id="ascendingOrDescendingDropdown" class="form-control" name="order" id="order">
                   <option value="dec">Descending</option>
                   <option value="inc">Ascending</option>
                 </select>
               </div>
               <div class="form-group">
-                <select name="addOrRemoveDropdown" class="form-control" name="addrmv" id="addrmv">
+                <select id="addOrRemoveDropdown" class="form-control" name="addrmv" id="addrmv">
                   <option value="addrmv">Add/Remove</option>
                   <option value="add">Add</option>
                   <option value="rmv">Remove</option>
@@ -299,13 +299,13 @@ usort($sortedDisplayNames, 'strnatcasecmp');
                 End Date: <input class="form-control" name="end" type="date">
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button name="submit" type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
           </div>
           <div class="col-md-8">
             <div class="table-scroll">
-              <table id="transTable" class="table table-striped table-bordered">
+              <table dusk="transactionTable" id="transTable" class="table table-striped table-bordered">
                 <thead>
                   <th scope="col">Transaction Date</th>
                   <th scope="col">Item</th>
