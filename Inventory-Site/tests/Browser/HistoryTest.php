@@ -37,8 +37,10 @@ class HistoryTest extends DuskTestCase
                     ->select('#addOrRemoveDropdown')
                     ->press('submit')
                     ->with('@transactionTable', function ($table) {
-                        $table->assertSee('Big Boss')
-                              ->assertSee('Nice');
+                        $table->assertSee('Item')
+                              ->assertSee('Change')
+                              ->assertSee('User')
+                              ->assertSee('Comment');
                     });
         });
     }
