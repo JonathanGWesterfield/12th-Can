@@ -96,7 +96,7 @@ Please fill out all the feilds in the table
                             <td><input id="itemName" ng-model = "item.name" type = "text"></td>
                             <td><input id="capacity" ng-model = "item.capacity" type = "number" only-num></td>
                             <td><input id="threshold" ng-model = "item.low_threshold" type = "number" only-num></td>
-                            <td><input id="foodItem" name=cheng-model = "item.is_food" type = "checkbox"></td>
+                            <td><input id="foodItem" ng-model = "item.is_food" type = "checkbox"></td>
                             <td><input id="refrigeration" ng-model = "item.refrigerated" type = "checkbox"></td>
                             <td><input id="delete" ng-model = "item.removed" type="checkbox"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>

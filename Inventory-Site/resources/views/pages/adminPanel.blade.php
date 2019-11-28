@@ -23,7 +23,7 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input type="text" class="form-control" id="accName" required>
+                        <input type="text" class="form-control" id="accName" required readonly>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input type="text" class="form-control" id="accPhone" required>
+                        <input type="text" class="form-control" id="accPhone" required only-num maxlength="10" minlength="10">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -299,9 +299,6 @@
         jQuery(function() {
             $scope.allAcounts = [];
             $scope.currentPos = [];
-            $scope.accNameVal = "";
-            $scope.accPhoneVal = "";
-            $scope.accEmailVal = "";
             $scope.accArcVal = false;
             $scope.currentMod = false;
             $scope.index = -1;
@@ -382,6 +379,23 @@
 
         $scope.modifyAcc = function(){
             $('#modifyAccModal').modal('hide');
+            var email = document.getElementById("accEmail").value
+
+            for (var i = 0; i < $scope.allAcounts.length; ++i){
+                if(email == $scope.allAcounts[i].email){
+                    document.getElementById("alert").innerHTML =  "Account was not modified because the email is in use by another account. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                    return;
+                }
+            }
+            
             account = {
                 id:$scope.index,
                 name:document.getElementById("accName").value,
@@ -580,6 +594,7 @@
         }
 
         $scope.modifyPos = function(pos){
+
             document.getElementById("posName").value = pos.position;
             $scope.posIdVal = pos.id;
             document.getElementById("posEmail").value = pos.email;
@@ -627,6 +642,22 @@
 
         $scope.modifyPosSub = function(){
             $('#modifyPosModal').modal('hide');
+            var email = document.getElementById("posEmail").value
+
+            for (var i = 0; i < $scope.currentPos.length; ++i){
+                if(email == $scope.currentPos[i].email){
+                    document.getElementById("alert").innerHTML =  "Possition was not added successfully because the email is in use by another position. ";
+                    document.getElementById("alert").hidden = false;
+                    jQuery("#alert").slideDown(200, function() {
+                        //jQuery(this).alert('close');
+                    });
+                    jQuery("#alert").delay(5000).slideUp(200, function() {
+                        //jQuery(this).alert('close');
+                        //document.getElementById("alert").hidden = true;
+                    });
+                    return;
+                }
+            }
             if($scope.posIdVal == -1){
                 $scope.addPosSub();
                 return;
@@ -675,5 +706,22 @@
             }
         }
     })
+    app.directive('onlyNum', function() {
+    return function(scope, element, attrs) {
+
+        var keyCode = [8, 9, 37, 39, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 110];
+        element.bind("keydown", function(event) {
+            //console.log($.inArray(event.which,keyCode));
+            if ($.inArray(event.which, keyCode) === -1) {
+                scope.$apply(function() {
+                    scope.$eval(attrs.onlyNum);
+                    event.preventDefault();
+                });
+                event.preventDefault();
+            }
+
+        });
+    };
+});
 </script>
 @endsection
