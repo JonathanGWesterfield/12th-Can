@@ -288,16 +288,19 @@ class AdminPanelTest extends DuskTestCase
                     });
         });
     }
+    
     public function testCurrentPositionsRemove()
     {
         $this->browse(function ($browser) {
-            $browser->press('currentPositionsRemove')
+            $browser->pause(500)
+                    ->press('currentPositionsRemove')
                     ->waitForText('Delete Position Confirmation')
                     ->press('positionDelete')
                     ->waitForText('was successfully deleted.')
                     ->assertSee('Admin Panel');
         });
     }
+    
     public function testAddPositionsError()
     {
         $this->browse(function ($browser) {
