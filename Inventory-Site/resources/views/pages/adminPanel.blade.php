@@ -382,7 +382,7 @@
             var email = document.getElementById("accEmail").value
 
             for (var i = 0; i < $scope.allAcounts.length; ++i){
-                if(email == $scope.allAcounts[i].email){
+                if(email == $scope.allAcounts[i].email  && $scope.index != $scope.allAcounts[i].id){
                     document.getElementById("alert").innerHTML =  "Account was not modified because the email is in use by another account. ";
                     document.getElementById("alert").hidden = false;
                     jQuery("#alert").slideDown(200, function() {
@@ -645,7 +645,7 @@
             var email = document.getElementById("posEmail").value
 
             for (var i = 0; i < $scope.currentPos.length; ++i){
-                if(email == $scope.currentPos[i].email){
+                if(email == $scope.currentPos[i].email && $scope.posIdVal != $scope.currentPos[i].id){
                     document.getElementById("alert").innerHTML =  "Possition was not added successfully because the email is in use by another position. ";
                     document.getElementById("alert").hidden = false;
                     jQuery("#alert").slideDown(200, function() {
