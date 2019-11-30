@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <div class="form-row">
                             <select id="positionDropdown" ng-model="accPosVal">
-                                <option id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
+                                <option dusk="position-<%x.position%>" id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select name="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
+                            <select dusk="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
                                 <option id="positionPrivilege-<%$index%>" ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
 
@@ -191,12 +191,12 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : 1}">
-                        <tr id="currentAccounts-<%$index%>">
+                        <tr dusk="currentAccounts-<%displayPos(acct.position_id)%>" id="currentAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
                             <td><%displayPos(acct.position_id)%></td>
-                            <td><button name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
+                            <td><button dusk="currentAccountsModify-<%acct.name%>" name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -243,7 +243,7 @@
                         <tr id="pendingAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button dusk="pendingAccountsAccept-<%acct.name%>" name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
                             <td><button name="pendingAccountsReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
@@ -276,7 +276,7 @@
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
                         <tr id="currentPositions-<%$index%>">
-                            <td><%pos.position%></td>
+                            <td id="tableCurrentPositions-<%pos.position%>"><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
                             <td><%displayLow(pos.low_notify)%></td>

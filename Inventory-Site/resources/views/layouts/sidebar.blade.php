@@ -114,7 +114,7 @@
                             <a href="/dashboard?totalInventory=on">Dashboard</a>
                         </li>
                         <li>
-                            <a href="#">History</a>
+                            <a href="/history">History</a>
                         </li>
                     </ul>
                 </nav>
