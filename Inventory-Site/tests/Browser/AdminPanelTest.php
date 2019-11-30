@@ -336,7 +336,13 @@ class AdminPanelTest extends DuskTestCase
                     ->select('positionPrivilegeDropdown')
                     ->press('modifyPositionSubmit')
                     ->assertSee('Modify Position')
-                    ->press('modifyPositionClose')
+                    ->type('position', 'testtest')
+                    ->type('positionEmail', '12thcannoreply@gmail.com')
+                    ->type('description', 'idk')
+                    ->check('#posLowNotify')
+                    ->select('positionPrivilegeDropdown')
+                    ->press('modifyPositionSubmit')
+                    ->waitForText('was not added successfully')
                     ->assertSee('Admin Panel')
                     ->pause(500);
         });
