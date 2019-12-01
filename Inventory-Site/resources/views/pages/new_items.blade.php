@@ -47,7 +47,7 @@
                     </div>
                     <div class="form-row">
                         <label for="capacity">Capacity</label>
-                        <input type="number" class="form-control" id="capacity" placeholder="Capcity" required>
+                        <input type="number" class="form-control" id="capacity" placeholder="Capacity" required>
                     </div>
                     <div class="form-row">
                         <label for="threshold">Threshold</label>
@@ -183,7 +183,7 @@
     app.controller('addItems', function($scope) {
         console.log("Hello")
         jQuery(function() {
-            
+
             //document.getElementById("alert").slideUp(500);
             $scope.addItems = []
             var xhttp = new XMLHttpRequest();
@@ -269,7 +269,7 @@
                     for (var i = 0; i<$scope.notAdded.length; ++i){
                         document.getElementById("alert").innerHTML += $scope.notAdded[i].name;
                     }
-                    
+
                 }
                 document.getElementById("alert").hidden = false;
                 jQuery("#alert").slideDown(200, function() {
