@@ -15,7 +15,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyAccModalLabel">Modify Account</h5>
-                <button name="closeModifyAccount" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -23,15 +23,15 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input name="name" type="text" class="form-control" id="accName" required readonly>
+                        <input type="text" class="form-control" id="accName" required readonly>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
-                        <input name="email" type="email" class="form-control" id="accEmail" required>
+                        <input type="email" class="form-control" id="accEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" id="accPhone" required only-num maxlength="10" minlength="10">
+                        <input type="text" class="form-control" id="accPhone" required only-num maxlength="10" minlength="10">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -41,8 +41,8 @@
                     </div>
                     <div class="form-group">
                         <div class="form-row">
-                            <select id="positionDropdown" ng-model="accPosVal">
-                                <option dusk="position-<%x.position%>" id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
+                            <select ng-model="accPosVal">
+                                <option ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modifyPosModalLabel">Modify Position</h5>
-                <button name="modifyPositionClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -67,15 +67,15 @@
                 <form ng-submit = "modifyPosSub()">
                     <div class="form-row">
                         <label for="posName">Position</label>
-                        <input name="position" type="text" class="form-control" id="posName" required>
+                        <input type="text" class="form-control" id="posName" required>
                     </div>
                     <div class="form-row">
                         <label for="posEmail">Email</label>
-                        <input name="positionEmail" type="email" class="form-control" id="posEmail" required>
+                        <input type="email" class="form-control" id="posEmail" required>
                     </div>
                     <div class="form-row">
                         <label for="posDesc">Description</label>
-                        <input name="description" class="form-control" id="posDesc" required>
+                        <input class="form-control" id="posDesc" required>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -86,8 +86,8 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select dusk="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
-                                <option id="positionPrivilege-<%$index%>" ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
+                            <select ng-model="posPriviledgeVal" id = "posPriviledge" required>
+                                <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
 
                         </div>
@@ -180,7 +180,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Current Accounts</h5>
             <div class="row">
-                <table dusk="currentAccountsTable" class="table table-striped table-bordered" id="example">
+                <table class="table table-striped table-bordered" id="example">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -191,12 +191,12 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : 1}">
-                        <tr dusk="currentAccounts-<%displayPos(acct.position_id)%>" id="currentAccounts-<%$index%>">
+                        <tr id="currentAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
                             <td><%displayPos(acct.position_id)%></td>
-                            <td><button dusk="currentAccountsModify-<%acct.name%>" name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
+                            <td><button name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -205,7 +205,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Past Accounts</h5>
             <div class="row">
-                <table dusk="pastAccountsTable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -230,7 +230,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Pending Accounts</h5>
             <div class="row">
-                <table dusk="pendingAccountsTable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -243,8 +243,8 @@
                         <tr id="pendingAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button dusk="pendingAccountsAccept-<%acct.name%>" name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
-                            <td><button name="pendingAccountsReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
+                            <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button name="pendingAccountReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -257,13 +257,13 @@
 
         </div>
         <div class="col-auto my-1 px-md-0 ml-auto">
-        <button name="addPosition" class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
+        <button class="text-right btn btn-primary" ng-click="addPos()">Add Position</button>
 
         </div>
         </div>
 
             <div class="row">
-                <table dusk="currentPositionsTable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Position</th>
@@ -276,7 +276,7 @@
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
                         <tr id="currentPositions-<%$index%>">
-                            <td id="tableCurrentPositions-<%pos.position%>"><%pos.position%></td>
+                            <td><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
                             <td><%displayLow(pos.low_notify)%></td>
