@@ -23,7 +23,7 @@
                 <form ng-submit = "modifyAcc()">
                     <div class="form-row">
                         <label for="accName">Name</label>
-                        <input name="name" type="text" class="form-control" id="accName" required>
+                        <input name="name" type="text" class="form-control" id="accName" required readonly>
                     </div>
                     <div class="form-row">
                         <label for="accEmail">Email</label>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-row">
                         <label for="accPhone">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" id="accPhone" required>
+                        <input name="phone" type="text" class="form-control" id="accPhone" required only-num maxlength="10" minlength="10">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <div class="form-row">
                             <select id="positionDropdown" ng-model="accPosVal">
-                                <option id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
+                                <option dusk="position-<%x.position%>" id="position-<%$index%>" ng-repeat="x in currentPos" value = "<%x.id%>"><%x.position%></option>
                             </select>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
                     <div class="form-group">
                         <div class="form-row">
                         <label for = "posPriviledge">Position Privilege</label>
-                            <select name="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
-                                <option ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
+                            <select dusk="positionPrivilegeDropdown" ng-model="posPriviledgeVal" id = "posPriviledge" required>
+                                <option id="positionPrivilege-<%$index%>" ng-repeat="x in posPriviledges" value = "<%x.id%>"><%x.value%></option>
                             </select>
 
                         </div>
@@ -191,12 +191,12 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="acct in allAcounts | filter :{current_member : 1}">
-                        <tr id="currentAccounts-<%$index%>">
+                        <tr dusk="currentAccounts-<%displayPos(acct.position_id)%>" id="currentAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.phone%></td>
                             <td><%acct.email%></td>
                             <td><%displayPos(acct.position_id)%></td>
-                            <td><button name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
+                            <td><button dusk="currentAccountsModify-<%acct.name%>" name="currentAccountsModify" class="btn btn-primary" ng-click="modifyCurrent(acct)">Modify</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -230,7 +230,7 @@
         <div class="col mx-md-5">
                 <h5 class="text-center">Pending Accounts</h5>
             <div class="row">
-                <table class="table table-striped table-bordered">
+                <table dusk="pendingAccountsTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -243,7 +243,7 @@
                         <tr id="pendingAccounts-<%$index%>">
                             <td><%acct.name%></td>
                             <td><%acct.email%></td>
-                            <td><button name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
+                            <td><button dusk="pendingAccountsAccept-<%acct.name%>" name="pendingAccountsAccept" class="btn btn-primary" ng-click="acceptAcc(acct)">Accept</button></td>
                             <td><button name="pendingAccountsReject" class="btn btn-primary" ng-click="rejectAcc(acct)">Reject</button></td>
                         </tr>
                     </tbody>
@@ -276,7 +276,7 @@
                     </thead>
                     <tbody ng-repeat="pos in currentPos">
                         <tr id="currentPositions-<%$index%>">
-                            <td><%pos.position%></td>
+                            <td id="tableCurrentPositions-<%pos.position%>"><%pos.position%></td>
                             <td><%pos.email%></td>
                             <td><%pos.privilege%></td>
                             <td><%displayLow(pos.low_notify)%></td>
@@ -382,7 +382,7 @@
             var email = document.getElementById("accEmail").value
 
             for (var i = 0; i < $scope.allAcounts.length; ++i){
-                if(email == $scope.allAcounts[i].email){
+                if(email == $scope.allAcounts[i].email  && $scope.index != $scope.allAcounts[i].id){
                     document.getElementById("alert").innerHTML =  "Account was not modified because the email is in use by another account. ";
                     document.getElementById("alert").hidden = false;
                     jQuery("#alert").slideDown(200, function() {
@@ -645,7 +645,7 @@
             var email = document.getElementById("posEmail").value
 
             for (var i = 0; i < $scope.currentPos.length; ++i){
-                if(email == $scope.currentPos[i].email){
+                if(email == $scope.currentPos[i].email && $scope.posIdVal != $scope.currentPos[i].id){
                     document.getElementById("alert").innerHTML =  "Possition was not added successfully because the email is in use by another position. ";
                     document.getElementById("alert").hidden = false;
                     jQuery("#alert").slideDown(200, function() {

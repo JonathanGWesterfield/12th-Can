@@ -151,7 +151,6 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('History');
         });
     }
-    /* Uncomment once History page exists
     public function testSidebarHistory()
     {
         $this->browse(function ($browser) {
@@ -177,5 +176,4 @@ class SidebarTest extends DuskTestCase
                     ->clickLink('History');
         });
     }
-    */
 }

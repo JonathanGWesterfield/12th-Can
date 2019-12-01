@@ -62,9 +62,9 @@ class RemoveInventoryTest extends DuskTestCase
                     ->waitForText('Confirmation')
                     ->assertSee('10')
                     ->assertSee('comment1')
-                    ->press('saveChanges');
+                    ->press('saveChanges')
                     //Uncomment once routes is figured out
-                    //->waitForText('Inventory was removed');
+                    ->waitForText('Inventory was removed');
         });
     }
 }
