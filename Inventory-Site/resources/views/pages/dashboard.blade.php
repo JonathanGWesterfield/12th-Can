@@ -20,6 +20,7 @@ for ($i = 0; $i < count($activeItems); ++$i) {
 */
 
 for ($i = 0; $i < count($activeItems); ++$i) {
+  //if statement prevents dashboard from breaking if any items are marked removed in the database
   if ($activeItems[$i]->removed == 0) {
     $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
     $inventoryDisplayNames[] = $activeItems[$i]->name;
@@ -42,6 +43,8 @@ $transactionIDs = array();
 $recentChanges = array();
 
 for ($i = 0; $i < count($activeTransactions); ++$i) {
+  //if statement prevents dashboard from breaking if any items are marked removed in the database
+  //TODO CHECK WHY ITS DELETING YEETERONIS
   if ($activeItems[$activeTransactions[$i]->item_id-1]->removed == 0){
     $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
     $transactionDates[] = $activeTransactions[$i]->transaction_date;
@@ -105,6 +108,10 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   }
 
   .table-scroll {
+    height: 230px;
+    overflow-y: auto;
+  }
+  .viewSelectBoxes {
     height: 230px;
     overflow-y: auto;
   }
@@ -203,6 +210,27 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       }
 
+      //You can add more colors here just fine
+      var backgrounds=[
+        'rgba(255, 20, 20, .2)',
+        'rgba(20, 240, 255, .2)',
+        'rgba(0, 255, 15, .2)',
+        'rgba(180, 0, 255, .2)',
+        'rgba(255, 160, 0, .2)'];
+      var borders=[
+        'rgba(255, 20, 20, .8)',
+        'rgba(20, 240, 255, .8)',
+        'rgba(0, 255, 15, .8)',
+        'rgba(180, 0, 255, .8)',
+        'rgba(255, 160, 0, .8)'];
+
+      var chartColors = [];
+      var chartBorders = [];
+      for (var i = 0; i < activeQuantities.length; i++){
+        chartColors.push(backgrounds[i%backgrounds.length]);
+        chartBorders.push(borders[i%borders.length]);
+      }
+
       var inventoryChart = document.getElementById('inventoryChart').getContext('2d');
       var inventoryChart = new Chart(inventoryChart, {
         type:'bar',
@@ -210,20 +238,9 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           labels:activeDisplayNames,
           datasets:[{
             //label:'Current Inventory',
-            data:activeQuantities,
-            backgroundColor:[
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)'],
-            borderColor:[
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)'
-          ],
+            data: activeQuantities,
+            backgroundColor: chartColors,
+            borderColor: chartBorders,
             borderWidth: 2
           }]
         },
@@ -246,6 +263,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           }
         }
       });
+
     </script>
   </div>
   <!--Recent Inventory Table-->
@@ -302,11 +320,16 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   <!--Form Selection for displayed inventory-->
   <div class="col-md-2">
     <form id="viewSelect" class="viewSelect">
-      <input type="submit" value="Submit" name="submitButton"><br>
+      <div class="form-group">
+        <!--<input type="submit" value="Submit" name="submitButton"><br>-->
+        <button type="submit" class="btn btn-primary">Submit</button><br>
+      </div>
+      <div class="viewSelectBoxes">
       <input type="checkbox" name="totalInventory">Total Inventory<br>
       @for ($i = 0; $i < count($sortedNames); ++$i)
         <input type="checkbox" id="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}<br>
       @endfor
+    </div>
     </form>
   </div>
   <!--Weekly Inventory Chart-->
@@ -371,13 +394,13 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         'rgba(20, 240, 255, .2)',
         'rgba(0, 255, 15, .2)',
         'rgba(180, 0, 255, .2)',
-        'rgba(255, 160, 0, .2)']
+        'rgba(255, 160, 0, .2)'];
       var borders=[
         'rgba(255, 20, 20, .8)',
         'rgba(20, 240, 255, .8)',
         'rgba(0, 255, 15, .8)',
         'rgba(180, 0, 255, .8)',
-        'rgba(255, 160, 0, .8)']
+        'rgba(255, 160, 0, .8)'];
       for (var i = 0; i < activeNames.length; i++){
         var itemLine = {
           label: activeNames[i],
@@ -471,6 +494,31 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       }
 
+      //You can add more colors here just fine
+      var backgrounds=[
+        'rgba(255, 20, 20, .2)',
+        'rgba(20, 240, 255, .2)',
+        'rgba(0, 255, 15, .2)',
+        'rgba(180, 0, 255, .2)',
+        'rgba(255, 160, 0, .2)'];
+      var borders=[
+        'rgba(255, 20, 20, .8)',
+        'rgba(20, 240, 255, .8)',
+        'rgba(0, 255, 15, .8)',
+        'rgba(180, 0, 255, .8)',
+        'rgba(255, 160, 0, .8)'];
+
+      var chartColors = [];
+      var chartBorders = [];
+      var chartCapacityColors = [];
+      var chartCapacityBorders = [];
+      for (var i = 0; i < activeQuantities.length; i++){
+        chartColors.push(backgrounds[i%backgrounds.length]);
+        chartBorders.push(borders[i%borders.length]);
+        chartCapacityColors.push(backgrounds[(i+3)%backgrounds.length]);
+        chartCapacityBorders.push(borders[(i+3)%borders.length]);
+      }
+
       var capacityChart = document.getElementById('capacityChart').getContext('2d');
       var capacityChart = new Chart(capacityChart, {
         type:'bar',
@@ -480,37 +528,15 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           {
             label:'Inventory',
             data:activeQuantities,
-            backgroundColor:[
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)'],
-            borderColor:[
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)'
-          ],
+            backgroundColor:chartColors,
+            borderColor:chartBorders,
             borderWidth: 2
           },
           {
             label:'Capacity',
             data:activeCapacities,
-            backgroundColor:[
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)',
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',],
-            borderColor:[
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)',
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-          ],
+            backgroundColor:chartCapacityColors,
+            borderColor:chartCapacityBorders,
             borderWidth: 2
           }
         ]
