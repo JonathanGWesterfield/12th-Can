@@ -7,24 +7,25 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use Facebook\WebDriver\WebDriverBy;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class DashboardTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     public function testLogin()
     {
         $this->browse(function ($browser) {
+            //fill in the credentials and login to admin account
             $browser->visit('/login')
                     ->assertSee('E-Mail')
                     ->assertSee('Password')
-                    ->type('email', 'johnsmith@aol.com')
-                    ->type('password', 'password')
+                    ->type('email', '12thcanNoReply@gmail.com')
+                    ->type('password', 'BigBoss12345')
                     ->press('Login')
                     ->assertSee('Low Inventory');
-                  });
+        });
     }
     public function testCharts()
     {

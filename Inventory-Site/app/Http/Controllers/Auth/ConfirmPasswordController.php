@@ -36,4 +36,6 @@ class ConfirmPasswordController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
 }

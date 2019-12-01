@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Member_Position;
 
-class AdminMiddleware
+class DashboardMiddleware
 {
     /**
      * Handle an incoming request.
@@ -23,10 +23,12 @@ class AdminMiddleware
         {
             //Only users with privilege 2 or higher should be able to access admin page
             $position_id =  $request->user()->position_id;
+            if($position_id == null)
+                return redirect('/login');
             //check privilege of the user by looking up their position_id in the member_position table
             $member = Member_Position::find($position_id);
             $privilege = $member->privilege;
-            if($privilege>=2)
+            if($privilege>=0)
             {
                 return $next($request);
             }

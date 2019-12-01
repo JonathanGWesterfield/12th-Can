@@ -7,13 +7,13 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Chrome;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class ExampleTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     public function testLoginPage()
     {
         

@@ -6,27 +6,27 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class ModifyItemTest extends DuskTestCase
 {
-   /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
    //login to the website
    public function testLogin()
-   {
-       $this->browse(function ($browser) {
-           //fill in the credentials and login
-           $browser->visit('/login')
-                   ->assertSee('E-Mail')
-                   ->assertSee('Password')
-                   ->type('email', 'johnsmith@aol.com')
-                   ->type('password', 'password')
-                   ->press('Login')
-                   ->assertSee('Low Inventory');
-       });
-   }
+    {
+        $this->browse(function ($browser) {
+            //fill in the credentials and login to admin account
+            $browser->visit('/login')
+                    ->assertSee('E-Mail')
+                    ->assertSee('Password')
+                    ->type('email', '12thcanNoReply@gmail.com')
+                    ->type('password', 'BigBoss12345')
+                    ->press('Login')
+                    ->assertSee('Low Inventory');
+        });
+    }
    //add an item to ensure one item exists
    public function testAddNewItem()
    {

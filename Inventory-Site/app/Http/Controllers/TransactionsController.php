@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Transaction;
 use App\User;
@@ -9,6 +10,7 @@ use App\Item;
 use Notification;
 use App\Notifications\ThresholdEmail;
 use Illuminate\Support\Facades\DB;
+use App\Member_Position;
 
 class TransactionsController extends Controller
 {
@@ -104,11 +106,15 @@ class TransactionsController extends Controller
         $itemThreshold = $item->low_threshold;
         $itemCapacity = $item->capacity;
 
-        //CHANGE THIS EMAIL TO PULL FROM member_position table
         //only happens when removing below threshold
-        if ($item->quantity < $item->low_threshold)
-            Notification::route('mail', '12thcannoreply@gmail.com')->notify(new ThresholdEmail($itemName,
-                $itemQuantity, $itemThreshold));
+        //pulls emails that are marked as low_notify and sends them an email update
+        for($i = 1; $i<=Member_Position::count(); $i++) {
+            $member = Member_Position::find($i);
+            if($member->low_notify)
+                Notification::route('mail', $member->email)->notify(new ThresholdEmail($itemName,
+                    $itemQuantity, $itemThreshold));
+
+        }
     }
 
 

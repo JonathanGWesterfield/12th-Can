@@ -6,23 +6,23 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+* Put in group 'site'
+*
+* @group site
+*/
 class RemoveInventoryTest extends DuskTestCase
 {
-    /**
-     * Put in group 'site'
-     *
-     * @group site
-     */
     //login to the website
     public function testLogin()
     {
         $this->browse(function ($browser) {
-            //fill in the credentials and login
+            //fill in the credentials and login to admin account
             $browser->visit('/login')
                     ->assertSee('E-Mail')
                     ->assertSee('Password')
-                    ->type('email', 'johnsmith@aol.com')
-                    ->type('password', 'password')
+                    ->type('email', '12thcanNoReply@gmail.com')
+                    ->type('password', 'BigBoss12345')
                     ->press('Login')
                     ->assertSee('Low Inventory');
         });
@@ -63,6 +63,7 @@ class RemoveInventoryTest extends DuskTestCase
                     ->assertSee('10')
                     ->assertSee('comment1')
                     ->press('saveChanges')
+                    //Uncomment once routes is figured out
                     ->waitForText('Inventory was removed');
         });
     }

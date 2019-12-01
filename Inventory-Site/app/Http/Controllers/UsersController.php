@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
+use Notification;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\UserAcceptance;
+
 class UsersController extends Controller
 {
     /**
@@ -125,6 +128,8 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+        //console.log("Help");
+        Notification::route('mail', $user->email)->notify(new UserAcceptance($user->name));
         $user->delete();
     }
 }
