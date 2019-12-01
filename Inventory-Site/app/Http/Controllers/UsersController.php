@@ -129,7 +129,9 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         //console.log("Help");
-        Notification::route('mail', $user->email)->notify(new UserAcceptance($user->name));
+        $localEmail = $user->email;
+        $localName = $user->name;
         $user->delete();
+        Notification::route('mail', $localEmail)->notify(new UserAcceptance($localName));
     }
 }
