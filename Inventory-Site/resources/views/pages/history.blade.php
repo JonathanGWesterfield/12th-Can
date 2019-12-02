@@ -69,7 +69,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
     <head>
       <style>
         .table-scroll {
-          height: 450px;
+          height: 470px;
           overflow-y: auto;
         }
         table th{
@@ -100,49 +100,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         var sortOrder = getUrlVars();
         var table = document.getElementById("transTable");
 
-        /*For sorting by date and alphabetically, no longer needed but I've left them in the code just in case
-        if (sortOrder.sort == 'date'){
-          while (switching){
-            var rows = table.rows;
-            var date1 = Date.parse(rows[i].cells[0].innerHTML);
-            var date2 = Date.parse(rows[i+1].cells[0].innerHTML);
-            if (sortOrder.order == 'dec' && date1 < date2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 0;
-            }
-            else if (sortOrder.order == 'inc' && date1 > date2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 0;
-            }
-            if (i == rows.length - 1){
-              switching = false;
-              i = 0;
-            }
-            i++;
-          }
-        }
-        else if (sortOrder.sort == 'alph'){
-          i = 1;
-          while (switching){
-            var rows = table.rows;
-            var item1 = rows[i].cells[1].innerHTML;
-            var item2 = rows[i+1].cells[1].innerHTML;
-            if (sortOrder.order == 'dec' && item1 < item2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            else if (sortOrder.order == 'inc' && item1 > item2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            if (i == rows.length - 1){
-              switching = false;
-              i = 1;
-            }
-            i++;
-          }
-        }
-        */
+
         //For filtering by item name
         var sort = sortOrder.sort.replace("*", " ");
         if (sort != "" && sort != 'all') {
@@ -154,37 +112,10 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           }
         }
 
-        //For chronological sorting
-
-
-        /*
-        var switching = true;
-        var i = 1;
-        if (sortOrder.order == 'dec' || sortOrder.order == 'inc'){
-          while (switching){
-            if (i == rows.length - 1){
-              switching = false;
-              i = 1;
-            }
-            var rows = table.rows;
-            var date1 = Date.parse(rows[i].cells[0].innerHTML);
-            var date2 = Date.parse(rows[i+1].cells[0].innerHTML);
-            if (sortOrder.order == 'dec' && date1 < date2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            else if (sortOrder.order == 'inc' && date1 > date2){
-              rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-              i = 1;
-            }
-            i++;
-          }
-        }
-        */
-        var switching = true;
-        var i = 0;
-        if (sortOrder.order == 'dec'){
-          while (i < table.rows.length - 1){
+        //Chronological sorting
+                if (sortOrder.order == 'dec'){
+          var i = 0;
+          while (i < table.rows.length-1){
             var date1 = Date.parse(table.rows[i].cells[0].innerHTML);
             var date2 = Date.parse(table.rows[i+1].cells[0].innerHTML);
             if (date1 < date2){
@@ -193,10 +124,10 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             }
             i++;
           }
-          table.rows[0].cells[0].innerHTML = 200;
         }
         else if (sortOrder.order == 'inc'){
-          while (i < table.rows.length - 1){
+          var i = 0;
+          while (i < table.rows.length-1){
             var date1 = Date.parse(table.rows[i].cells[0].innerHTML);
             var date2 = Date.parse(table.rows[i+1].cells[0].innerHTML);
             if (date1 > date2){
@@ -205,14 +136,12 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             }
             i++;
           }
-          table.rows[0].cells[0].innerHTML = 300;
         }
-
 
         //Filter by add or removing quantities
         if (sortOrder.addrmv == 'add'){
           for (var i = 1; i < table.rows.length; i++){
-            var change = parseInt(table.rows[i].cells[2].innerHTML);
+            var change = table.rows[i].cells[2].innerHTML;
             if (change < 0){
               table.deleteRow(i);
               i--;
@@ -221,7 +150,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
         else if (sortOrder.addrmv == 'rmv'){
           for (var i = 1; i < table.rows.length; i++){
-            var change = parseInt(table.rows[i].cells[2].innerHTML);
+            var change = table.rows[i].cells[2].innerHTML;
             if (change > 0){
               table.deleteRow(i);
               i--;
@@ -246,18 +175,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           }
         }
       }
-
-      function filterTable() {
-        var urlVars = getUrlVars();
-        var table = document.getElementById("transTable");
-        if (urlVars.addrmv == 'add'){
-          for (var i = 0; i < table.rows.length; i++){
-            table.rows[i].cells[0].innerHTML = 500;
-
-          }
-        }
-
-      }
     </script>
 
     <body onload="sortTable()">
@@ -272,7 +189,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           <div class="col-md-4">
             <form id="sortSelect">
               <div class="form-group">
-                <select name="inventoryDropdown" class="form-control" name="sort" id="sort">
+                <select class="form-control" name="sort" id="sort">
                   <!--<option value="date">Date</option>
                   <option value="alph">Alphabetical</option>-->
                   <option value="all">All Inventory</option>
@@ -282,13 +199,13 @@ usort($sortedDisplayNames, 'strnatcasecmp');
                 </select>
               </div>
               <div class="form-group">
-                <select name="ascendingOrDescendingDropdown" class="form-control" name="order" id="order">
+                <select class="form-control" name="order" id="order">
                   <option value="dec">Descending</option>
                   <option value="inc">Ascending</option>
                 </select>
               </div>
               <div class="form-group">
-                <select name="addOrRemoveDropdown" class="form-control" name="addrmv" id="addrmv">
+                <select class="form-control" name="addrmv" id="addrmv">
                   <option value="addrmv">Add/Remove</option>
                   <option value="add">Add</option>
                   <option value="rmv">Remove</option>
