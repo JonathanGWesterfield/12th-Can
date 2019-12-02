@@ -26,7 +26,7 @@ class UserPrivilegesTest extends DuskTestCase
                     //looks for the name tag in register.blade.php. ex: <... name='name' ...> 
                     ->type('name', 'p0')
                     ->type('email', 'p0@dusk.com')
-                    ->type('phone', '3143563412')
+                    ->type('phone', '3143563272')
                     ->type('password', 'password')
                     ->type('password_confirmation', 'password')
                     ->press('Register')

@@ -322,7 +322,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
     <form id="viewSelect" class="viewSelect">
       <div class="form-group">
         <!--<input type="submit" value="Submit" name="submitButton"><br>-->
-        <button type="submit" class="btn btn-primary">Submit</button><br>
+        <button name="submitButton" type="submit" class="btn btn-primary">Submit</button><br>
       </div>
       <div class="viewSelectBoxes">
       <input type="checkbox" name="totalInventory">Total Inventory<br>

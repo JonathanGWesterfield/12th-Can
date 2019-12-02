@@ -7,9 +7,9 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
 /**
-* Put in group 'register'
+* Put in group 'site'
 *
-* @group register
+* @group site
 */
 class LoginTest extends DuskTestCase
 {
@@ -31,10 +31,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password')
                     ->type('password_confirmation', 'password')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $second->visit('/register')
                     ->assertSee('Name')
@@ -48,10 +44,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password1')
                     ->type('password_confirmation', 'password1')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $third->visit('/register')
                     ->assertSee('Name')
@@ -65,10 +57,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password2')
                     ->type('password_confirmation', 'password2')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $fourth->visit('/register')
                     ->assertSee('Name')
@@ -82,10 +70,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password3')
                     ->type('password_confirmation', 'password3')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $fifth->visit('/register')
                     ->assertSee('Name')
@@ -99,10 +83,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password4')
                     ->type('password_confirmation', 'password4')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $sixth->visit('/register')
                     ->assertSee('Name')
@@ -116,10 +96,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password5')
                     ->type('password_confirmation', 'password5')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $seventh->visit('/register')
                     ->assertSee('Name')
@@ -133,10 +109,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password6')
                     ->type('password_confirmation', 'password6')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
             $eigth->visit('/register')
                     ->assertSee('Name')
@@ -150,10 +122,6 @@ class LoginTest extends DuskTestCase
                     ->type('password', 'password7')
                     ->type('password_confirmation', 'password7')
                     ->press('Register')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
         });
     }
@@ -167,10 +135,6 @@ class LoginTest extends DuskTestCase
                     ->type('email', 'johnsmith@aol.com')
                     ->type('password', 'password')
                     ->press('Login')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
         });
     }
@@ -183,10 +147,6 @@ class LoginTest extends DuskTestCase
                     ->type('email', 'johnapple@aol.com')
                     ->type('password', 'password1')
                     ->press('Login')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
         });
     }
@@ -259,10 +219,6 @@ class LoginTest extends DuskTestCase
                     ->type('email', 'johnbpple@aol.com')
                     ->type('password', 'password2')
                     ->press('Login')
-                    ->AssertSee('Low Inventory')
-                    ->AssertSee('Recent Inventory')
-                    ->click('#navbarDropdown')
-                    ->click('#logout')
                     ->assertSee('Login');
         });
     }       
