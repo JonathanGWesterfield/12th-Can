@@ -13,7 +13,7 @@ use Tests\DuskTestCase;
 */
 class NewItemsTest extends DuskTestCase
 {
-    
+
     public function testLogin()
     {
         $this->browse(function ($browser) {
@@ -31,7 +31,7 @@ class NewItemsTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add Item Page')
+                    ->assertSee('Add New Items')
                     ->press('#addItemButton')
                     ->waitForText('Add New Item')
                     ->type('#itemName', 'duskFoodItem&Refrigeration')
@@ -45,13 +45,13 @@ class NewItemsTest extends DuskTestCase
                     ->waitForText('Confirmation')
                     ->press('saveChanges')
                     ->waitForText('successfully created');
-        }); 
+        });
     }
     public function testAddNewItem1()
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add Item Page')
+                    ->assertSee('Add New Items')
                     ->press('#addItemButton')
                     ->waitForText('Add New Item')
                     ->type('#itemName', 'duskFoodItem')
@@ -64,13 +64,13 @@ class NewItemsTest extends DuskTestCase
                     ->waitForText('Confirmation')
                     ->press('saveChanges')
                     ->waitForText('successfully created');
-        }); 
+        });
     }
     public function testAddNewItem2()
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add Item Page')
+                    ->assertSee('Add New Items')
                     ->press('#addItemButton')
                     ->waitForText('Add New Item')
                     ->type('#itemName', 'duskRefrigeration')
@@ -83,7 +83,7 @@ class NewItemsTest extends DuskTestCase
                     ->waitForText('Confirmation')
                     ->press('saveChanges')
                     ->waitForText('successfully created');
-                    
-        }); 
+
+        });
     }
 }

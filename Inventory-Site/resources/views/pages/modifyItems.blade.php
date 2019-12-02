@@ -61,7 +61,7 @@ Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Modify Items Page</h2>
+        <h2>Modify Items</h2>
     </div>
 </div>
 <div class="row">

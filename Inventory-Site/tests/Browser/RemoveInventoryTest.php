@@ -32,7 +32,7 @@ class RemoveInventoryTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/new_items')
-                    ->assertSee('Add Item Page')
+                    ->assertSee('Add New Items')
                     ->press('#addItemButton')
                     ->waitForText('Add New Item')
                     ->type('#itemName', 'duskFoodItem&Refrigeration')
@@ -46,14 +46,14 @@ class RemoveInventoryTest extends DuskTestCase
                     ->waitForText('Confirmation')
                     ->press('saveChanges')
                     ->waitForText('successfully created');
-        }); 
+        });
     }
-    //Remove inventory for the first item 
+    //Remove inventory for the first item
     public function testRemoveInventory()
     {
         $this->browse(function ($browser) {
             $browser->visit('/remove_inventory')
-                    ->assertSee('Remove Inventory Page')
+                    ->assertSee('Remove Inventory')
                     ->press('#item-0')
                     ->type('quantity', 10)
                     ->type('comment', 'comment1')

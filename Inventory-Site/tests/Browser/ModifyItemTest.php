@@ -32,7 +32,7 @@ class ModifyItemTest extends DuskTestCase
    {
        $this->browse(function ($browser) {
            $browser->visit('/new_items')
-                   ->assertSee('Add Item Page')
+                   ->assertSee('Add New Items')
                    ->press('#addItemButton')
                    ->waitForText('Add New Item')
                    ->type('#itemName', 'duskFoodItem&Refrigeration')
@@ -46,14 +46,14 @@ class ModifyItemTest extends DuskTestCase
                    ->waitForText('Confirmation')
                    ->press('saveChanges')
                    ->waitForText('successfully created');
-       }); 
+       });
    }
-   //Modify inventory for the first item 
+   //Modify inventory for the first item
    public function testModifyInventory()
    {
        $this->browse(function ($browser) {
            $browser->visit('/modify_items')
-                   ->assertSee('Modify Items Page')
+                   ->assertSee('Modify Items')
                    ->press('#item-0')
                    ->type('#itemName', 'testRename')
                    ->type('#capacity', 10)

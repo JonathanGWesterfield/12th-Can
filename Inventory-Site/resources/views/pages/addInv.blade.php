@@ -52,7 +52,7 @@ Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Add Inventory Page</h2>
+        <h2>Add Inventory</h2>
     </div>
 </div>
 <div class="row">
@@ -115,7 +115,7 @@ Please fill out all the feilds in the table
             //document.getElementById("alert").slideUp(500);
 
             $scope.addItems = []
-            
+
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {

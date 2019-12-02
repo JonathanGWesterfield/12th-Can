@@ -115,7 +115,7 @@
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Add Item Page</h2>
+        <h2>Add New Items</h2>
     </div>
 </div>
 <div class="row">
