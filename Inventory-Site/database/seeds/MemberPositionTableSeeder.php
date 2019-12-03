@@ -12,6 +12,15 @@ class MemberPositionTableSeeder extends Seeder
     public function run()
     {
         DB::table('Member_Position')->insert([
+            'position' => 'Big Boss',
+            'privilege' => 3,
+            'description' => 'Has full admin rights to the website for troubleshooting and development purposes.',
+            'created_at' => '2019-09-22 18:19:12',
+//            'updated_at' => '2019-09-22 18:19:12',
+            'email' => 'jgwesterfield@gmail.com'
+        ]);
+
+        DB::table('Member_Position')->insert([
             'position' => 'Development Director',
             'privilege' => 0,
             'description' => 'Works on grant writing, meeting with people who are interested in large monetary donations, setting up profit shares, going to Aggie Moms Club meetings, Sully donations, and help work towards making sure the 12th Can is financially secure',
@@ -65,15 +74,6 @@ class MemberPositionTableSeeder extends Seeder
             'email' => '12thcan.ad@gmail.com'
         ]);
 
-        DB::table('Member_Position')->insert([
-            'position' => 'Big Boss',
-            'privilege' => 3,
-            'description' => 'Has full admin rights to the website for troubleshooting and development purposes.',
-            'created_at' => '2019-09-22 18:19:12',
-//            'updated_at' => '2019-09-22 18:19:12',
-            'email' => 'jgwesterfield@gmail.com'
-        ]);
-
 /*        DB::table('Member_Position')->insert([
             'position' => '',
             'privilege' => '',
@@ -89,7 +89,7 @@ class MemberPositionTableSeeder extends Seeder
             'description' => 'Lord of the 12th Can. A resource for everyone on the team and helps make sure everything done is working towards the goals set for the 12th Can.',
             'created_at' => '2019-09-22 23:53:38',
 //            'updated_at' => '2019-09-22 23:53:38',
-            'email' => '12thcan.director@gmail.com'
+            'email' => '12thcannoreply@gmail.com'
         ]);
 
         DB::table('Member_Position')->insert([

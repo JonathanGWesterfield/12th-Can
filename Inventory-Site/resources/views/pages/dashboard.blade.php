@@ -10,7 +10,18 @@ $inventoryThresholds = array();
 $inventoryIDs = array();
 $visitedArray = array();
 
+/*
+$activeItemsFiltered = $activeItems->toArray();
 for ($i = 0; $i < count($activeItems); ++$i) {
+  if ($activeItems[$i]->removed == 1) {
+    array_splice($activeItemsFiltered, $i, 1);
+  }
+}
+*/
+
+for ($i = 0; $i < count($activeItems); ++$i) {
+  //if statement prevents dashboard from breaking if any items are marked removed in the database
+  if ($activeItems[$i]->removed == 0) {
     $inventoryNames[] = str_replace(' ', '', $activeItems[$i]->name);
     $inventoryDisplayNames[] = $activeItems[$i]->name;
     $inventoryQuantities[] = $activeItems[$i]->quantity;
@@ -18,7 +29,13 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryThresholds[] = $activeItems[$i]->low_threshold;
     $inventoryIDs[] = $activeItems[$i]->id;
     $visitedArray[$i+1] = 0;
+  }
 }
+
+$sortedNames = $inventoryNames;
+usort($sortedNames, 'strnatcasecmp');
+$sortedDisplayNames = $inventoryDisplayNames;
+usort($sortedDisplayNames, 'strnatcasecmp');
 
 $transactionChanges = array();
 $transactionDates = array();
@@ -26,9 +43,13 @@ $transactionIDs = array();
 $recentChanges = array();
 
 for ($i = 0; $i < count($activeTransactions); ++$i) {
-  $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
-  $transactionDates[] = $activeTransactions[$i]->transaction_date;
-  $transactionIDs[] = $activeTransactions[$i]->item_id;
+  //if statement prevents dashboard from breaking if any items are marked removed in the database
+  //TODO CHECK WHY ITS DELETING YEETERONIS
+  if ($activeItems[$activeTransactions[$i]->item_id-1]->removed == 0){
+    $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
+    $transactionDates[] = $activeTransactions[$i]->transaction_date;
+    $transactionIDs[] = $activeTransactions[$i]->item_id;
+  }
 }
 for ($i = count($activeTransactions); $i > count($activeTransactions)-10; --$i) {
   if ($i > 0) {
@@ -45,22 +66,21 @@ for ($i = 0; $i < count($transactionIDs); ++$i) {
 
 
 $arrayOfSums = array();
-//for ($i = count($inventoryIDs)-1; $i >= 0; --$i){
 for ($i = 0; $i < count($inventoryIDs); ++$i) {
   $arrayOfSums[$inventoryIDs[$i]] = $inventoryQuantities[$i];
 }
 $transactionQuantities = array();
 for ($i = count($transactionChanges)-1; $i >= 0; --$i){
-  //$transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-  //$arrayOfSums[$transactionIDs[$i]] -=- $transactionChanges[$i];
-  if ($visitedArray[$transactionIDs[$i]] == 0){
-    $visitedArray[$transactionIDs[$i]] = 1;
-    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
-  }
-  elseif ($visitedArray[$transactionIDs[$i]] == 1){
-    $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
-    $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+  if (isset($transactionIDs[$i]) && isset($visitedArray[$transactionIDs[$i]])) {
+    if ($visitedArray[$transactionIDs[$i]] == 0){
+      $visitedArray[$transactionIDs[$i]] = 1;
+      $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+      $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+    }
+    elseif ($visitedArray[$transactionIDs[$i]] == 1){
+      $transactionQuantities[] = $arrayOfSums[$transactionIDs[$i]];
+      $arrayOfSums[$transactionIDs[$i]] -= $transactionChanges[$i];
+    }
   }
 
 }
@@ -70,7 +90,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 <head>
   <style>
   .vertical-menu {
-    height: 100px;
+    height: 230px;
     overflow-y: auto;
   }
   .vertical-menu a {
@@ -88,8 +108,15 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   }
 
   .table-scroll {
-    height: 200px;
+    height: 230px;
     overflow-y: auto;
+  }
+  .viewSelectBoxes {
+    height: 230px;
+    overflow-y: auto;
+  }
+  .col-md-2 {
+    padding-left: 3%;
   }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -124,17 +151,26 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
       return -1;
     }
 
+    function rememberChecks() {
+      var inventoryNames = <?php echo json_encode($inventoryNames); ?>;
+      var form = document.getElementById("viewSelect");
+      var checkedNames = getUrlVars();
+      //form["totalInventory"].checked = "on";
+      if (checkedNames["totalInventory"] == "on"){
+        form["totalInventory"].checked = "on";
+      }
+      for (var i = 0; i < inventoryNames.length; i++){
+        if (checkedNames[inventoryNames[i]] == "on"){
+          form[inventoryNames[i]].checked = "on";
+        }
+      }
+    }
   </script>
 
 </head>
-<body>
-{{--<div class="row">--}}
-{{--    <div class="col" style="text-align: center">--}}
-{{--        <h2>Inventory Dashboard</h2>--}}
-{{--        <br>--}}
-{{--    </div>--}}
-{{--</div>--}}
+<body onload="rememberChecks()">
 <div class="row">
+  <!--Low Inventory Notifier-->
   <div class="col-md-2">
     <h4><strong>Low Inventory</strong></h4>
       <div class="vertical-menu" id="lowInventory">
@@ -145,6 +181,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           @endfor
     </div>
   </div>
+  <!--Current Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="inventoryChart"></canvas>
@@ -173,6 +210,27 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       }
 
+      //You can add more colors here just fine
+      var backgrounds=[
+        'rgba(255, 20, 20, .2)',
+        'rgba(20, 240, 255, .2)',
+        'rgba(0, 255, 15, .2)',
+        'rgba(180, 0, 255, .2)',
+        'rgba(255, 160, 0, .2)'];
+      var borders=[
+        'rgba(255, 20, 20, .8)',
+        'rgba(20, 240, 255, .8)',
+        'rgba(0, 255, 15, .8)',
+        'rgba(180, 0, 255, .8)',
+        'rgba(255, 160, 0, .8)'];
+
+      var chartColors = [];
+      var chartBorders = [];
+      for (var i = 0; i < activeQuantities.length; i++){
+        chartColors.push(backgrounds[i%backgrounds.length]);
+        chartBorders.push(borders[i%borders.length]);
+      }
+
       var inventoryChart = document.getElementById('inventoryChart').getContext('2d');
       var inventoryChart = new Chart(inventoryChart, {
         type:'bar',
@@ -180,20 +238,9 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           labels:activeDisplayNames,
           datasets:[{
             //label:'Current Inventory',
-            data:activeQuantities,
-            backgroundColor:[
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)'],
-            borderColor:[
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)'
-          ],
+            data: activeQuantities,
+            backgroundColor: chartColors,
+            borderColor: chartBorders,
             borderWidth: 2
           }]
         },
@@ -216,8 +263,10 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           }
         }
       });
+
     </script>
   </div>
+  <!--Recent Inventory Table-->
   <div class="col-md-5">
     <script>
       var transactionDates = <?php echo json_encode($transactionDates); ?>;
@@ -239,8 +288,10 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           <th scope="col">Date</th>
         </thead>
         <tbody>
-          <!--For loops runs one less time than you think it will, this displays 5 most recent changes-->
-          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-10; --$i)
+          <!--Displays the X-1 most recent transactions in order of recency
+              X meaning the integer in $i > count($transactionChanges)-X
+              So if its $i > count($transactionChanges)-10, the 9 most recent transactions are shown-->
+          @for ($i = count($transactionChanges)-1; $i > count($transactionChanges)-16; --$i)
           @if ($i >= 0)
             @if ($transactionChanges[$i] < 0)
               <tr style="background-color:#ffdede">
@@ -266,15 +317,22 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
   </div>
 </div>
 <div class="row">
+  <!--Form Selection for displayed inventory-->
   <div class="col-md-2">
-    <form id="viewSelect">
-      <input type="submit" value="Submit" name="submitButton"><br>
+    <form id="viewSelect" class="viewSelect">
+      <div class="form-group">
+        <!--<input type="submit" value="Submit" name="submitButton"><br>-->
+        <button name="submitButton" type="submit" class="btn btn-primary">Submit</button><br>
+      </div>
+      <div class="viewSelectBoxes">
       <input type="checkbox" name="totalInventory">Total Inventory<br>
-      @for ($i = 0; $i < count($inventoryNames); ++$i)
-        <input type="checkbox" name="{{$inventoryNames[$i]}}">{{$inventoryDisplayNames[$i]}}<br>
+      @for ($i = 0; $i < count($sortedNames); ++$i)
+        <input type="checkbox" id="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}<br>
       @endfor
+    </div>
     </form>
   </div>
+  <!--Weekly Inventory Chart-->
   <div class="col-md-5">
     <div>
       <canvas id="monthlyChart"></canvas>
@@ -330,32 +388,26 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       });
 
-      var today = Date.now();
-      //604800000 is the number of milliseconds in a week
-      var fourWeeks = today - 4*604800000;
-      var threeWeeks = today - 3*604800000;
-      var twoWeeks = today - 2*604800000;
-      var oneWeek = today - 604800000;
-
       var lines = [];
       var backgrounds=[
         'rgba(255, 20, 20, .2)',
         'rgba(20, 240, 255, .2)',
         'rgba(0, 255, 15, .2)',
         'rgba(180, 0, 255, .2)',
-        'rgba(255, 160, 0, .2)']
+        'rgba(255, 160, 0, .2)'];
       var borders=[
         'rgba(255, 20, 20, .8)',
         'rgba(20, 240, 255, .8)',
         'rgba(0, 255, 15, .8)',
         'rgba(180, 0, 255, .8)',
-        'rgba(255, 160, 0, .8)']
+        'rgba(255, 160, 0, .8)'];
       for (var i = 0; i < activeNames.length; i++){
         var itemLine = {
           label: activeNames[i],
           data: [0, 0, 0, activeQuantities[i]],
           fill: false,
-          //i%5 ensures quantity bars are not same color as their capactiy bar
+          //i%5 makes colors loop after 5
+          //Might need to add more colors, readability concern
           backgroundColor: backgrounds[i%5],
           borderColor: borders[i%5],
           borderWidth: 2
@@ -363,7 +415,15 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         lines.push(itemLine);
       }
 
+      var today = Date.now();
+      //604800000 is the number of milliseconds in a week
+      var fourWeeks = today - 4*604800000;
+      var threeWeeks = today - 3*604800000;
+      var twoWeeks = today - 2*604800000;
+      var oneWeek = today - 604800000;
+
       //DO THIS BY PULLING VALUES FROM RECENT CHANGES TABLE --- getElementById
+      //Can't do that b/c the needed values might not be in the ~15 most recent changes
       //Fills data for each line object
       for (var i = 0; i < transactionNames.length; i++){
         var nameIndex = lineSearch(transactionNames[i], lines);
@@ -379,7 +439,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
             lines[nameIndex].data[2] = parseInt(lines[nameIndex].data[2]) - parseInt(transactionChanges[i]);
           }
           if (targetDate > oneWeek && targetDate <= today){
-            lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) - parseInt(transactionChanges[i]);
+            //lines[nameIndex].data[3] = parseInt(lines[nameIndex].data[3]) + parseInt(transactionChanges[i]);
             //lines[nameIndex].data[3] = parseInt(activeQuantities[i]);
           }
         }
@@ -401,6 +461,7 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
 
     </script>
   </div>
+  <!--Inventory vs Capacity chart-->
   <div class="col-md-5">
     <div>
       <canvas id="capacityChart"></canvas>
@@ -433,6 +494,31 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
         }
       }
 
+      //You can add more colors here just fine
+      var backgrounds=[
+        'rgba(255, 20, 20, .2)',
+        'rgba(20, 240, 255, .2)',
+        'rgba(0, 255, 15, .2)',
+        'rgba(180, 0, 255, .2)',
+        'rgba(255, 160, 0, .2)'];
+      var borders=[
+        'rgba(255, 20, 20, .8)',
+        'rgba(20, 240, 255, .8)',
+        'rgba(0, 255, 15, .8)',
+        'rgba(180, 0, 255, .8)',
+        'rgba(255, 160, 0, .8)'];
+
+      var chartColors = [];
+      var chartBorders = [];
+      var chartCapacityColors = [];
+      var chartCapacityBorders = [];
+      for (var i = 0; i < activeQuantities.length; i++){
+        chartColors.push(backgrounds[i%backgrounds.length]);
+        chartBorders.push(borders[i%borders.length]);
+        chartCapacityColors.push(backgrounds[(i+3)%backgrounds.length]);
+        chartCapacityBorders.push(borders[(i+3)%borders.length]);
+      }
+
       var capacityChart = document.getElementById('capacityChart').getContext('2d');
       var capacityChart = new Chart(capacityChart, {
         type:'bar',
@@ -442,37 +528,15 @@ for ($i = count($transactionChanges)-1; $i >= 0; --$i){
           {
             label:'Inventory',
             data:activeQuantities,
-            backgroundColor:[
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)'],
-            borderColor:[
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)'
-          ],
+            backgroundColor:chartColors,
+            borderColor:chartBorders,
             borderWidth: 2
           },
           {
             label:'Capacity',
             data:activeCapacities,
-            backgroundColor:[
-              'rgba(180, 0, 255, .2)',
-              'rgba(255, 160, 0, .2)',
-              'rgba(255, 20, 20, .2)',
-              'rgba(20, 240, 255, .2)',
-              'rgba(0, 255, 15, .2)',],
-            borderColor:[
-              'rgba(180, 0, 255, .8)',
-              'rgba(255, 160, 0, .8)',
-              'rgba(255, 20, 20, .8)',
-              'rgba(20, 240, 255, .8)',
-              'rgba(0, 255, 15, .8)',
-          ],
+            backgroundColor:chartCapacityColors,
+            borderColor:chartCapacityBorders,
             borderWidth: 2
           }
         ]

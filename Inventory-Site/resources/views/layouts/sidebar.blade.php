@@ -78,7 +78,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    <a id="logout" class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
@@ -114,7 +114,7 @@
                             <a href="/dashboard?totalInventory=on">Dashboard</a>
                         </li>
                         <li>
-                            <a href="#">History</a>
+                            <a href="/history">History</a>
                         </li>
                     </ul>
                 </nav>

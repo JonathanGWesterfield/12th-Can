@@ -40,7 +40,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
+                <button name="saveChanges" type="button" class="btn btn-primary" ng-click="submit()" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@ Please fill out all the feilds in the table
 </div>
 <div class="row">
     <div class="col" style="text-align: center">
-        <h2>Remove Inventory Page</h2>
+        <h2>Remove Inventory</h2>
     </div>
 </div>
 <div class="row">
@@ -63,7 +63,7 @@ Please fill out all the feilds in the table
                 <th>Available Items</th>
             </tr>
             <tr ng-repeat="item in items | filter:searchText">
-                <td class="btn btn-link" ng-click="addToTable(item)"><%item.name%></td>
+                <td id="item-<%$index%>" class="btn btn-link" ng-click="addToTable(item)"><%item.name%></td>
             </tr>
         </table>
     </div>
@@ -84,8 +84,8 @@ Please fill out all the feilds in the table
                         <tr>
                             <td><%item.name%></td>
                             <td><%item.quantity%></td>
-                            <td><input ng-model = "item.addQuantity" type = "number" only-num min = "0"></td>
-                            <td><input ng-model = "item.comment" type = "text"></td>
+                            <td><input name="quantity" ng-model = "item.addQuantity" type = "number" only-num min = "0"></td>
+                            <td><input name="comment" ng-model = "item.comment" type = "text"></td>
                             <td><button class="btn btn-primary" ng-click="remove($index)">Cancel</button></td>
                         </tr>
                     </tbody>
@@ -94,7 +94,7 @@ Please fill out all the feilds in the table
         </div>
         <div class="row pt-md-2">
             <div class="col" style="text-align: right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="preview()">
+                <button name="submit" type="button" class="btn btn-primary" data-toggle="modal" ng-click="preview()">
                     Submit
                 </button>
             </div>
