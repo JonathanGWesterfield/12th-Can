@@ -86,6 +86,9 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a id="adminPanel" class="dropdown-item" href="/admin_panel" hidden>
+                                        {{ __('Admin Panel') }}
+                                    </a>
                                 </div>
                             </li>
                             @endguest
@@ -129,6 +132,26 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
+            var currentPos;
+            var posID = {{Auth::user()->position_id}}
+            var xhttp2 = new XMLHttpRequest();
+            xhttp2.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText)
+                    currentPos = JSON.parse(this.responseText);
+                    for (let i = 0; i < currentPos.length; i++) {
+                        const element = currentPos[i];
+                        if(element.id == posID){
+                            if(element.privilege>=2){
+                                document.getElementById('adminPanel').hidden = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            };
+            xhttp2.open("GET", "member_position", true);
+            xhttp2.send();
         });
     </script>
 </body>
