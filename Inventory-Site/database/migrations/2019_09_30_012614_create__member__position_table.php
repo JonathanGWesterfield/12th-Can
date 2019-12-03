@@ -19,6 +19,7 @@ class CreateMemberPositionTable extends Migration
             $table->integer('privilege');
             $table->string('description');
             $table->string('email')->unique()->index();
+            $table->boolean('low_notify')->default(false);
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->useCurrent();
         });

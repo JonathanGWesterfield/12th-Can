@@ -22,6 +22,19 @@ class UserTableSeed extends Seeder
             'phone' => '7132536097'
         ]);
 
+        //new test user
+        // Insert a test user for this test to work
+        DB::table('users')->insert([
+            'name' => 'Test User',
+            'email' => '12thcanNoReply@gmail.com',
+            'password' => '$2y$10$m2Gre.RecRNMqON1g.Pycecoj32dM1OSFbfvFY6bUzwLnWJg0BI96',
+            'created_at' => '2019-11-21 16:04:01',
+            'updated_at' => '2019-11-21 16:04:01',
+            'phone' => '1234567890',
+            'current_member' => '1',
+            'position_id' => '8'
+        ]);
+
         // Insert a test user for this test to work
         DB::table('users')->insert([
             'name' => 'Abdul Campos',

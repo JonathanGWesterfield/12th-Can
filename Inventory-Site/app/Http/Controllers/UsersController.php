@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Member_Position;
 use Illuminate\Http\Request;
 use App\User;
+use Notification;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\UserAcceptance;
 
 class UsersController extends Controller
 {
@@ -22,53 +24,10 @@ class UsersController extends Controller
      * Gets all of the users who are current members of the 12th Can.
      * @return array Returns all information for users who are members.
      */
-    public function getCurrentMembers()
+    public static function getCurrentMembers()
     {
-        return DB::select('select * from users where current_member=TRUE ');
+        return json_encode(DB::select('select * from users'));
     }
-
-//    /**
-//     * Show the form for creating a new resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function create()
-//    {
-//        //
-//    }
-
-//    /**
-//     * Store a newly created resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function store(Request $request)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($id)
-//    {
-//        //
-//    }
 
     /**
      * Update the specified resource in storage.
@@ -117,14 +76,19 @@ class UsersController extends Controller
             ->header('Content-Type', 'text/plain');
     }
 
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        //console.log("Help");
+        $localEmail = $user->email;
+        $localName = $user->name;
+        $user->delete();
+        Notification::route('mail', $localEmail)->notify(new UserAcceptance($localName));
+    }
 }

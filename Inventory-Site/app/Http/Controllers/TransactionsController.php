@@ -2,33 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Transaction;
 use App\User;
 use App\Item;
+use Notification;
+use App\Notifications\ThresholdEmail;
 use Illuminate\Support\Facades\DB;
+use App\Member_Position;
 
 class TransactionsController extends Controller
 {
-//    /**
-//     * Display a listing of the resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function index()
-//    {
-//        //
-//    }
-
-//    /**
-//     * Show the form for creating a new resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function create()
-//    {
-//        //
-//    }
 
     /**
      * Store a newly created resource in storage. Is used to input a new transaction into the
@@ -39,8 +24,6 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: WRITE THE TESTS FOR THIS CHANGE
-
         try
         {
             $transactions = json_decode($request->getContent(), true);
@@ -85,7 +68,7 @@ class TransactionsController extends Controller
 
     /**
      * Updates the quantity of the specified item by summing up all of the quantity changes
-     * for that item in the transactions table.
+     * for that item in the transactions table. And sends email if item goes below threshold.
      * @param $id The ID of the item that needs to have it's quantity updated.
      */
     public function updateItemQuantity($id)
@@ -96,88 +79,26 @@ class TransactionsController extends Controller
             ->sum('item_quantity_change');
 
         $item->save();
+
+        $itemName = $item->name;
+        $itemQuantity = $item->quantity;
+        $itemThreshold = $item->low_threshold;
+        $itemCapacity = $item->capacity;
+
+        //only happens when removing below threshold
+        //pulls emails that are marked as low_notify and sends them an email update
+        for($i = 1; $i<=Member_Position::count(); $i++)
+        {
+            $member = Member_Position::find($i);
+
+            // make sure that a member position was actually found
+            if ($member == null)
+                continue;
+
+            if($member->low_notify)
+                Notification::route('mail', $member->email)->notify(new ThresholdEmail($itemName,
+                    $itemQuantity, $itemThreshold));
+
+        }
     }
-
-
-// Old transaction function. Needs to have more than one transaction at a time.
-//$this->validate($request, [
-//'item_id' => 'required',
-//'user_id' => 'required',
-//'quantity_change' => 'required',
-//]);
-//
-//try
-//{
-//    // Transaction date is created by the database current timestamp
-//$transaction = new Transaction();
-//$transaction->item_id = $request->input('item_id');
-//$transaction->member_id = $request->input('user_id');
-//$transaction->item_quantity_change = $request->input('quantity_change');
-//
-//if($request->input('comment') != null)
-//$transaction->comment = $request->input('comment');
-//
-//$transaction->save();
-//}
-//catch (Exception $e)
-//        {
-//            // Attempt to catch a bad database store
-//            return response([
-//                'status' => 'transaction failed',
-//                'error' => $e->getMessage()
-//            ], 500);
-//        }
-//
-////        return redirect('/new_transactions')->with('success', 'transaction Added');
-//        return response([
-//            'status' => 'transaction succeeded',
-//            'transaction_item' => $transaction->item_id,
-//            'transaction_user' => $transaction->member_id,
-//            'transaction_change' =>  $transaction->item_quantity_change], 200)
-//            ->header('Content-Type', 'text/plain');
-
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($id)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
 }
