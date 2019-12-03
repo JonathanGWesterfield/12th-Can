@@ -176,6 +176,18 @@ usort($sortedDisplayNames, 'strnatcasecmp');
               }
             }
           }
+          //This is just a temporary notification, try to make it a modal
+          else if (startDate > endDate){
+            table.rows[0].cells[0].innerHTML = "Dates Invalid";
+            table.rows[0].cells[1].innerHTML = "";
+            table.rows[0].cells[2].innerHTML = "";
+            table.rows[0].cells[3].innerHTML = "";
+            table.rows[0].cells[4].innerHTML = "";
+            for (var i = 1; i < table.rows.length; i++){
+              table.deleteRow(i);
+              i--;
+            }
+          }
         }
         //Handle all other cases
         else if (sortOrder.start != '' || sortOrder.end != ''){
@@ -206,7 +218,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
       }
     </script>
 
-    <body onload="sortTable(); rememberSelects();">
+    <body onload="rememberSelects(); sortTable();">
       <div class="row">
         <div class="col text-center" style="...">
           <h1>Inventory History</h1>
@@ -270,9 +282,8 @@ usort($sortedDisplayNames, 'strnatcasecmp');
                 </tbody>
               </div>
           </div>
-
-
-            <br>
-
+          <br>
     </body>
+
+
 @endsection
