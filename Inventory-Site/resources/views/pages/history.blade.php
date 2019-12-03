@@ -175,9 +175,19 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           }
         }
       }
+
+      function rememberChecks() {
+        var selectBoxes = document.getElementById("sortSelect").elements;
+        var urlVars = getUrlVars();
+        selectBoxes[0].value = urlVars.sort;
+        selectBoxes[1].value = urlVars.order;
+        selectBoxes[2].value = urlVars.addrmv;
+        selectBoxes[3].value = urlVars.start;
+        selectBoxes[4].value = urlVars.end;
+      }
     </script>
 
-    <body onload="sortTable()">
+    <body onload="sortTable(); rememberChecks();">
       <div class="row">
         <div class="col text-center" style="...">
           <h1>Inventory History</h1>
