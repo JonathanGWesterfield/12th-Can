@@ -195,7 +195,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
       }
 
-      function rememberChecks() {
+      function rememberSelects() {
         var selectBoxes = document.getElementById("sortSelect").elements;
         var urlVars = getUrlVars();
         selectBoxes[0].value = urlVars.sort;
@@ -206,7 +206,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
       }
     </script>
 
-    <body onload="sortTable(); rememberChecks();">
+    <body onload="sortTable(); rememberSelects();">
       <div class="row">
         <div class="col text-center" style="...">
           <h1>Inventory History</h1>
