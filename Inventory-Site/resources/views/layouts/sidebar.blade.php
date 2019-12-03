@@ -117,7 +117,7 @@
                             <a href="/dashboard?totalInventory=on">Dashboard</a>
                         </li>
                         <li>
-                            <a href="/history">History</a>
+                            <a href="/history?sort=all&order=dec&addrmv=addrmv&start=&end=">History</a>
                         </li>
                     </ul>
                 </nav>
