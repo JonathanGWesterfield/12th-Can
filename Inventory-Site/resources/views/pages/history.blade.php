@@ -159,7 +159,26 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
 
         //Filter by calendar date range
-        if (sortOrder.start != '' || sortOrder.end != ''){
+        //Prevent user from making Start Date > End Date
+        if (sortOrder.start != '' &&  sortOrder.end != ''){
+          var startDate = Date.parse(sortOrder.start);
+          var endDate = Date.parse(sortOrder.end);
+          if (startDate < endDate){
+            for (var i = 1; i < table.rows.length; i++){
+              var transDate = Date.parse(table.rows[i].cells[0].innerHTML);
+              if (startDate > transDate){
+                table.deleteRow(i);
+                i--;
+              }
+              if (endDate < transDate){
+                table.deleteRow(i);
+                i--;
+              }
+            }
+          }
+        }
+        //Handle all other cases
+        else if (sortOrder.start != '' || sortOrder.end != ''){
           var startDate = Date.parse(sortOrder.start);
           var endDate = Date.parse(sortOrder.end);
           for (var i = 1; i < table.rows.length; i++){
@@ -200,8 +219,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             <form id="sortSelect">
               <div class="form-group">
                 <select class="form-control" name="sort" id="sort">
-                  <!--<option value="date">Date</option>
-                  <option value="alph">Alphabetical</option>-->
                   <option value="all">All Inventory</option>
                   @for ($i = 0; $i < count($sortedNames); ++$i)
                     <option value="{{$sortedNames[$i]}}" name="{{$sortedNames[$i]}}">{{$sortedDisplayNames[$i]}}</option>
