@@ -100,7 +100,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         var sortOrder = getUrlVars();
         var table = document.getElementById("transTable");
 
-
+        if (sortOrder.sort != null){
         //For filtering by item name
         var sort = sortOrder.sort.replace("*", " ");
         if (sort != "" && sort != 'all') {
@@ -113,7 +113,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
 
         //Chronological sorting
-                if (sortOrder.order == 'dec'){
+        if (sortOrder.order == 'dec'){
           var i = 0;
           while (i < table.rows.length-1){
             var date1 = Date.parse(table.rows[i].cells[0].innerHTML);
@@ -163,7 +163,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         if (sortOrder.start != '' &&  sortOrder.end != ''){
           var startDate = Date.parse(sortOrder.start);
           var endDate = Date.parse(sortOrder.end);
-          if (startDate < endDate){
+          if (startDate <= endDate){
             for (var i = 1; i < table.rows.length; i++){
               var transDate = Date.parse(table.rows[i].cells[0].innerHTML);
               if (startDate > transDate){
@@ -195,30 +195,67 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           var endDate = Date.parse(sortOrder.end);
           for (var i = 1; i < table.rows.length; i++){
             var transDate = Date.parse(table.rows[i].cells[0].innerHTML);
-            if (startDate > transDate){
+            if (startDate+86400000 >= transDate){
               table.deleteRow(i);
               i--;
             }
-            if (endDate < transDate){
+            if (endDate <= transDate-86400000-86400000){
               table.deleteRow(i);
               i--;
             }
           }
         }
       }
+    }
 
-      function rememberSelects() {
+      function formatTable() {
+        //Remember selectbox values
         var selectBoxes = document.getElementById("sortSelect").elements;
         var urlVars = getUrlVars();
-        selectBoxes[0].value = urlVars.sort;
-        selectBoxes[1].value = urlVars.order;
-        selectBoxes[2].value = urlVars.addrmv;
-        selectBoxes[3].value = urlVars.start;
-        selectBoxes[4].value = urlVars.end;
+        if (urlVars.sort != null){
+          selectBoxes[0].value = urlVars.sort;
+        }
+        if (urlVars.order != null){
+          selectBoxes[1].value = urlVars.order;
+        }
+        if (urlVars.addrmv != null){
+          selectBoxes[2].value = urlVars.addrmv;
+        }
+        if (urlVars.start != null){
+          selectBoxes[3].value = urlVars.start;
+        }
+        if (urlVars.end != null){
+          selectBoxes[4].value = urlVars.end;
+        }
+
+        var rows = document.getElementById("transTable").rows;
+        for (var i = 1; i < rows.length; i++){
+          var tableDate = new Date(rows[i].cells[0].innerHTML);
+          var hours = tableDate.getHours();
+          var amPM = "AM";
+          var minutes = tableDate.getMinutes();
+          var minutesStr = "";
+          var day = tableDate.getDay()+1;
+          var month = tableDate.getMonth()+1;
+          var year = tableDate.getFullYear();
+
+          if (hours >= 12){
+            hours = hours-12;
+            amPM = "PM";
+            if (hours == 0){
+              hours = 12;
+            }
+          }
+          if (minutes < 10){
+
+            minutes = "0" + minutes;
+          }
+          rows[i].cells[0].innerHTML = month + "/" + day + "/" + year + " " + hours + ":" + minutes + " " + amPM;
+        }
       }
     </script>
 
-    <body onload="rememberSelects(); sortTable();">
+    <body onload="sortTable(); formatTable();">
       <div class="row">
         <div class="col text-center" style="...">
           <h1>Inventory History</h1>
