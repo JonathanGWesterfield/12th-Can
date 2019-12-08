@@ -235,7 +235,7 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           var amPM = "AM";
           var minutes = tableDate.getMinutes();
           var minutesStr = "";
-          var day = tableDate.getDay()+1;
+          var day = tableDate.getDate();
           var month = tableDate.getMonth()+1;
           var year = tableDate.getFullYear();
 
