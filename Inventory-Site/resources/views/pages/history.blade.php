@@ -234,7 +234,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           var hours = tableDate.getHours();
           var amPM = "AM";
           var minutes = tableDate.getMinutes();
-          var minutesStr = "";
           var day = tableDate.getDate();
           var month = tableDate.getMonth()+1;
           var year = tableDate.getFullYear();
@@ -245,10 +244,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             if (hours == 0){
               hours = 12;
             }
-          }
-          if (minutes < 10){
-
-            minutes = "0" + minutes;
           }
           rows[i].cells[0].innerHTML = month + "/" + day + "/" + year + " " + hours + ":" + minutes + " " + amPM;
         }
