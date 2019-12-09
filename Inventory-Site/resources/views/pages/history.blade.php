@@ -7,7 +7,6 @@ $inventoryQuantities = array();
 $inventoryCapacities = array();
 $inventoryThresholds = array();
 $inventoryIDs = array();
-
 for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryNames[] = str_replace(' ', '*', $activeItems[$i]->name);
     $inventoryDisplayNames[] = $activeItems[$i]->name;
@@ -17,14 +16,12 @@ for ($i = 0; $i < count($activeItems); ++$i) {
     $inventoryDates[] = $activeItems[$i]->updated_at;
     $inventoryIDs[] = $activeItems[$i]->id;
 }
-
 $transactionChanges = array();
 $transactionDates = array();
 $transactionIDs = array();
 $transactionComments = array();
 $transactionUsers = array();
 $recentChanges = array();
-
 for ($i = 0; $i < count($activeTransactions); ++$i) {
   $transactionChanges[] = $activeTransactions[$i]->item_quantity_change;
   $transactionDates[] = $activeTransactions[$i]->transaction_date;
@@ -37,28 +34,24 @@ for ($i = count($activeTransactions); $i > count($activeTransactions)-3; --$i) {
     $recentChanges[] = $activeTransactions[$i-1];
   }
 }
-
 $transactionNames = array();
 for ($i = 0; $i < count($transactionIDs); ++$i) {
   if (in_array($transactionIDs[$i], $inventoryIDs)) {
     $transactionNames[] = $inventoryDisplayNames[array_search($transactionIDs[$i], $inventoryIDs)];
   }
 }
-
 $userNames = array();
 $userIDs = array();
 for ($i = 0; $i < count($activeUsers); ++$i) {
   $userNames[] = $activeUsers[$i]->name;
   $userIDs[] = $activeUsers[$i]->id;
 }
-
 $transactionUserNames = array();
 for ($i = 0; $i < count($transactionUserIDs); ++$i) {
   if (in_array($transactionUserIDs[$i], $userIDs)) {
     $transactionUserNames[] = $userNames[array_search($transactionUserIDs[$i], $userIDs)];
   }
 }
-
 $sortedNames = $inventoryNames;
 usort($sortedNames, 'strnatcasecmp');
 $sortedDisplayNames = $inventoryDisplayNames;
@@ -95,11 +88,9 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         });
         return vars;
       }
-
       function sortTable() {
         var sortOrder = getUrlVars();
         var table = document.getElementById("transTable");
-
         if (sortOrder.sort != null){
         //For filtering by item name
         var sort = sortOrder.sort.replace("*", " ");
@@ -111,7 +102,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             }
           }
         }
-
         //Chronological sorting
         if (sortOrder.order == 'dec'){
           var i = 0;
@@ -137,7 +127,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             i++;
           }
         }
-
         //Filter by add or removing quantities
         if (sortOrder.addrmv == 'add'){
           for (var i = 1; i < table.rows.length; i++){
@@ -157,7 +146,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
             }
           }
         }
-
         //Filter by calendar date range
         //Prevent user from making Start Date > End Date
         if (sortOrder.start != '' &&  sortOrder.end != ''){
@@ -207,7 +195,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         }
       }
     }
-
       function formatTable() {
         //Remember selectbox values
         var selectBoxes = document.getElementById("sortSelect").elements;
@@ -227,7 +214,6 @@ usort($sortedDisplayNames, 'strnatcasecmp');
         if (urlVars.end != null){
           selectBoxes[4].value = urlVars.end;
         }
-
         var rows = document.getElementById("transTable").rows;
         for (var i = 1; i < rows.length; i++){
           var tableDate = new Date(rows[i].cells[0].innerHTML);
@@ -237,13 +223,15 @@ usort($sortedDisplayNames, 'strnatcasecmp');
           var day = tableDate.getDate();
           var month = tableDate.getMonth()+1;
           var year = tableDate.getFullYear();
-
           if (hours >= 12){
             hours = hours-12;
             amPM = "PM";
             if (hours == 0){
               hours = 12;
             }
+          }
+          if (minutes < 10){
+            minutes = "0" + minutes;
           }
           rows[i].cells[0].innerHTML = month + "/" + day + "/" + year + " " + hours + ":" + minutes + " " + amPM;
         }
